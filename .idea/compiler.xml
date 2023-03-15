@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TestRequest" />
+        <module name="BetterCRM" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="TestRequest" target="19" />
+      <module name="BetterCRM" target="19" />
     </bytecodeTargetLevel>
   </component>
 </project>
