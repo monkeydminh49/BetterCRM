@@ -1,6 +1,5 @@
 package Controller;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Consts;
 import org.apache.http.Header;
@@ -8,10 +7,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.fluent.Form;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
@@ -20,72 +19,104 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
+
 
 public class Request {
+    private static Request requestInstance;
 
-    public static void main(String[] args) throws IOException {
+    private Request() {
+    }
+
+    public static Request getInstance() {
+        if (requestInstance == null) {
+            requestInstance = new Request();
+        }
+        return requestInstance;
+    }
+
+    private List<String> classIdList;
+    private HttpGet get;
+    private HttpPost post;
+    private HttpClient client;
+    private HttpResponse getResponse;
+    private CloseableHttpResponse response;
+    private String token;
+    private String loginUrl;
+    private String on_goingClassListUrl;
+
+    public void login(String username, String password, boolean remember) throws IOException {
         // First Get request to get token
-        String loginUrl = "https://crm.llv.edu.vn/index.php?module=Users&action=Login&mode=login";
-        HttpGet get = new HttpGet(loginUrl);
-        HttpClient client = HttpClients.createDefault();
-        HttpResponse getResponse = client.execute(get);
+        loginUrl = "https://crm.llv.edu.vn/index.php?module=Users&action=Login&mode=login";
+        get = new HttpGet(loginUrl);
+        client = HttpClients.createDefault();
+        getResponse = client.execute(get);
 
+        // Print request response
         System.out.println("Protocol: " + getResponse.getProtocolVersion());
         System.out.println("Status:" + getResponse.getStatusLine().toString());
         System.out.println("Content type:" + getResponse.getEntity().getContentType());
         System.out.println("Locale:" + getResponse.getLocale());
         System.out.println("Headers:");
+
+        // Read response headers
         for(Header header : getResponse.getAllHeaders()) {
             System.out.println("          " + header.getName()+": " + header.getValue());
         }
+
+        // Read response body - html
         String content = IOUtils.toString(getResponse.getEntity().getContent(), "UTF-8");
-        //System.out.println("Content:");
-        //System.out.println(content);
 
         // Get token in returned HTML
         Document doc = (Document) Jsoup.connect(loginUrl).get();
-        //doc.select("input").forEach(System.out::println);
-
         Element element = doc.select("input").get(3);
-        String token = element.attr("value");
+        token = element.attr("value");
         System.out.println("Token: " + token);
 
         // Add form data to payload
         List<NameValuePair> payload = new ArrayList<>();
-        payload.add(new BasicNameValuePair("username", "dangminh.TAMD"));
-        payload.add(new BasicNameValuePair("password", "LLVN123456"));
-        payload.add(new BasicNameValuePair("remember", "true"));
+        payload.add(new BasicNameValuePair("username", username));
+        payload.add(new BasicNameValuePair("password", password));
+        payload.add(new BasicNameValuePair("remember", remember ? "true" : "false"));
         payload.add(new BasicNameValuePair("__vtrftk", token));
 
         // Add payload to post request
-        HttpPost httppost = new HttpPost(loginUrl);
+        post = new HttpPost(loginUrl);
         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(payload, Consts.UTF_8);
-        httppost.setEntity(entity);
-        httppost.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
-        CloseableHttpResponse response = (CloseableHttpResponse) client.execute(httppost);
+        post.setEntity(entity);
+        post.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
+        CloseableHttpResponse response = (CloseableHttpResponse) client.execute(post);
+    }
 
-        // Make Get request to obtain data of Lesson content page of class EL1-2201
-        String LM1Url = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=453551&mode=showRelatedList&tab_label=Lesson%20Content";
-        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
-        HttpGet get2 = new HttpGet(on_goingClassListUrl);
-        response = (CloseableHttpResponse) client.execute(get2);
-        content = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
-        //System.out.println(content);
-        doc = (Document) Jsoup.parse(content);
+    public void requestClassIdList() throws IOException, URISyntaxException {
+        classIdList = new ArrayList<>();
+        // Loop through all pages
+        int page = 1;
 
-        // Get class id
-        Elements elements = doc.select("tr");
-        for (Element e : elements) {
-            if (e.hasClass("listViewEntries")){
-                System.out.println(e.attr("data-id"));
-                // System.out.println(e.select(".listViewEntryValue").get(0).text());
+        while (page < 5){
+            // Build url
+            on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
+            URIBuilder builder = new URIBuilder(on_goingClassListUrl);
+            builder.setParameter("page", Integer.toString(page));
+
+            // Request
+            get = new HttpGet(builder.build());
+            response = (CloseableHttpResponse) client.execute(get);
+            String content = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
+            Document doc = (Document) Jsoup.parse(content);
+
+            // Get classId from response
+            Elements elements = doc.select("tr");
+            for (Element e : elements) {
+                if (e.hasClass("listViewEntries")){
+                    classIdList.add(e.attr("data-id"));
+                    System.out.println( classIdList.size() + ": " + e.attr("data-id"));
+                }
             }
-            // System.out.println(e);
+            page++;
         }
-
 
         // Get class name
         //element  = doc.select(".span2").get(6);
@@ -97,8 +128,19 @@ public class Request {
         //    System.out.println(e.select("#lessonName").text() + " - " + e.select(".lessonEmailStatus").text());
         //}
 
-//        File file = new File("on-goingClassList.html");
+//        File file = new File("on_goingClassList.html");
 //        FileUtils.writeStringToFile(file, content, "UTF-8");
-
     }
+
+    public List<String> getClassIdList() {
+        return classIdList;
+    }
+
+    public void run() throws IOException, URISyntaxException {
+        // Login
+        login("dangminh.TAMD", "LLVN123456", true);
+        requestClassIdList();
+    }
+
+
 }
