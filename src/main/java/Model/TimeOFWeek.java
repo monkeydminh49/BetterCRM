@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-public class TimeOFWeek {
+public class TimeOFWeek implements Serializable {
     public TimeOFWeek() {
 
     }

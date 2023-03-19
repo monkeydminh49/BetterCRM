@@ -25,5 +25,6 @@
     <orderEntry type="library" name="jsoup" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.15.4" level="project" />
+    <orderEntry type="library" name="json" level="project" />
   </component>
 </module>
