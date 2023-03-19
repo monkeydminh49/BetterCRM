@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head><title>Người dùng</title>
+    <link REL="SHORTCUT ICON" HREF="layouts/vlayout/skins/images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="libraries/jquery/chosen/chosen.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libraries/jquery/jquery-ui/css/custom-theme/jquery-ui-1.8.16.custom.css"
+          type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libraries/jquery/select2/select2.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libraries/bootstrap/css/bootstrap.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libraries/bootstrap/css/jqueryBxslider.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="resources/styles.css" type="text/css" media="screen"/>
+    <link rel="stylesheet"
+          href="libraries/jquery/posabsolute-jQuery-Validation-Engine/css/validationEngine.jquery.css"/>
+    <link rel="stylesheet" href="libraries/jquery/select2/select2.css"/>
+    <link rel="stylesheet" href="libraries/guidersjs/guiders-1.2.6.css"/>
+    <link rel="stylesheet" href="libraries/jquery/pnotify/jquery.pnotify.default.css"/>
+    <link rel="stylesheet" href="libraries/jquery/pnotify/use for pines style icons/jquery.pnotify.default.icons.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="libraries/jquery/datepicker/css/datepicker.css"/>
+    <link rel="stylesheet" href="libraries/css/style.css">
+    <link rel="stylesheet" href="libraries/css/2-style.css">
+    <link rel="stylesheet" href="libraries/css/font-awesome.min.css">
+    <link rel="stylesheet" href="libraries/css/select2.min.css">
+    <script src="libraries/js/mainjs.js"></script>
+    <style type="text/css">@media print {
+        .noprint {
+            display: none;
+        }
+    }
+
+    @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+    * {
+        font-family: 'Roboto', sans-serif;
+    }</style>
+    <script type="text/javascript" src="libraries/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="libraries/js/number-divider.min.js"></script>
+    <!--[if IE]><script type="text/javascript" src="libraries/html5shim/html5.js"></script><script type="text/javascript" src="libraries/html5shim/respond.js"></script><![endif]-->
+    <script type="text/javascript">if (top != self) {
+        top.location.href = self.location.href;
+    }</script>
+    <script type="text/javascript">var csrfMagicToken = "sid:6df507245621eedf0cd0ca1ccfefb5afdf00a38a,1679244575;ip:21cfc6ca99e65e20f2951561273c2911ade79550,1679244575";
+    var csrfMagicName = "__vtrftk";</script>
+    <script src="libraries/csrf-magic/csrf-magic.js" type="text/javascript"></script>
+</head>
+<body data-skinpath="layouts/vlayout/skins/softed" data-language="">
+<div id="js_strings" class="hide noprint">{"JS_DECIMAL_SEPERATOR_AND_GROUPING_SEPERATOR_CANT_BE_SAME":"phân số thập phân
+    và Phân nhóm tách có thể được dùng","JS_ENTER_CONFIRMATION_PASSWORD":"ui lòng nhập mật khẩu xác nhận của
+    bạn.","JS_ENTER_NEW_PASSWORD":"Vui lòng nhập mật khẩu mới.","JS_ENTER_OLD_PASSWORD":"Vui lòng nhập mật khẩu cũ của
+    bạn.","JS_INVALID_PASSWORD":"Bạn phải chỉ định một tên người dùng và mật khẩu hợp
+    lệ.","JS_PASSWORD_CHANGE_FAILED_1":"Người dùng thay đổi mật khẩu thất bại cho ","JS_PASSWORD_CHANGE_FAILED_2":" Thất
+    bại. Mật khẩu mới phải được thiết lập.","JS_PASSWORD_INCORRECT_OLD":"Mật khẩu cũ không chính xác theo quy định. Nhập
+    lại thông tin mật khẩu.","JS_REENTER_PASSWORDS":"Vui lòng nhập mật khẩu. Các \\ \"mật khẩu mới \\\" và \\ \"xác nhận
+    mật khẩu \\\" giá trị không phù hợp.","AM":"Sáng","INVALID_NUMBER":"Số không hợp lệ","INVALID_NUMBER_OF":"Sai
+    số","JS_ACCEPT_ONLY_NUMBER":"Các số được chấp nhận","JS_ACCEPT_POSITIVE_NUMBER":"Số điện thoại được chấp
+    nhận","JS_ALLOWED_TO_SELECT_MAX_OF_THREE_RECORDS":"Bạn được phép lựa chọn tối đa là 3 bản
+    ghi","JS_ARE_YOU_SURE_TO_DELETE_WIDGET":"Bạn chắc chắn muốn xoá Widget","JS_CAN_NOT_REMOVE_DEFAULT_WIDGET":"Không
+    thể xoá Widget mặc định","JS_CHECK_FILE_INTEGRITY":"Kiểm tra toàn vẹn dữ
+    liệu","JS_CONTAINS_ILLEGAL_CHARACTERS":"Chứa các ký tự không được phép","JS_CURRENT_DATE":"Ngày hiện
+    tại","JS_DO_NOT_HAVE_AN_EMAIL_ID":"không có địa chỉ email","JS_DUPLIACATE_ENTRIES_FOUND_FOR_THE_VALUE":"Tìm thấy các
+    bản sao cho giá trị","JS_DUPLICATE_ENTRIES_FOUND_FOR_THE_VALUE":"Tìm thấy các bản sao cho giá
+    trị","JS_DUPLICATE_RECORD":"Bản ghi trùng lặp","JS_DUPLICTAE_CREATION_CONFIRMATION":"Tên tổ chức đã tồn tại. Bạn
+    muốn tạo bản ghi trùng lặp?","JS_EMAIL_SERVER_CONFIGURATION":"Hãy cấu hình cài đặt máy chủ gửi mail của bạn từ các
+    trang cài đặt","JS_END_DATE_TIME":"Ngày & Giờ kết thúc","JS_ERROR":"Lỗi","JS_FAILED_TO_SAVE":"Không thể lưu các thay
+    đổi trên máy chủ","JS_FIELD_MAPPED_MORE_THAN_ONCE":"Trường được mapping nhiều hơn 1
+    lần","JS_IMPORT_FILE_CAN_NOT_BE_EMPTY":"Tệp tin nhập khẩu không được phép trống","JS_INFORMATION":"Thông
+    tin","JS_INVALID_PAGE_NUMBER":"Số trang không hợp lệ","JS_IS_DISABLED":"bị vô hiệu hoá","JS_IS_ENABLED":"được kích
+    hoạt","JS_ITEMS":"mục","JS_ITEMS_DELETED_SUCCESSFULLY":"Xoá mục thành công","JS_ITEM_ADDED_SUCCESSFULLY":"Thêm mục
+    thành công","JS_ITEM_RENAMED_SUCCESSFULLY":"Đổi tên mục thành công","JS_LBL_ARE_YOU_SURE_YOU_WANT_TO_DELETE":"Bạn
+    chắc chắn muốn xoá?","JS_LBL_CANCEL":"Huỷ bỏ","JS_LBL_COMMENT_VALUE_CANT_BE_EMPTY":"Không được để trống bình
+    luận","JS_LBL_PERMISSION":"Quyền","JS_LBL_SAVE":"Lưu","JS_MAP_MANDATORY_FIELDS":"Hãy mapping các trường bắt
+    buộc","JS_MAP_NAME_ALREADY_EXISTS":"Tên mapping đã tồn tại","JS_MAP_NAME_CAN_NOT_BE_EMPTY":"Tên mapping không được
+    để trống","JS_MASS_EDIT_LIMIT":"Chỉnh sửa 500 hoặc ít hơn số bản ghi tai một thời
+    điểm","JS_MAX_FILE_UPLOAD_EXCEEDS":"Vượt quá đăng tải tối đa","JS_MAX_TAG_LENGTH_EXCEEDS":"Chiều dài thẻ Tag vượt
+    quá kích thước tối đa","JS_MESSAGE":"Tin nhắn","JS_MINUTES":"phút","JS_MODULE_DISABLED":"Module bị vô hiệu
+    hoá","JS_MODULE_ENABLED":"Module được kích hoạt","JS_MORE_THAN_ONE_ITEM_SELECTED":"Nhiều hơn một mục lựa
+    chọn","JS_NO_CREATE_OR_NOT_QUICK_CREATE_ENABLED":"Không có quyền hoặc không được kích hoạt cho việc tạo
+    nhanh","JS_NO_ITEM_SELECTED":"Không có mục chọn","JS_NO_RECORDS_RELATED_TO_THIS_FILTER":"Không có bản ghi liên quan
+    đến bộ lọc này","JS_NO_RESULTS_FOUND":"Không tìm thấy kết quả","JS_NO_VIEW_PERMISSION_AFTER_SAVE":"Bạn sẽ không có
+    quy\u1ec1n xem bản ghi này. Bạn có muốn tiếp tục?","JS_NUMBER_SHOULD_BE_LESS_THAN_32":"Số cần ít hơn
+    32","JS_PAGE_NOT_EXIST":"Trang không tồn tại","JS_PBX_CALL_FROM":"Gọi từ","JS_PBX_FILL_ALL_FIELDS":"Vui lòng điền
+    vào tất cả các trường","JS_PBX_INCOMING_CALL":"Cuộc gọi đến","JS_PBX_OUTGOING_FAILURE":"Không gọi
+    được","JS_PBX_OUTGOING_SUCCESS":"Nhấn nút mở rộng để quay số","JS_PERCENTAGE_VALUE_SHOULD_BE_LESS_THAN_100":"Phần
+    trăm giá trị cần ít hơn 100%","JS_PHONE_NUMBER_LENGTH_EXCEEDED":"độ dài số điện thoại đã vượt quá giới
+    hạn","JS_PLEASE_ENABLE_BASE_CURRENCY_FOR_PRODUCT":"Vui lòng kích hoạt tiền tệ cơ bản cho sản
+    phẩm","JS_PLEASE_ENTER_A_TAG":"Vui lòng nhập thẻ Tag","JS_PLEASE_ENTER_DECIMAL_VALUE":"Vui lòng nhập giá trị số thập
+    phân","JS_PLEASE_ENTER_INTEGER_VALUE":"Vui lòng nhập giá trị số
+    nguyên","JS_PLEASE_ENTER_PRIMARY_EMAIL_VALUE_TO_ENABLE_PORTAL_USER":"Vui lòng nhập địa chỉ email chính để cho phép
+    người dùng sử dụng trong Cổng","JS_PLEASE_ENTER_SOME_TEXT_FOR_COMMENT":"Vui lòng nhập văn bản bình
+    luận","JS_PLEASE_ENTER_SOME_VALUE":"Vui lòng nhập văn bản để tìm kiếm","JS_PLEASE_ENTER_VALID_DATE":"Xin mời nhập
+    ngày hợp lệ","JS_PLEASE_ENTER_VALID_EMAIL_ADDRESS":"Vui lòng nhập một địa chỉ email hợp
+    lệ","JS_PLEASE_ENTER_VALID_TIME":"Xin vui lòng nhập thời gian hợp
+    lệ","JS_PLEASE_SELECT_AN_ACCOUNT_TO_COPY_ADDRESS":"Vui lòng chọn một tổ chức để sao chép địa
+    chỉ","JS_PLEASE_SELECT_AN_CONTACT_TO_COPY_ADDRESS":"Vui lòng chọn Liên hệ để sao chép địa
+    chỉ","JS_PLEASE_SELECT_ATLEAST_ONE_MANDATORY_FIELD":"Vui lòng chọn ít nhất một trường bắt
+    buộc","JS_PLEASE_SELECT_ATLEAST_ONE_OPTION":"Vui lòng chọn ít nhất một tuỳ
+    chọn","JS_PLEASE_SELECT_BASE_CURRENCY_FOR_PRODUCT":"Vui lòng chọn tiền tệ cơ bản cho sản
+    phẩm","JS_PLEASE_SELECT_ONE_FIELD_FOR_MERGE":"Chọn ít nhất một trường với các tiêu chí hợp
+    nhất","JS_PLEASE_SELECT_ONE_RECORD":"Vui lòng chọn ít nhất một bản ghi","JS_PLEASE_SPLIT_FILE_AND_IMPORT_AGAIN":"Hãy
+    chia file thành các file nhỏ hơn và nhập khẩu một lần nữa.","JS_POSTPONE":"Hoãn
+    lại","JS_PRIMARY_EMAIL_FIELD_DOES_NOT_EXISTS":"Trường email chính không tồn tại để cho phép người dùng sử dụng Cổng
+    thông tin","JS_RECORDS_ARE_GETTING_DELETED":"Bản ghi đã được xoá","JS_RECORDS_TRANSFERRED SUCCESSFULLY":"Quyền sở
+    hữu hồ sơ đã được chuyển giao thành công","JS_RECORD_GETTING_DELETED":"Bản ghi bị xoá","JS_REQUIRED_FIELD":"* Đây là
+    trường bắt buộc","JS_SELECTED_ACCOUNT_DOES_NOT_HAVE_AN_ADDRESS":"Chọn Tổ chức không có địa chỉ để sao
+    chép","JS_SELECTED_CONTACT_DOES_NOT_HAVE_AN_ADDRESS":"Chọn Liên hệ không có địa chỉ để sao
+    chép","JS_SELECT_ATLEAST_TWO_RECORD_FOR_MERGING":"Chọn ít nhất hai hồ sơ cho việc hợp
+    nhất","JS_SELECT_FILE_EXTENSION":"Vui lòng chọn một tập tin với phần mở rộng sau đây:","JS_SELECT_MODULE":"Vui lòng
+    chọn Module","JS_SELECT_RECORDS_TO_MERGE_FROM_SAME_GROUP":"Bạn phải lựa chọn các bản ghi trong các nhóm giống nhau
+    để hợp nhất","JS_SHORTCUT_ALREADY_ADDED":"Đã thêm phím tắt này","JS_SHOULD_BE_GREATER_THAN_CURRENT_DATE":"phải lớn
+    hơn ngày hiện tại","JS_SHOULD_BE_GREATER_THAN_OR_EQUAL_TO":"phải lớn hơn hoặc
+    bằng","JS_SHOULD_BE_LESS_THAN_CURRENT_DATE":"phải nhỏ hơn ngày hiện tại","JS_SHOULD_BE_LESS_THAN_OR_EQUAL_TO":"phải
+    nhỏ hơn hoặc bằng","JS_SMS_SERVER_CONFIGURATION":"Hãy cấu hình tin nhắn SMS dạng thông báo của bạn từ các trang cài
+    đặt tin nhắn SMS dạng thông báo","JS_START_DATE_TIME":"Ngày & Giờ bắt đầu","JS_SUCCESSFULLY_PINNED":"Thêm phím tắt
+    thành công","JS_SUCCESSFULLY_UNPINNED":"Loại bỏ phím tắt thành công","JS_TAG_NAME_ALREADY_EXIST":"Tên thẻ Tag đã tồn
+    tại","JS_THIS_DOCUMENT_HAS_ALREADY_BEEN_SELECTED":"Tài liệu này đã được đính
+    kèm","JS_THIS_FILE_HAS_ALREADY_BEEN_SELECTED":"Tập tin này đã được chọn","JS_TOTAL_RECORDS":"Tổng số bản
+    ghi","JS_UPLOADED_FILE_SIZE_EXCEEDS":"kích thước tập tin tải lên đã vượt quá giới
+    hạn","JS_UPLOADED_FILE_SIZE_SHOULD_BE_LESS_THAN":"Tập tin đăng tải phải nhỏ hơn","JS_USER_EXISTS":"Người dùng đã tồn
+    tại","JS_VALUE_SHOULD_BE_GREATER_THAN_ZERO":"giá trị phải lớn hơn 0","JS_VALUE_SHOULD_NOT_BE_LESS_THAN":"Tần số của
+    bất kỳ công việc định kỳ cấu hình không được ít hơn","JS_YOU_ARE_IN_PAGE_NUMBER":"Bạn đang ở trang
+    số","JS_YOU_CAN_SELECT_ONLY":"Bạn chỉ có thể chọn","LBL_DELETE_CONFIRMATION":"Bạn chắc chắn muốn
+    xoá?","LBL_DELETE_USER_CONFIRMATION":"Khi một người dùng bị xóa, người dùng sẽ được đánh dấu là \"không hoạt động\"
+    và không có hồ sơ mới có thể được gán cho người dùng, và người dùng sẽ không thể đăng nhập. Bạn có chắc chắn bạn
+    muốn xóa?","LBL_RESTORE_CONFIRMATION":"Các hồ sơ trước đây đã giao cho người sử dụng này sẽ không được phục hồi. Bạn
+    có chắc chắn bạn muốn khôi phục thành viên này?","LBL_DELETE_USER_PERMANENT_CONFIRMATION":"Sau khi đã xóa người dùng
+    này không thể được phục hồi trở lại. Bạn có chắc chắn bạn muốn xóa người dùng này vĩnh
+    viễn?","LBL_IMAGE_DELETED_SUCCESSFULLY":"Hình ảnh được xóa thành công","LBL_IMAGE_NOT_DELETED":"Hình ảnh chưa được
+    xóa","LBL_MASS_DELETE_CONFIRMATION":"Bạn có chắc muốn xóa hồ sơ đã
+    chọn?","LBL_NO":"Không","LBL_YES":"Có","NONE_OF_THE_FIELD_VALUES_ARE_CHANGED_IN_MASS_EDIT":"Không có giá trị trong
+    các trường được thay đổi","OVERWRITE_EXISTING_MSG1":"Ghi đè lên địa chỉ hiện tại với các lựa
+    chọn","OVERWRITE_EXISTING_MSG2":"Địa chỉ chi tiết?","PM":"Chiều","SHOULD_BE_LESS_THAN_TODAY":"Phải thực hiện trước
+    ngày hôm nay","SINGLE_Accounts":"Tổ chức","SINGLE_Contacts":"Học viên","JS_HIDE_PROMOTION":"Ẩn khuyến
+    mại","JS_SHOW_PROMOTION":"Hiển thị khuyến mại","JS_PLEASE_ENABLE_PRODUCT_OR_SERVICE_MODULE":"Hãy Kích hoạt tính năng
+    module sản phẩm hoặc dịch vụ","LBL_SYNC_BUTTON":"Đồng bộ hoá","LBL_SYNCRONIZING":"Đồng bộ
+    hoá","JS_RECORDS_TRANSFERRED_SUCCESSFULLY":"Quyền sở hữu hồ sơ chuyển nhượng thành
+    công.","JS_CHANGES_WILL_BE_LOST":"Những thay đổi của bạn sẽ Mất!","JS_MASS_EDIT_NOT_SUCCESSFULL":"Một số chỉnh sửa
+    đối với hồ sơ chưa thành công"}
+</div>
+<input type="hidden" id="start_day" value=""/><input type="hidden" id="row_type" value=""/><input type="hidden"
+                                                                                                  id="current_user_id"
+                                                                                                  value=""/>
+<div id="page"><!-- container which holds data temporarly for pjax calls -->
+    <div id="pjaxContainer" class="hide noprint"></div>
+
+
+    <!DOCTYPE html>
+    <html>
+    <head><title>Vtiger login page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- for Login page we are added -->
+        <link href="libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="libraries/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="libraries/bootstrap/css/jqueryBxslider.css" rel="stylesheet"/>
+        <script src="libraries/jquery/jquery.min.js"></script>
+        <script src="libraries/jquery/boxslider/jqueryBxslider.js"></script>
+        <script src="libraries/jquery/boxslider/respond.min.js"></script>
+        <script>jQuery(document).ready(function () {
+            scrollx = jQuery(window).outerWidth();
+            window.scrollTo(scrollx, 0);
+            slider = jQuery('.bxslider').bxSlider({auto: true, pause: 4000, randomStart: true, autoHover: true});
+            jQuery('.bx-prev, .bx-next, .bx-pager-item').live('click', function () {
+                slider.startAuto();
+            });
+        });</script>
+        <style>label {
+            font-size: 14px;
+            color: #313a46;
+            font-family: "Roboto", sans-serif;
+            font-weight: 700;
+            margin-bottom: .5rem;
+        }
+
+        .float-left {
+            float: left !important;
+        }
+
+        img {
+            vertical-align: middle;
+            border-style: none;
+            padding: 10px 0px 20px;
+        }
+
+        .form-control {
+            border: 1px solid #d9e3e9;
+            border-radius: 4px;
+            max-width: 100%;
+            padding: .469rem .75rem;
+            font-size: 14px;
+            box-shadow: none;
+            line-height: 1.5;
+            transition: all 300ms linear;
+            background-color: #fff;
+            background-clip: padding-box;
+        }
+
+        .p-5 {
+            padding: 3rem !important;
+        }
+
+        input[type="text"], input[type="password"] {
+            height: 40px;
+            width: 340px;
+        }
+
+        .account-copyright {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }</style>
+    </head>
+    <body>
+    <div class="container-fluid login-container">
+        <div class="row-fluid">
+            <div class="span3"></div>
+            <div class="span9"></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="content-wrapper">
+                    <div class="container-fluid">
+                        <div class="row-fluid">
+                            <div class="span6"></div>
+                            <div class="span6">
+                                <div class="wrapper-page account-page-full login-wrap">
+                                    <div class="card" style="border: none;">
+                                        <div class="card-block" style="border-radius: 5px;">
+                                            <div class="account-box">
+                                                <div class="card-box p-5"><h2 class="text-uppercase text-center pb-4">
+                                                    <span><img src="storage/image_icon/logo-llv.png" alt="" height="50"
+                                                               class="" style="display: block;margin: auto;"></span>
+                                                </h2>
+                                                    <div class="login-failed"></div>
+                                                    <form action="index.php?module=Users&action=Login" method="POST"
+                                                          id="login" class="form-login"><input type='hidden'
+                                                                                               name='__vtrftk'
+                                                                                               value="sid:6df507245621eedf0cd0ca1ccfefb5afdf00a38a,1679244575;ip:21cfc6ca99e65e20f2951561273c2911ade79550,1679244575"/>
+                                                        <div class="form-group m-b-20 row">
+                                                            <div class="span12"><label
+                                                                    for="emailaddress">Username</label><input
+                                                                    type="text" class="form-control" name="username"
+                                                                    id="username" size="15" value=""
+                                                                    placeholder="Username"/></div>
+                                                        </div>
+                                                        <div class="form-group row m-b-20">
+                                                            <div class="span12">
+                                                                <!-- <a href="forgot_password.php" class="text-muted float-right"><?php print_string("forgotten_new") ?></a> --><label
+                                                                    for="password">Password</label><input
+                                                                    type="password" class="form-control" name="password"
+                                                                    id="password" size="15" value=""
+                                                                    placeholder="PassWord"/></div>
+                                                        </div>
+                                                        <div class="form-group row m-b-20">
+                                                            <div class="col-12">
+                                                                <div class="checkbox checkbox-custom"
+                                                                     style="padding: 20px 17px 10px;"><input
+                                                                        id="remember" type="checkbox" value="true"
+                                                                        name="remember"><label for="remember">Remember
+                                                                    me on this computer</label></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row text-center m-t-10">
+                                                            <div class="col-12">
+                                                                <button class="btn btn-block btn-success waves-effect waves-light"
+                                                                        type="submit"> Sign In
+                                                                </button>
+                                                            </div>
+                                                            <div class="span12">
+                                                                <div class="span6"></div>
+                                                                <div class="span6">
+                                                                    <div class="control-group signin-button"
+                                                                         style="margin-top: 17px; margin-left: 30px">
+                                                                        <div class="controls" id="forgotPassword">&nbsp;&nbsp;&nbsp;<a>Forgot
+                                                                            password ?</a></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <!--  <div class="row m-t-50"><div class="col-sm-12 text-center"><p class="text-muted">Don't have an account? <a href="<?php echo $CFG->wwwroot ?>/signup" class="text-dark m-l-5"><b>Sign Up</b></a></p></div></div> -->
+                                                </div>
+                                                <div class="login-box hide p-5" id="forgotPasswordDiv">
+                                                    <form class="form-horizontal login-form" style="margin:0;"
+                                                          action="forgotPassword.php" method="POST"><input type='hidden'
+                                                                                                           name='__vtrftk'
+                                                                                                           value="sid:6df507245621eedf0cd0ca1ccfefb5afdf00a38a,1679244575;ip:21cfc6ca99e65e20f2951561273c2911ade79550,1679244575"/>
+                                                        <div class=""><h3 class="login-header">Forgot password </h3>
+                                                        </div>
+                                                        <div class="control-group"><label
+                                                                for="emailaddress">Username</label><input type="text"
+                                                                                                          class="form-control"
+                                                                                                          name="username"
+                                                                                                          id="username"
+                                                                                                          size="15"
+                                                                                                          value=""
+                                                                                                          placeholder="Username"/>
+                                                        </div>
+                                                        <div class="form-group row m-b-20">
+                                                            <div class="span12">
+                                                                <!-- <a href="forgot_password.php" class="text-muted float-right"><?php print_string("forgotten_new") ?></a> --><label
+                                                                    class="control-label" for="email"
+                                                                    style="text-align: left;"><b>Email</b></label><input
+                                                                    type="text" id="emailId" name="emailId"
+                                                                    placeholder="Email"></div>
+                                                        </div>
+                                                        <div class="control-group signin-button"
+                                                             style="margin-top: 20px;">
+                                                            <div class="controls" id="backButton"><input type="submit"
+                                                                                                         class="btn btn-primary sbutton"
+                                                                                                         value="Submit"
+                                                                                                         name="retrievePassword"
+                                                                                                         style="margin-left: -30px;">&nbsp;&nbsp;&nbsp;<a>Back</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-t-40 text-center"><p class="account-copyright"
+                                                                       style="text-align: center;">2019 © Sales
+                                        Management System LLA 2.0.</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">CsrfMagic.end();</script>
+    </body>
+    <script>jQuery(document).ready(function () {
+        jQuery("#forgotPassword a").click(function () {
+            jQuery(".card-box").hide();
+            jQuery("#forgotPasswordDiv").show();
+        });
+        jQuery("#backButton a").click(function () {
+            jQuery(".card-box").show();
+            jQuery("#forgotPasswordDiv").hide();
+        });
+        jQuery("input[name='retrievePassword']").click(function () {
+            var username = jQuery('#user_name').val();
+            var email = jQuery('#emailId').val();
+            var email1 = email.replace(/^\s+/, '').replace(/\s+$/, '');
+            var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/;
+            var illegalChars = /[\(\)\<\>\,\;\:\\\"\[\]]/;
+            if (username == '') {
+                alert('Please enter valid username');
+                return false;
+            } else if (!emailFilter.test(email1) || email == '') {
+                alert('Please enater valid email address');
+                return false;
+            } else if (email.match(illegalChars)) {
+                alert("The email address contains illegal characters.");
+                return false;
+            } else {
+                return true;
+            }
+        });
+    });</script>
+    </html>
+
+    <input id='activityReminder' class='hide noprint' type="hidden" value=""/>
+
+
+    <script type="text/javascript" src="libraries/jquery/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="libraries/jquery/chosen/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/select2/select2.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/jquery-ui/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/jquery.class.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/defunkt-jquery-pjax/jquery.pjax.js"></script>
+    <script type="text/javascript" src="libraries/jquery/jstorage.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/autosize/jquery.autosize-min.js"></script>
+
+    <script type="text/javascript" src="libraries/jquery/rochal-jQuery-slimScroll/slimScroll.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/pnotify/jquery.pnotify.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/jquery.hoverIntent.minified.js"></script>
+
+    <script type="text/javascript" src="libraries/bootstrap/js/bootstrap-alert.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap/js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap/js/bootstrap-collapse.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap/js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap/js/bootstrap-popover.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap/js/bootbox.min.js"></script>
+    <script type="text/javascript" src="resources/jquery.additions.js"></script>
+    <script type="text/javascript" src="resources/app.js"></script>
+    <script type="text/javascript" src="resources/helper.js"></script>
+    <script type="text/javascript" src="resources/Connector.js"></script>
+    <script type="text/javascript" src="resources/ProgressIndicator.js"></script>
+    <script type="text/javascript"
+            src="libraries/jquery/posabsolute-jQuery-Validation-Engine/js/jquery.validationEngine.js"></script>
+    <script type="text/javascript" src="libraries/guidersjs/guiders-1.2.6.js"></script>
+    <script type="text/javascript" src="libraries/jquery/datepicker/js/datepicker.js"></script>
+    <script type="text/javascript" src="libraries/jquery/dangrossman-bootstrap-daterangepicker/date.js"></script>
+    <script type="text/javascript" src="libraries/jquery/jquery.ba-outside-events.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery/jquery.placeholder.js"></script>
+
+    <script type="text/javascript"
+            src="libraries/jquery/posabsolute-jQuery-Validation-Engine/js/languages/jquery.validationEngine-en.js?v=6.4.0"></script>
+
+    <!-- Added in the end since it should be after less file loaded -->
+    <script type="text/javascript" src="libraries/bootstrap/js/less.min.js"></script>
+</div>
+</body>
+</html>

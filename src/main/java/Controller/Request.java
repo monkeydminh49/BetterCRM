@@ -61,20 +61,15 @@ public class Request {
     private CloseableHttpResponse response;
     private String token;
 
-
     public List<TA> getTAList() {
         return TAList;
     }
-
     public List<String> getClassIdList() {
         return classIdList;
     }
-
-
     public void setClassIdList(List<String> classIdList) {
         this.classIdList = classIdList;
     }
-
     public void setTAList(List<TA> TAList) {
         this.TAList = TAList;
     }
@@ -120,7 +115,6 @@ public class Request {
         post.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
         response = (CloseableHttpResponse) client.execute(post);
     }
-
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
         // Get classIdList from file
         classIdList = IOSystem.getInstance().read(filesPath + "classIdList.dat");
@@ -291,7 +285,6 @@ public class Request {
         jo = jo.getJSONObject("result");
         totalPage = jo.getInt("page");
 
-        Set<String> set = new HashSet<>();
         // Get class id from each page
         while (page <= totalPage){
             // Build url
@@ -308,18 +301,16 @@ public class Request {
             Elements elements = doc.select("tr");
             for (Element e : elements) {
                 if (e.hasClass("listViewEntries")){
-                    set.add(e.attr("data-id"));
+                    classIdList.add(e.attr("data-id"));
                 }
             }
             page++;
         }
-
-        classIdList.addAll(set);
+        System.out.println("Total class: " + classIdList.size());
 
         // Write list to file
         IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
     }
-
     public void updateTAList() throws URISyntaxException, IOException {
         // Clear TAList
         TAList.clear();
@@ -377,8 +368,6 @@ public class Request {
         // Write to file
         IOSystem.getInstance().write(TAList, filesPath+ "TAList.dat");
     }
-
-
     public void updateStudentList() throws URISyntaxException, IOException {
         // Clear studentList
         studentList.clear();
@@ -435,13 +424,13 @@ public class Request {
         // Write to file
         IOSystem.getInstance().write(studentList, filesPath+ "studentList.dat");
     }
-
     public void run() throws IOException, URISyntaxException, ClassNotFoundException {
         // Login
         login("dangminh.TAMD", "LLVN123456", true);
-        //updateClassIdList();
-         //updateTAList();
-        //updateStudentList();
+
+//        updateClassIdList();
+//         updateTAList();
+//        updateStudentList();
 
 //        List<TA> list = IOSystem.getInstance().read(filesPath + "TAList.dat");
 //        for (TA ta : list) {
@@ -451,7 +440,7 @@ public class Request {
 //        for (String s : classIdList) {
 //            System.out.println(s);
 //        }
-        updateClassList();
+//        updateClassList();
 //        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
 //        System.out.println(list.size());
     }

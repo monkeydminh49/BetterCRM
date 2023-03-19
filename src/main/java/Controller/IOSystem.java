@@ -37,7 +37,7 @@ public class IOSystem {
         try {
             ObjectOutputStream a = new ObjectOutputStream(new FileOutputStream(file));
             a.writeObject(list);
-            System.out.println("Write file successfully!");
+            System.out.println("Write file " + file + " successfully!");
             a.close();
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File not found!");
