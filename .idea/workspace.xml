@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Rearrange Request class &#10;+ Request class information: name, day, time make file class">
-      <change afterPath="$PROJECT_DIR$/lib/json-20220924.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Files/classRoomList.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Files/studentList.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java" afterDir="false" />
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Create GUI, SidePanel and MainPanel">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/LessonStatusPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/TestPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Files/classIdList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Files/classIdList.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/Request.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/Request.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/GUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/SidePanel/SidePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/SidePanel/SidePanel.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,14 +85,13 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Test | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/Test.http" requestIdentifier="#1" runType="Run single request">
-      <method v="2" />
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="BetterCRM" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="HTTP Request.Test | #1" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -130,7 +127,21 @@
       <option name="project" value="LOCAL" />
       <updated>1679213752922</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Update classIdList and classIdList.dat with 71 classes">
+      <created>1679252569406</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1679252569406</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Create GUI, SidePanel and MainPanel">
+      <created>1679252607540</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1679252607540</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,7 +152,9 @@
     <MESSAGE value="Rearrange Request class" />
     <MESSAGE value="Rearrange Request class &#10;+ Request class information: name, day, time" />
     <MESSAGE value="Rearrange Request class &#10;+ Request class information: name, day, time make file class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rearrange Request class &#10;+ Request class information: name, day, time make file class" />
+    <MESSAGE value="Update classIdList and classIdList.dat with 71 classes" />
+    <MESSAGE value="Create GUI, SidePanel and MainPanel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create GUI, SidePanel and MainPanel" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
