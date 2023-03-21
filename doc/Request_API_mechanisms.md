@@ -56,11 +56,11 @@ There are two important methods to send a request to a website: GET and POST.
 
 In my case, I use GET to get data, which is inside the returned HTML text of the response.
 
-![GET](/img/GET_method.png "GET_method")
+![GET](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/GET_method.png?raw=true "GET_method")
 
 Some methods require user to provide parameters to get the data.
 
-![Parameters](/img/request_parameters.png "Parameters")
+![Parameters](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/GET_method.png?raw=true "Parameters")
 
 So to pass parameters to the request, I use the URIBuilder class to build the URL with the parameters, which are stored in a List of NameValuePair objects.
 
