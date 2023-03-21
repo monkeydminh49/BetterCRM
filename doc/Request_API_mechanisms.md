@@ -60,7 +60,7 @@ In my case, I use GET to get data, which is inside the returned HTML text of the
 
 Some methods require user to provide parameters to get the data.
 
-![Parameters](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/GET_method.png?raw=true "Parameters")
+![Parameters](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/request_parameters.png?raw=true "Parameters")
 
 So to pass parameters to the request, I use the URIBuilder class to build the URL with the parameters, which are stored in a List of NameValuePair objects.
 
