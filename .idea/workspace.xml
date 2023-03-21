@@ -4,27 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Create card and container in MainPanel, display test table">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jsoup_jsoup_1_15_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_httpclient.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/Request_API_mechanisms.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-codec-1.2.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-httpclient-20020423.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-httpclient-3.1.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-logging-1.0.4.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_11_0.xml" afterDir="false" />
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Apply getRequestContent in update functions">
+      <change afterPath="$PROJECT_DIR$/doc/img/GET_method.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/MainPanel/LessonStatusPanel$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BetterCRM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BetterCRM.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/Request_API_mechanisms.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Request_API_mechanisms.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/LessonStatusPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/LessonStatusPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Controller/Request.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/Request.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/GUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/MainPanel/LessonStatusPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/MainPanel/LessonStatusPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/SidePanel/SidePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/SidePanel/SidePanel.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +104,7 @@
       <workItem from="1678953478853" duration="6516000" />
       <workItem from="1679350485410" duration="66000" />
       <workItem from="1679373487861" duration="4794000" />
-      <workItem from="1679417083390" duration="4595000" />
+      <workItem from="1679417083390" duration="9153000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -162,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679303516522</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Add new method to request from API">
+      <created>1679422057145</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1679422057146</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,17 +169,8 @@
     <MESSAGE value="Update classIdList and classIdList.dat with 71 classes" />
     <MESSAGE value="Create GUI, SidePanel and MainPanel" />
     <MESSAGE value="Create card and container in MainPanel, display test table" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create card and container in MainPanel, display test table" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Controller/Request.java</url>
-          <line>380</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Add new method to request from API" />
+    <MESSAGE value="Apply getRequestContent in update functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Apply getRequestContent in update functions" />
   </component>
 </project>
