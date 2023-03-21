@@ -1,7 +1,5 @@
 package Viewer.GUI.SidePanel;
 
-import Viewer.GUI.GUI;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,6 +15,7 @@ public class SidePanel extends JPanel {
 
     public SidePanel() {
         setBackground(Color.green);
+        System.out.println("SidePanel created");
     }
 
 }
