@@ -14,7 +14,12 @@ public class LessonStatusPanel  extends JPanel{
         lessonStatusTable = new JTable();
         lessonStatusTable.setBounds(30, 40, 200, 300);
         lessonStatusTable.setRowHeight(30);
-        model = new DefaultTableModel(title, 0);
+        model = new DefaultTableModel(title, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         lessonStatusTable.setModel(model);
         JScrollPane sp = new JScrollPane(lessonStatusTable);
         add(sp);

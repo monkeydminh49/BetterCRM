@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="commons.httpclient" type="repository">
+    <properties maven-id="commons-httpclient:commons-httpclient:20020423" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/commons-httpclient-20020423.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
