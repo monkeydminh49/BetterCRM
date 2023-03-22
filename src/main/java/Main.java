@@ -1,5 +1,5 @@
 import Controller.Request;
-import Viewer.GUI.GUI;
+import Viewer.GUI;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

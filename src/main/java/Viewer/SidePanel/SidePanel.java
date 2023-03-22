@@ -1,4 +1,4 @@
-package Viewer.GUI.SidePanel;
+package Viewer.SidePanel;
 
 import javax.swing.*;
 import java.awt.*;
