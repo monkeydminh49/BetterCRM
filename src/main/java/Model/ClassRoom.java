@@ -107,4 +107,15 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
             System.out.println(student.getName());
         }
     }
+
+    public Lesson getLatestLesson(){
+        Lesson latestLesson = null;
+        LocalDate today = LocalDate.now();
+        for (Lesson lesson : lessonList){
+            if ((lesson.getDate().isBefore(today)|| lesson.getDate().isEqual(today) )&& (latestLesson == null || lesson.getDate().isAfter(latestLesson.getDate()))){
+                latestLesson = lesson;
+            }
+        }
+        return latestLesson;
+    }
 }

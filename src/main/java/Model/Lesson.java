@@ -73,4 +73,9 @@ public class Lesson implements Serializable {
     public Lesson() {
     }
 
+    @Override
+    public String toString(){
+        return lessonNumber + " - " + lessonId + " - " + lessonName + " - " + date.toString() + " - " + time + " - " + emailStatus;
+    }
+
 }

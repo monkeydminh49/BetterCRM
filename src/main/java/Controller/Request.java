@@ -42,6 +42,11 @@ public class Request {
         }
         return requestInstance;
     }
+
+    public String getFilesPath() {
+        return filesPath;
+    }
+
     private final String filesPath = "src/Files/";
 
     private List<ClassRoom> classRoomList;
@@ -427,8 +432,12 @@ public class Request {
 //        }
 //        updateClassIdList();
 //        updateClassList();
-//        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
-//        System.out.println(list.size());
+        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
+        for (ClassRoom classRoom : list) {
+            System.out.println(classRoom.getClassCode());
+            System.out.println(classRoom.getLatestLesson());
+        }
+        System.out.println(list.size());
     }
     public String getRequestContent(String url, List<NameValuePair> payload, String method) throws URISyntaxException, IOException {
         // Build url
