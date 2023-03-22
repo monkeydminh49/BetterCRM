@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ClassRoom implements Serializable , Comparable<ClassRoom> {
@@ -8,6 +9,9 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     private String classCode;
     private List<TA> listTA;
     private List<TimeOFWeek> listStartTime;
+    private List<Lesson> listLesson;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public String getId() {
         return id;
