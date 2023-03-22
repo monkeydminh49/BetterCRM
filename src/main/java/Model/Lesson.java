@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Lesson {
+public class Lesson implements Serializable {
     public String getLessonNumber() {
         return lessonNumber;
     }

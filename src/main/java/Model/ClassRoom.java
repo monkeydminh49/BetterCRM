@@ -88,4 +88,23 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     public int compareTo(ClassRoom o) {
         return 0;
     }
+
+    public void display(){
+        System.out.println(id);
+        System.out.println(classCode);
+        System.out.println(startDate.toString());
+        System.out.println(endDate.toString());
+        for (TA ta : listTA){
+            System.out.println(ta.getName());
+        }
+        for (TimeOFWeek time : listStartTime){
+            System.out.println(time.getDayOfWeek() + " - " + time.getTime());
+        }
+        for (Lesson lesson : lessonList){
+            System.out.println(lesson.getLessonNumber() + " - " + lesson.getLessonId() + " - " + lesson.getLessonName() + " - " + lesson.getDate() + " - " + lesson.getTime() + " - " + lesson.getEmailStatus());
+        }
+        for (Student student : listStudent){
+            System.out.println(student.getName());
+        }
+    }
 }

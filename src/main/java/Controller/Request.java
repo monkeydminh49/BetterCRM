@@ -212,8 +212,6 @@ public class Request {
                     }
                 }
 
-
-
                 // Found day and time ** has json file
                 if (e.hasClass("weekDay") && !e.text().equals("")){
                     countWeekDay++;
@@ -249,15 +247,12 @@ public class Request {
             String emailStatus = null;
             String lessonStatus = null;
 
-//            System.out.println(content);
-
-//            // request1
+//            // request with attendance page
 //            elements = doc.select(".table-bordered");
 //            System.out.println(elements.size());
 //            elements = elements.get(2).select("tr");
 
-
-            // request2
+            // request with lesson content page
             elements = doc.select(".item__lesson");
 
             for (Element e : elements){
@@ -285,15 +280,10 @@ public class Request {
 //                System.out.println(lessonNumber + " - " + lessonId + " - " + lessonName + " - " + lessonDate + " - " + emailStatus);
                 }
 
-            // Get first lesson id
-//            if (lessonStatus == null){
-//                continue;
-//            }
-
             // *Get student list
-            // Get student list
             List<Student> listStudent = new ArrayList<>();
 
+            // Get first lesson detail to extract student list
             String firstLessonDetailUrl = "https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=listStudent&id=456177&lessonId=181942";
 
             List<NameValuePair> params = new ArrayList<>();
@@ -323,33 +313,16 @@ public class Request {
                     }
                 }
             }
+
             ClassRoom classRoom = new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent);
-//            System.out.println(classRoom.toString());
-           // classRoomList.add(new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent));
-
-
-            System.out.println(classId);
-            System.out.println(classCode);
-            System.out.println(startDate.toString());
-            System.out.println(endDate.toString());
-            for (TA ta : listTA){
-                System.out.println(ta.getName());
-            }
-            for (TimeOFWeek time : listTimeOfWeek){
-                System.out.println(time.getDayOfWeek() + " - " + time.getTime());
-            }
-            for (Lesson lesson : lessonList){
-                System.out.println(lesson.getLessonNumber() + " - " + lesson.getLessonId() + " - " + lesson.getLessonName() + " - " + lesson.getDate() + " - " + lesson.getTime() + " - " + lesson.getEmailStatus());
-            }
-            for (Student student : listStudent){
-                System.out.println(student.getName());
-            }
+//            classRoom.display();
+            classRoomList.add(classRoom);
 
             System.out.println("Added " + classCode + " " + count + "/" + classIdList.size());
             System.out.println("----------------------------------------------------");
         }
         // Write to file
-       // IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
+        IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
     }
     public void updateTAList() throws URISyntaxException, IOException {
         // Clear TAList
@@ -438,7 +411,7 @@ public class Request {
         // Write to file
         IOSystem.getInstance().write(studentList, filesPath+ "studentList.dat");
     }
-    public void run() throws IOException, URISyntaxException, ClassNotFoundException {
+    public void run() throws IOException, URISyntaxException, ClassNotFoundException  {
         // Login
         login("dangminh.TAMD", "LLVN123456", true);
 //        updateTAList();
@@ -453,7 +426,7 @@ public class Request {
 //            System.out.println(s);
 //        }
 //        updateClassIdList();
-        updateClassList();
+//        updateClassList();
 //        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
 //        System.out.println(list.size());
     }
