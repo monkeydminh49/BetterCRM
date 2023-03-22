@@ -5,15 +5,13 @@ import Model.Student;
 import Model.TA;
 import Model.TimeOFWeek;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.Consts;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,7 +22,9 @@ import org.jsoup.select.Elements;
 import org.json.*;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -73,27 +73,26 @@ public class Request {
     public void setTAList(List<TA> TAList) {
         this.TAList = TAList;
     }
-    public void login(String username, String password, boolean remember) throws IOException {
-//        // First Get request to get token
-        String loginUrl = "https://crm.llv.edu.vn/index.php?module=Users&action=Login&mode=login";
-        get = new HttpGet(loginUrl);
+    public void login(String username, String password, boolean remember) throws IOException, URISyntaxException {
+        // Init
         client = HttpClients.createDefault();
-        HttpResponse getResponse = client.execute(get);
+        // First Get request to get token
+        String loginUrl = "https://crm.llv.edu.vn/index.php?module=Users&action=Login&mode=login";
+
+        // Get request response (HTML)
+        String content = getRequestContent(loginUrl, null, "GET");
 //
         // Print request response
-        System.out.println("Protocol: " + getResponse.getProtocolVersion());
-        System.out.println("Status:" + getResponse.getStatusLine().toString());
-        System.out.println("Content type:" + getResponse.getEntity().getContentType());
-        System.out.println("Locale:" + getResponse.getLocale());
+        System.out.println("Protocol: " + response.getProtocolVersion());
+        System.out.println("Status:" + response.getStatusLine().toString());
+        System.out.println("Content type:" + response.getEntity().getContentType());
+        System.out.println("Locale:" + response.getLocale());
         System.out.println("Headers:");
 
         // Read response headers
-        for(Header header : getResponse.getAllHeaders()) {
+        for(Header header : response.getAllHeaders()) {
             System.out.println("          " + header.getName()+": " + header.getValue());
         }
-
-        // Read response body - html
-        String content = IOUtils.toString(getResponse.getEntity().getContent(), StandardCharsets.UTF_8);
 
         // Get token in returned HTML
         Document doc = Jsoup.parse(content);
@@ -108,12 +107,9 @@ public class Request {
         payload.add(new BasicNameValuePair("password", password));
         payload.add(new BasicNameValuePair("remember", remember ? "true" : "false"));
 
-        // Add payload to post request
-        post = new HttpPost(loginUrl);
-        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(payload, Consts.UTF_8);
-        post.setEntity(entity);
-        post.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
-        response = (CloseableHttpResponse) client.execute(post);
+        content = getRequestContent(loginUrl, payload, "POST");
+        System.out.println(content);
+
     }
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
         // Get classIdList from file
@@ -271,14 +267,8 @@ public class Request {
         String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:0e4015d1f33aee007767349d620db9e2e515740b,1679154595&module=Classes&parent=&page=1&view=ListAjax&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D&mode=getPageCount";
 
-        // Build url
-        builder = new URIBuilder(totalPageJsonUrl);
-        builder.setParameter("__vtrftk", token);
-
         // Request
-        get = new HttpGet(builder.build());
-        response = (CloseableHttpResponse) client.execute(get);
-        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+        content = getRequestContent(totalPageJsonUrl,Arrays.asList(new BasicNameValuePair("__vtrftk", token)) , "GET");
 
         // parsing json content
         JSONObject jo = new JSONObject(content);
@@ -302,6 +292,7 @@ public class Request {
             for (Element e : elements) {
                 if (e.hasClass("listViewEntries")){
                     classIdList.add(e.attr("data-id"));
+                    System.out.println(e.attr("data-id"));
                 }
             }
             page++;
@@ -323,14 +314,8 @@ public class Request {
         String TAListUrl = "https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:6eb8d4459b055ecf6ca085e3895468c2a865dd75,1679155849&module=TeacherTA&parent=&page=1&view=ListAjax&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D&mode=getPageCount";
 
-        // Build url
-        builder = new URIBuilder(totalPageJsonUrl);
-        builder.setParameter("__vtrftk", token);
-
         // Request
-        get = new HttpGet(builder.build());
-        response = (CloseableHttpResponse) client.execute(get);
-        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+        content = getRequestContent(totalPageJsonUrl,Arrays.asList(new BasicNameValuePair("__vtrftk", token)) , "GET");
 
         // parsing json content
         JSONObject jo = new JSONObject(content);
@@ -339,14 +324,7 @@ public class Request {
 
         Set<TA> set = new HashSet<>();
         while (page <= totalPage){
-            // Build url
-            builder = new URIBuilder(TAListUrl);
-            builder.setParameter("page", Integer.toString(page));
-
-            // Request
-            get = new HttpGet(builder.build());
-            response = (CloseableHttpResponse) client.execute(get);
-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+            content = getRequestContent(TAListUrl,Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))) , "GET");
             Document doc = Jsoup.parse(content);
 
             // Get TA from response
@@ -359,6 +337,7 @@ public class Request {
 
                     TA ta = new TA(name, phone, email);
                     set.add(ta);
+//                    System.out.println(ta.getName());
                 }
             }
             page++;
@@ -380,14 +359,8 @@ public class Request {
         String studentListUrl = "https://crm.llv.edu.vn/index.php?module=Contacts&parent=&page=1&view=List&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:797b1b65f176b662e920f223a74320f600987536,1679156710&module=Contacts&parent=&page=1&view=ListAjax&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D&mode=getPageCount";
 
-        // Build url
-        builder = new URIBuilder(totalPageJsonUrl);
-        builder.setParameter("__vtrftk", token);
-
         // Request
-        get = new HttpGet(builder.build());
-        response = (CloseableHttpResponse) client.execute(get);
-        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+        content = getRequestContent(totalPageJsonUrl,Arrays.asList(new BasicNameValuePair("__vtrftk", token)) , "GET");
 
         // parsing json content
         JSONObject jo = new JSONObject(content);
@@ -397,15 +370,7 @@ public class Request {
 
         while (page <= totalPage){
             System.out.println("Page " + page + "/" + totalPage);
-
-            // Build url
-            builder = new URIBuilder(studentListUrl);
-            builder.setParameter("page", Integer.toString(page));
-
-            // Request
-            get = new HttpGet(builder.build());
-            response = (CloseableHttpResponse) client.execute(get);
-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+            content = getRequestContent(studentListUrl, Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))), "GET");
             Document doc = Jsoup.parse(content);
 
             // Get TA from response
@@ -443,6 +408,26 @@ public class Request {
 //        updateClassList();
 //        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
 //        System.out.println(list.size());
+    }
+
+    public String getRequestContent(String url, List<NameValuePair> payload, String method) throws URISyntaxException, IOException {
+        // Build url
+        builder = new URIBuilder(url);
+        if (payload != null)builder.addParameters(payload);
+
+        // Request
+        get = new HttpGet(builder.build());
+        post = new HttpPost(builder.build());
+
+        if (method.equals("POST")) {
+            response = (CloseableHttpResponse) client.execute(post);
+        } else {
+            response = (CloseableHttpResponse) client.execute(get);
+        }
+
+        // Get content from response
+        String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+        return content;
     }
 
 }

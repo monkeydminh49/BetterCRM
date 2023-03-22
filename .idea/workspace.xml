@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Create GUI, SidePanel and MainPanel">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/LessonStatusPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/TestPanel.java" afterDir="false" />
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Commit Request API doc">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/GUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/SidePanel/SidePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/GUI/SidePanel/SidePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/Request_API_mechanisms.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Request_API_mechanisms.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/Request.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/Request.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +46,7 @@
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "403",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "D:/ProPTIT/Java/ProjectJava/BetterCRM",
@@ -105,6 +99,9 @@
       <workItem from="1678906495526" duration="7490000" />
       <workItem from="1678925739706" duration="3547000" />
       <workItem from="1678953478853" duration="6516000" />
+      <workItem from="1679350485410" duration="66000" />
+      <workItem from="1679373487861" duration="4794000" />
+      <workItem from="1679417083390" duration="10550000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -141,7 +138,35 @@
       <option name="project" value="LOCAL" />
       <updated>1679252607540</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Create card and container in MainPanel, display test table">
+      <created>1679303516522</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1679303516522</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Add new method to request from API">
+      <created>1679422057145</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1679422057146</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Commit Request API doc">
+      <created>1679427291957</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1679427291957</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Commit Request API doc">
+      <created>1679427306201</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1679427306201</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,17 +179,10 @@
     <MESSAGE value="Rearrange Request class &#10;+ Request class information: name, day, time make file class" />
     <MESSAGE value="Update classIdList and classIdList.dat with 71 classes" />
     <MESSAGE value="Create GUI, SidePanel and MainPanel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create GUI, SidePanel and MainPanel" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Controller/Request.java</url>
-          <line>371</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Create card and container in MainPanel, display test table" />
+    <MESSAGE value="Add new method to request from API" />
+    <MESSAGE value="Apply getRequestContent in update functions" />
+    <MESSAGE value="Commit Request API doc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit Request API doc" />
   </component>
 </project>
