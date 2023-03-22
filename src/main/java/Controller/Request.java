@@ -1,17 +1,12 @@
 package Controller;
 
-import Model.ClassRoom;
-import Model.Student;
-import Model.TA;
-import Model.TimeOFWeek;
+import Model.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -22,11 +17,10 @@ import org.jsoup.select.Elements;
 import org.json.*;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -111,6 +105,45 @@ public class Request {
         System.out.println(content);
 
     }
+    public void updateClassIdList() throws IOException, URISyntaxException {
+        classIdList.clear();
+        // Loop through all pages
+        int page = 1;
+        int totalPage = 0;
+
+        String content = null;
+        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
+        String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:0e4015d1f33aee007767349d620db9e2e515740b,1679154595&module=Classes&parent=&page=1&view=ListAjax&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D&mode=getPageCount";
+
+        // Request
+        content = getRequestContent(totalPageJsonUrl,Arrays.asList(new BasicNameValuePair("__vtrftk", token)) , "GET");
+
+        // parsing json content
+        JSONObject jo = new JSONObject(content);
+        jo = jo.getJSONObject("result");
+        totalPage = jo.getInt("page");
+
+        // Get class id from each page
+        while (page <= totalPage){
+            content = getRequestContent(on_goingClassListUrl,Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))) , "GET");
+            Document doc = Jsoup.parse(content);
+
+            // Get classId from response
+            Elements elements = doc.select("tr");
+            for (Element e : elements) {
+                if (e.hasClass("listViewEntries")){
+                    classIdList.add(e.attr("data-id"));
+//                    System.out.println(e.attr("data-id"));
+                }
+            }
+            page++;
+        }
+        classIdList = new ArrayList<>(new HashSet<>(classIdList));
+        System.out.println("Total class updated: " + classIdList.size());
+
+        // Write list to file
+        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
+    }
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
         // Get classIdList from file
         classIdList = IOSystem.getInstance().read(filesPath + "classIdList.dat");
@@ -123,17 +156,10 @@ public class Request {
         for (String classId : classIdList){
             count++;
 
-            // Build url
-            //String classLessonContentUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=&mode=showRelatedList&tab_label=Lesson%20Content";
+            // Get class information
+            String classLessonContentUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=&mode=showRelatedList&tab_label=Lesson%20Content";
             String classAttendanceUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=AttendanceClass&view=Detail&record=456177&mode=showRelatedList&tab_label=Attendance%20Report";
-            builder = new URIBuilder(classAttendanceUrl);
-            builder.setParameter("record", classId);
-//            System.out.println(builder.build());
-
-            // Request
-            get = new HttpGet(builder.build());
-            response = (CloseableHttpResponse) client.execute(get);
-            String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+            String content = getRequestContent(classLessonContentUrl, Arrays.asList(new BasicNameValuePair("record", classId)), "GET");
             Document doc = Jsoup.parse(content);
 
             // Get class from response
@@ -144,6 +170,8 @@ public class Request {
             List<TA> listTA = new ArrayList<>();
             List<String> listTAName = new ArrayList<>();
             String classCode = "";
+            LocalDate startDate = null;
+            LocalDate endDate = null;
 
             boolean foundTA = false;
             int countWeekDay = 0;
@@ -153,6 +181,16 @@ public class Request {
                 if (e.text().equals("Class Code")){
                     classCode = e.nextElementSibling().text();
 //                    System.out.println(classCode);
+                }
+
+                // Get start and end date
+                if (e.text().equals("Start Date")){
+                    String start = e.nextElementSibling().text();
+                    startDate = LocalDate.parse(start, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                }
+                if (e.text().equals("End Date")){
+                    String end = e.nextElementSibling().text();
+                    endDate = LocalDate.parse(end, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                 }
 
                 // Found TA
@@ -173,6 +211,8 @@ public class Request {
                         }
                     }
                 }
+
+
 
                 // Found day and time ** has json file
                 if (e.hasClass("weekDay") && !e.text().equals("")){
@@ -198,22 +238,70 @@ public class Request {
                 };
             }
 
-            // Get first lesson id
-            Element e = doc.select(".detailModal").first();
-            String lessonId = e.attr("data-lesson");
+            // Get lesson list information
+            List<Lesson>  lessonList = new ArrayList<>();
 
+            String lessonNumber = null;
+            String lessonId = null;
+            String lessonName = null;
+            LocalDate lessonDate = null;
+            LocalTime lessonTime = null;
+            String emailStatus = null;
+            String lessonStatus = null;
+
+//            System.out.println(content);
+
+//            // request1
+//            elements = doc.select(".table-bordered");
+//            System.out.println(elements.size());
+//            elements = elements.get(2).select("tr");
+
+
+            // request2
+            elements = doc.select(".item__lesson");
+
+            for (Element e : elements){
+//                System.out.println(e.text());
+                Elements td = e.select("td");
+                lessonNumber = td.get(0).text();
+                lessonId = td.get(8).select(".btnSendEmail").attr("data-id");
+                lessonName = td.get(1).text();
+                String date = td.get(2).text();
+
+                // Get lesson date
+                if (date.equals("")){ // lesson not started
+                    if (lessonNumber.equals("1") || lessonNumber.equals("21")){   // First lesson
+                        lessonDate = startDate;
+                    } else {
+                        Lesson previousLesson = lessonList.get(lessonList.size()-1);
+                        lessonDate = previousLesson.getDate().plusDays(7);
+                    }
+                } else {
+                    lessonDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                }
+
+                emailStatus = td.get(7).text();
+                lessonList.add(new Lesson(lessonNumber, lessonId, lessonName, lessonDate, null, emailStatus));
+//                System.out.println(lessonNumber + " - " + lessonId + " - " + lessonName + " - " + lessonDate + " - " + emailStatus);
+                }
+
+            // Get first lesson id
+//            if (lessonStatus == null){
+//                continue;
+//            }
+
+            // *Get student list
             // Get student list
             List<Student> listStudent = new ArrayList<>();
 
             String firstLessonDetailUrl = "https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=listStudent&id=456177&lessonId=181942";
-            builder = new URIBuilder(firstLessonDetailUrl);
-            builder.setParameter("id", classId);
-            builder.setParameter("lessonId", lessonId);
 
-            // Request
-            get = new HttpGet(builder.build());
-            response = (CloseableHttpResponse) client.execute(get);
-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("id", classId));
+            params.add(new BasicNameValuePair("lessonId", lessonId));
+
+            // Json file of student list
+            content = getRequestContent(firstLessonDetailUrl, params, "GET");
 
             JSONObject jo = new JSONObject(content);
             JSONArray ja = jo.getJSONArray("result");
@@ -235,72 +323,33 @@ public class Request {
                     }
                 }
             }
+            ClassRoom classRoom = new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent);
+//            System.out.println(classRoom.toString());
+           // classRoomList.add(new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent));
 
-            classRoomList.add(new ClassRoom(classId,classCode ,listTA, listTimeOfWeek, listStudent));
 
-
-//            System.out.println(classId);
-//            System.out.println(classCode);
-//            for (TA ta : listTA){
-//                System.out.println(ta.getName());
-//            }
-//            for (TimeOFWeek time : listTimeOfWeek){
-//                System.out.println(time.getDayOfWeek() + " - " + time.getTime());
-//            }
-//            for (Student student : listStudent){
-//                System.out.println(student.getName());
-//            }
+            System.out.println(classId);
+            System.out.println(classCode);
+            System.out.println(startDate.toString());
+            System.out.println(endDate.toString());
+            for (TA ta : listTA){
+                System.out.println(ta.getName());
+            }
+            for (TimeOFWeek time : listTimeOfWeek){
+                System.out.println(time.getDayOfWeek() + " - " + time.getTime());
+            }
+            for (Lesson lesson : lessonList){
+                System.out.println(lesson.getLessonNumber() + " - " + lesson.getLessonId() + " - " + lesson.getLessonName() + " - " + lesson.getDate() + " - " + lesson.getTime() + " - " + lesson.getEmailStatus());
+            }
+            for (Student student : listStudent){
+                System.out.println(student.getName());
+            }
 
             System.out.println("Added " + classCode + " " + count + "/" + classIdList.size());
             System.out.println("----------------------------------------------------");
         }
         // Write to file
        // IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
-    }
-    public void updateClassIdList() throws IOException, URISyntaxException {
-        classIdList.clear();
-        // Loop through all pages
-        int page = 1;
-        int totalPage = 0;
-
-        String content = null;
-        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
-        String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:0e4015d1f33aee007767349d620db9e2e515740b,1679154595&module=Classes&parent=&page=1&view=ListAjax&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D&mode=getPageCount";
-
-        // Request
-        content = getRequestContent(totalPageJsonUrl,Arrays.asList(new BasicNameValuePair("__vtrftk", token)) , "GET");
-
-        // parsing json content
-        JSONObject jo = new JSONObject(content);
-        jo = jo.getJSONObject("result");
-        totalPage = jo.getInt("page");
-
-        // Get class id from each page
-        while (page <= totalPage){
-            // Build url
-            builder = new URIBuilder(on_goingClassListUrl);
-            builder.setParameter("page", Integer.toString(page));
-
-            // Request
-            get = new HttpGet(builder.build());
-            response = (CloseableHttpResponse) client.execute(get);
-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
-            Document doc = Jsoup.parse(content);
-
-            // Get classId from response
-            Elements elements = doc.select("tr");
-            for (Element e : elements) {
-                if (e.hasClass("listViewEntries")){
-                    classIdList.add(e.attr("data-id"));
-                    System.out.println(e.attr("data-id"));
-                }
-            }
-            page++;
-        }
-        System.out.println("Total class: " + classIdList.size());
-
-        // Write list to file
-        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
     }
     public void updateTAList() throws URISyntaxException, IOException {
         // Clear TAList
@@ -392,9 +441,7 @@ public class Request {
     public void run() throws IOException, URISyntaxException, ClassNotFoundException {
         // Login
         login("dangminh.TAMD", "LLVN123456", true);
-
-//        updateClassIdList();
-//         updateTAList();
+//        updateTAList();
 //        updateStudentList();
 
 //        List<TA> list = IOSystem.getInstance().read(filesPath + "TAList.dat");
@@ -405,11 +452,11 @@ public class Request {
 //        for (String s : classIdList) {
 //            System.out.println(s);
 //        }
-//        updateClassList();
+//        updateClassIdList();
+        updateClassList();
 //        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
 //        System.out.println(list.size());
     }
-
     public String getRequestContent(String url, List<NameValuePair> payload, String method) throws URISyntaxException, IOException {
         // Build url
         builder = new URIBuilder(url);

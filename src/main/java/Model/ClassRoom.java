@@ -9,7 +9,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     private String classCode;
     private List<TA> listTA;
     private List<TimeOFWeek> listStartTime;
-    private List<Lesson> listLesson;
+    private List<Lesson> lessonList;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -55,11 +55,14 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
 
     private List<Student> listStudent;
 
-    public ClassRoom(String id, String name, List<TA> listTA, List<TimeOFWeek> listStartTime, List<Student> listStudent) {
+    public ClassRoom(String id, String name, List<TA> listTA, LocalDate startDate, LocalDate endDate, List<TimeOFWeek> listStartTime, List<Lesson> lessonList, List<Student> listStudent) {
         this.id = id;
         this.classCode = name;
         this.listTA = listTA;
+        this.endDate = endDate;
         this.listStartTime = listStartTime;
+        this.startDate = startDate;
+        this.lessonList = lessonList;
         this.listStudent = listStudent;
     }
 
@@ -67,6 +70,19 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
 
     }
 
+    @Override
+    public String toString() {
+        return "ClassRoom{" +
+                "id='" + id + '\'' +
+                ", classCode='" + classCode + '\'' +
+                ", listTA=" + listTA +
+                ", listStartTime=" + listStartTime +
+                ", lessonList=" + lessonList +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", listStudent=" + listStudent +
+                '}';
+    }
 
     @Override
     public int compareTo(ClassRoom o) {

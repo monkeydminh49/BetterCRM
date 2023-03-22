@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Change img path">
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Create Lesson class, add list lesson, startDate, endDate ClassRoom class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/Request_API_mechanisms.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Request_API_mechanisms.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Files/classIdList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Files/classIdList.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Lesson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Lesson.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +107,7 @@
       <workItem from="1679350485410" duration="66000" />
       <workItem from="1679373487861" duration="4794000" />
       <workItem from="1679417083390" duration="11304000" />
-      <workItem from="1679481387069" duration="65000" />
+      <workItem from="1679481387069" duration="11089000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -181,7 +186,21 @@
       <option name="project" value="LOCAL" />
       <updated>1679428126826</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Delete junk html file">
+      <created>1679481542895</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1679481542895</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Create Lesson class, add list lesson, startDate, endDate ClassRoom class">
+      <created>1679483357749</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1679483357749</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +218,8 @@
     <MESSAGE value="Apply getRequestContent in update functions" />
     <MESSAGE value="Commit Request API doc" />
     <MESSAGE value="Change img path" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change img path" />
+    <MESSAGE value="Delete junk html file" />
+    <MESSAGE value="Create Lesson class, add list lesson, startDate, endDate ClassRoom class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create Lesson class, add list lesson, startDate, endDate ClassRoom class" />
   </component>
 </project>
