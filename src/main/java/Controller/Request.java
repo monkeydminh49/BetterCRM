@@ -2,7 +2,7 @@ package Controller;
 
 import Model.*;
 import org.apache.commons.io.IOUtils;
-
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -23,9 +24,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import org.apache.http.Header;
-import org.apache.http.NameValuePair;
 import org.json.*;
+
 
 
 public class Request {

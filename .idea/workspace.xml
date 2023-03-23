@@ -5,34 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="add button to table using ButtonBuilder">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_core5_httpcore5_5_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_ecf_org_apache_httpcomponents_httpclient_4_5_2_v20170210_0925.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20220924.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/MainPanel/LessonStatusPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/ActionButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/NewJFrame.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/TableActionCellRender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/reload.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BetterCRM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BetterCRM.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Request.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/LessonStatusPanel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/MainPanel/MainPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/TestPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/MainPanel/TestPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/SidePanel/SidePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/Request.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/Request.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/MainPanel/LessonStatusPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/MainPanel/MainPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/MainPanel/TestPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/SidePanel/SidePanel.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/GUI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/MainPanel/LessonStatusPanel$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/MainPanel/LessonStatusPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/MainPanel/MainPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/MainPanel/TestPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/GUI/SidePanel/SidePanel.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,37 +51,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH&quot;: &quot;403&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/ProPTIT/Java/ProjectJava/BetterCRM&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.38965517&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW": "false",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "403",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/ProPTIT/Java/ProjectJava/BetterCRM",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.38965517",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Markdown&quot;,
-      &quot;PLAIN_TEXT&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Markdown",
+      "PLAIN_TEXT"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\ProPTIT\Java\ProjectJava\TestRequest" />
@@ -130,6 +120,7 @@
       <workItem from="1679417083390" duration="11304000" />
       <workItem from="1679481387069" duration="20781000" />
       <workItem from="1679506396273" duration="4694000" />
+      <workItem from="1679584821509" duration="3282000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>

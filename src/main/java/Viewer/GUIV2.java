@@ -24,7 +24,8 @@ public class GUIV2 extends javax.swing.JFrame {
     public GUIV2() {
         initComponents();
         update();
-        jTable1.setRowHeight(30);
+        jTable1.setRowHeight(40);
+        jTable1.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
     }
 
     /**
