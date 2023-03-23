@@ -26,6 +26,7 @@ public class GUIV2 extends javax.swing.JFrame {
         update();
         jTable1.setRowHeight(40);
         jTable1.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
+        System.out.println("Check git");
     }
 
     /**
