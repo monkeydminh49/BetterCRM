@@ -1,7 +1,7 @@
-package Viewer.GUI;
+package Viewer;
 
-import Viewer.GUI.MainPanel.MainPanel;
-import Viewer.GUI.SidePanel.SidePanel;
+import Viewer.MainPanel.MainPanel;
+import Viewer.SidePanel.SidePanel;
 
 import javax.swing.*;
 

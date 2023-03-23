@@ -62,7 +62,7 @@ Some methods require user to provide parameters to get the data.
 
 ![Parameters](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/request_parameters.png?raw=true "Parameters")
 
-So to pass parameters to the request, I use the URIBuilder class to build the URL with the parameters, which are stored in a List of NameValuePair objects.
+So to pass parameters to the request, I use URIBuilder class to build URL with the parameters, which are stored in a List of NameValuePair objects.
 
 For example:
 ```java

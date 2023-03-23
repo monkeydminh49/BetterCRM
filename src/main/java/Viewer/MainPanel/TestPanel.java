@@ -1,4 +1,4 @@
-package Viewer.GUI.MainPanel;
+package Viewer.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
