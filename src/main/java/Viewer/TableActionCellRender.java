@@ -20,6 +20,7 @@ public class TableActionCellRender extends DefaultTableCellRenderer {
 
         PanelAction action = new PanelAction();
         action.setOpaque(true);
+        action.setBackground(com.getBackground());
         return action;
     }
 }

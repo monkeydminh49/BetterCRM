@@ -5,7 +5,7 @@
 package Viewer;
 
 import Controller.IOSystem;
-import Controller.Request;
+import Controller.RequestAPI;
 import Model.ClassRoom;
 import Model.Lesson;
 import java.io.IOException;
@@ -166,7 +166,7 @@ public class GUIV2 extends javax.swing.JFrame {
         model.setRowCount(0);
         List<ClassRoom> classRoomList = null;
         try {
-            classRoomList = IOSystem.getInstance().read(Request.getInstance().getFilesPath() + "classRoomList.dat");
+            classRoomList = IOSystem.getInstance().read(RequestAPI.getInstance().getFilesPath() + "classRoomList.dat");
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

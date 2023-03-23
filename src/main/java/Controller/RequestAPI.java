@@ -2,20 +2,15 @@ package Controller;
 
 import Model.*;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.*;
+
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -24,23 +19,29 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import org.apache.http.Header;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.HttpClients;
+
 import org.json.*;
 
 
 
-public class Request {
-    private static Request requestInstance;
+public class RequestAPI {
+    private static RequestAPI requestInstance;
 
-    private Request() {
+    private RequestAPI() {
         classRoomList = new ArrayList<>();
         classIdList = new ArrayList<>();
         TAList = new ArrayList<>();
         studentList = new ArrayList<>();
     }
 
-    public static Request getInstance() {
+    public static RequestAPI getInstance() {
         if (requestInstance == null) {
-            requestInstance = new Request();
+            requestInstance = new RequestAPI();
         }
         return requestInstance;
     }

@@ -1,0 +1,38 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Viewer;
+
+import Model.ClassRoom;
+import java.awt.Component;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+
+/**
+ *
+ * @author MinhDunk
+ */
+public class TableActionCellEditor extends DefaultCellEditor {
+
+    private TableActionEvent event;
+    
+    private ClassRoom classRoom;
+    
+    public TableActionCellEditor(TableActionEvent event, ClassRoom classRoom) {
+        super(new JCheckBox());
+        this.event = event;
+        this.classRoom = classRoom;
+    }
+
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        PanelAction action = new PanelAction();
+        action.initEvent(event, classRoom);
+        action.setBackground(table.getBackground());
+        return action;
+    }
+    
+    
+}
