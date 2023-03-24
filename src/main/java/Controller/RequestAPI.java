@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import Viewer.GUI;
 import org.apache.commons.io.IOUtils;
 
 import org.apache.http.client.HttpClient;
@@ -19,6 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -53,6 +56,17 @@ public class RequestAPI {
     private final String filesPath = "src/Files/";
 
     private List<ClassRoom> classRoomList;
+
+    public List<ClassRoom> getClassRoomList() {
+        try {
+            classRoomList = IOSystem.getInstance().read(RequestAPI.getInstance().getFilesPath() + "classRoomList.dat");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return classRoomList;
+    }
     private List<String> classIdList;
     private List<TA> TAList;
     private List<Student> studentList;
@@ -434,7 +448,7 @@ public class RequestAPI {
 //            System.out.println(s);
 //        }
 //        updateClassIdList();
-//        updateClassList();
+        updateClassList();
         List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
         for (ClassRoom classRoom : list) {
             System.out.println(classRoom.getClassCode());

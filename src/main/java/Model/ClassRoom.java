@@ -54,6 +54,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     }
 
     private List<Student> listStudent;
+    private Lesson latestLesson = null;
 
     public ClassRoom(String id, String name, List<TA> listTA, LocalDate startDate, LocalDate endDate, List<TimeOFWeek> listStartTime, List<Lesson> lessonList, List<Student> listStudent) {
         this.id = id;
@@ -109,13 +110,16 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     }
 
     public Lesson getLatestLesson(){
-        Lesson latestLesson = null;
+        updateLatestLesson();
+        return latestLesson;
+    }
+    
+    public void updateLatestLesson(){
         LocalDate today = LocalDate.now();
         for (Lesson lesson : lessonList){
             if ((lesson.getDate().isBefore(today)|| lesson.getDate().isEqual(today) )&& (latestLesson == null || lesson.getDate().isAfter(latestLesson.getDate()))){
                 latestLesson = lesson;
             }
         }
-        return latestLesson;
     }
 }

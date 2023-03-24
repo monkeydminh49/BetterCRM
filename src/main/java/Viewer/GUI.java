@@ -28,44 +28,58 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
         update();
-        ClassRoom classRoom = new ClassRoom();
-        classRoom.setClassCode("TESTT");
+
+
+    }
+    
+      public void update(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        List<ClassRoom> classRoomList = null;
+             
+        classRoomList = RequestAPI.getInstance().getClassRoomList();
+
         TableActionEvent event = new TableActionEvent() {
             @Override
-            public void onUpdate(ClassRoom classRooom) {
-                System.out.println(classRoom.getClassCode());
+            public void onUpdate(int row) {
+                ClassRoom current = classRoomList.get(row);
+                System.out.println(current.getClassCode());
+                current.updateLatestLesson();
+                
+                if (jTable1.isEditing()){
+                    jTable1.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                current.setClassCode("Test Update");
+                model.fireTableDataChanged();
             }
 
             @Override
             public void onDelete(int row) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                if (jTable1.isEditing()){
+                    jTable1.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                classRoomList.remove(row);
+                model.removeRow(row);
             }
 
             @Override
             public void onView(int row) {
                 throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
             }
+
+
         };
         
-//        jTable1.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
-//        jTable1.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event, classRoom));
-    }
-    
-      public void update(){
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-        List<ClassRoom> classRoomList = null;
-        try {
-            classRoomList = IOSystem.getInstance().read(RequestAPI.getInstance().getFilesPath() + "classRoomList.dat");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        jTable1.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
+        jTable1.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event));
+        
         for (int i = 0; i < classRoomList.size(); i++) {
             ClassRoom classRoom = classRoomList.get(i);
             Lesson latestLesson = classRoom.getLatestLesson();
-            model.addRow(new Object[]{i+1, classRoom.getClassCode(), latestLesson.getLessonName(),latestLesson.getDate().toString(), latestLesson.getEmailStatus()});
+            model.addRow(new Object[]{i+1, classRoom.getClassCode(), latestLesson.getLessonName(),latestLesson.getDate().toString(), latestLesson.getEmailStatus(), "Update"});
         }
     }
 
@@ -98,17 +112,17 @@ public class GUI extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "No.", "Class Code", "Lesson", "Date", "Status"
+                "No.", "Class Code", "Lesson", "Date", "Status", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
