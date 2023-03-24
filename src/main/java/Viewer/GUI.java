@@ -4,12 +4,15 @@
  */
 package Viewer;
 
-import Controller.RequestAPI;
+import Controller.IOSystem;
 import Model.ClassRoom;
 import Model.Lesson;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import java.util.List;
-import javax.swing.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,19 +25,27 @@ public class GUI extends javax.swing.JFrame {
      * Creates new form GUI
      */
     public GUI() {
+        this.classRoomList = new ArrayList<>();
         initComponents();
         update();
 
 
     }
     
-        private List<ClassRoom> classRoomList = null;
+        private List<ClassRoom> classRoomList;
       public void update(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
 
-        classRoomList = RequestAPI.getInstance().getClassRoomList();
+        try {
+            //        classRoomList = RequestAPI.getInstance().getClassRoomList();
+            classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         TableActionEvent event = new TableActionEvent() {
             @Override
@@ -42,12 +53,12 @@ public class GUI extends javax.swing.JFrame {
                 ClassRoom current = classRoomList.get(row);
 //                System.out.println(current.getClassCode());
 
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        current.updateLatestLesson();
-                    }
-                });
+//                SwingUtilities.invokeLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        current.updateLatestLesson();
+//                    }
+//                });
 
                 if (jTable1.isEditing()){
                     jTable1.getCellEditor().stopCellEditing();

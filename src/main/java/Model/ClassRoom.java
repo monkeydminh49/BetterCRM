@@ -1,6 +1,5 @@
 package Model;
 
-import Controller.RequestAPI;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -124,7 +123,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     }
     
     public void updateLatestLesson(){
-        updateLessonStatus();
+//        updateLessonStatus();
         
         LocalDate today = LocalDate.now();
         for (Lesson lesson : lessonList){
@@ -134,10 +133,10 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
         }
     }
     
-    public void updateLessonStatus(){
-        ClassRoom another = RequestAPI.getInstance().getClassRoomInformation(id);
-        this.lessonList = another.getLessonList();
-        this.listStudent = another.getListStudent();
-    }
+//    public void updateLessonStatus(){
+//        ClassRoom another = RequestAPI.getInstance().getClassRoomInformation(id);
+//        this.lessonList = another.getLessonList();
+//        this.listStudent = another.getListStudent();
+//    }
     
 }
