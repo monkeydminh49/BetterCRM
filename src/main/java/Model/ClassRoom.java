@@ -1,8 +1,10 @@
 package Model;
 
+import Controller.RequestAPI;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import org.jsoup.Connection;
 
 public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     private String id;
@@ -10,6 +12,14 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     private List<TA> listTA;
     private List<TimeOFWeek> listStartTime;
     private List<Lesson> lessonList;
+
+    public List<Lesson> getLessonList() {
+        return lessonList;
+    }
+
+    public void setLessonList(List<Lesson> lessonList) {
+        this.lessonList = lessonList;
+    }
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -115,6 +125,8 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     }
     
     public void updateLatestLesson(){
+//        updateLessonStatus();
+        
         LocalDate today = LocalDate.now();
         for (Lesson lesson : lessonList){
             if ((lesson.getDate().isBefore(today)|| lesson.getDate().isEqual(today) )&& (latestLesson == null || lesson.getDate().isAfter(latestLesson.getDate()))){
@@ -122,4 +134,11 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
             }
         }
     }
+    
+    public void updateLessonStatus(){
+        ClassRoom another = RequestAPI.getInstance().getClassRoomInformation(classCode); 
+        this.lessonList = another.getLessonList();
+        this.listStudent = another.getListStudent();
+    }
+    
 }

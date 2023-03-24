@@ -6,8 +6,6 @@ package Viewer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -20,7 +18,6 @@ public class PanelAction extends javax.swing.JPanel {
      */
     public PanelAction() {
         initComponents();
-//        try{btnDelete.setIcon(new ImageIcon(getClass().getResource("/src/resources/trash.png")));}catch(Exception e){}
     }
     
     public void initEvent(TableActionEvent event, int row){
@@ -31,19 +28,8 @@ public class PanelAction extends javax.swing.JPanel {
             }
             
         });
-        btnDelete.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                event.onDelete(row);
-            }
-        
-        });
-        
     }
-    
-    public ActionButton newActionButton() throws CloneNotSupportedException{
-           return btnUpdate.clone();
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,17 +41,8 @@ public class PanelAction extends javax.swing.JPanel {
     private void initComponents() {
 
         btnUpdate = new Viewer.ActionButton();
-        btnDelete = new Viewer.ActionButton();
 
-        btnUpdate.setText("Update");
-
-        btnDelete.setIcon(new javax.swing.ImageIcon("C:\\Users\\MinhDunk\\Documents\\NetBeansProjects\\BetterCRM\\resources\\trash.png")); // NOI18N
-        btnDelete.setToolTipText("");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
+        btnUpdate.setText("actionButton1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -74,28 +51,19 @@ public class PanelAction extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Viewer.ActionButton btnDelete;
     private Viewer.ActionButton btnUpdate;
     // End of variables declaration//GEN-END:variables
 

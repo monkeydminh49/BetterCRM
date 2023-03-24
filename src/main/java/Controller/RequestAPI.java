@@ -59,7 +59,8 @@ public class RequestAPI {
 
     public List<ClassRoom> getClassRoomList() {
         try {
-            classRoomList = IOSystem.getInstance().read(RequestAPI.getInstance().getFilesPath() + "classRoomList.dat");
+            String filePath = RequestAPI.getInstance().getFilesPath() + "classRoomList.dat";
+            classRoomList = IOSystem.getInstance().read(filePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException ex) {
@@ -177,171 +178,14 @@ public class RequestAPI {
         // Loop through all classId
         for (String classId : classIdList){
             count++;
-
-            // Get class information
-            String classLessonContentUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=&mode=showRelatedList&tab_label=Lesson%20Content";
-            String classAttendanceUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=AttendanceClass&view=Detail&record=456177&mode=showRelatedList&tab_label=Attendance%20Report";
-            String content = getRequestContent(classLessonContentUrl, Arrays.asList(new BasicNameValuePair("record", classId)), "GET");
-            Document doc = Jsoup.parse(content);
-
-            // Get class from response
-            Elements elements = doc.select("td");
-
-            TimeOFWeek timeOFWeek = new TimeOFWeek();
-            List <TimeOFWeek> listTimeOfWeek = new ArrayList<>();
-            List<TA> listTA = new ArrayList<>();
-            List<String> listTAName = new ArrayList<>();
-            String classCode = "";
-            LocalDate startDate = null;
-            LocalDate endDate = null;
-
-            boolean foundTA = false;
-            int countWeekDay = 0;
-            // Get class code, day and time
-            for (Element e : elements){
-                // Found class code
-                if (e.text().equals("Class Code")){
-                    classCode = e.nextElementSibling().text();
-//                    System.out.println(classCode);
-                }
-
-                // Get start and end date
-                if (e.text().equals("Start Date")){
-                    String start = e.nextElementSibling().text();
-                    startDate = LocalDate.parse(start, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                }
-                if (e.text().equals("End Date")){
-                    String end = e.nextElementSibling().text();
-                    endDate = LocalDate.parse(end, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                }
-
-                // Found TA
-                if (e.text().equals("TA") && !foundTA){
-                    foundTA = true;
-                    String TAName = e.nextElementSibling().text();
-                    listTAName = Arrays.asList(TAName.split(", "));
-
-                    // Get TA by name
-                    for (String name : listTAName){
-//                        System.out.println("\""+name+"\"");
-                        for (TA ta : TAList){
-                            if (ta.getName().equals(name)){
-//                                System.out.println("Found "+ name + " in TAList");
-                                listTA.add(ta);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                // Found day and time ** has json file
-                if (e.hasClass("weekDay") && !e.text().equals("")){
-                    countWeekDay++;
-                    int dayOfWeek = Integer.parseInt(e.attr("value"));
-                    if (dayOfWeek == 0) dayOfWeek = 7;
-
-                    String startTime = e.text().split(" ")[0];
-                    LocalTime time = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm"));
-
-                    timeOFWeek.setDayOfWeek(DayOfWeek.of(dayOfWeek));
-                    timeOFWeek.setTime(time);
-
-//                    System.out.println(timeOFWeek.getDayOfWeek() + " - " + timeOFWeek.getTime());
-
-                    listTimeOfWeek.add(timeOFWeek);
-                }
-
-
-                // Found all class information
-                if (listTimeOfWeek.size() == 2 || countWeekDay == 7){
-                    break;
-                };
-            }
-
-            // Get lesson list information
-            List<Lesson>  lessonList = new ArrayList<>();
-
-            String lessonNumber = null;
-            String lessonId = null;
-            String lessonName = null;
-            LocalDate lessonDate = null;
-            LocalTime lessonTime = null;
-            String emailStatus = null;
-            String lessonStatus = null;
-
-//            // request with attendance page
-//            elements = doc.select(".table-bordered");
-//            System.out.println(elements.size());
-//            elements = elements.get(2).select("tr");
-
-            // request with lesson content page
-            elements = doc.select(".item__lesson");
-
-            for (Element e : elements){
-//                System.out.println(e.text());
-                Elements td = e.select("td");
-                lessonNumber = td.get(0).text();
-                lessonId = td.get(8).select(".btnSendEmail").attr("data-id");
-                lessonName = td.get(1).text();
-                String date = td.get(2).text();
-
-                // Get lesson date
-                if (date.equals("")){ // lesson not started
-                    if (lessonNumber.equals("1") || lessonNumber.equals("21")){   // First lesson
-                        lessonDate = startDate;
-                    } else {
-                        Lesson previousLesson = lessonList.get(lessonList.size()-1);
-                        lessonDate = previousLesson.getDate().plusDays(7);
-                    }
-                } else {
-                    lessonDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                }
-
-                emailStatus = td.get(7).text();
-                lessonList.add(new Lesson(lessonNumber, lessonId, lessonName, lessonDate, null, emailStatus));
-//                System.out.println(lessonNumber + " - " + lessonId + " - " + lessonName + " - " + lessonDate + " - " + emailStatus);
-                }
-
-            // *Get student list
-            List<Student> listStudent = new ArrayList<>();
-
-            // Get first lesson detail to extract student list
-            String firstLessonDetailUrl = "https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=listStudent&id=456177&lessonId=181942";
-
-            List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("id", classId));
-            params.add(new BasicNameValuePair("lessonId", lessonId));
-
-            // Json file of student list
-            content = getRequestContent(firstLessonDetailUrl, params, "GET");
-
-            JSONObject jo = new JSONObject(content);
-            JSONArray ja = jo.getJSONArray("result");
-
-//            System.out.println(studentList.get(0).getName() + " - " + studentList.get(0).getId());
-
-            // Loop through all student
-            for (int i = 0; i < ja.length(); i++){
-                JSONObject student = ja.getJSONObject(i);
-                String studentId = student.getString("studentid");
-//                System.out.println(studentId);
-
-                // Get student by id
-                for (Student s : studentList){
-                    if (s.getId().equals(studentId)){
-//                        System.out.println("Found "+ s.getName() + " in studentList");
-                        listStudent.add(s);
-                        break;
-                    }
-                }
-            }
-
-            ClassRoom classRoom = new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent);
+            
+            ClassRoom classRoom = getClassRoomInformation(classId);
 //            classRoom.display();
             classRoomList.add(classRoom);
 
-            System.out.println("Added " + classCode + " " + count + "/" + classIdList.size());
+            System.out.println("Added " + classRoom.getClassCode() + " " + count + "/" + classIdList.size());
             System.out.println("----------------------------------------------------");
+//            break;
         }
         // Write to file
         IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
@@ -475,5 +319,180 @@ public class RequestAPI {
         String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
         return content;
     }
+    public ClassRoom getClassRoomInformation(String classId){   
+            // Get class information
+            String classLessonContentUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=&mode=showRelatedList&tab_label=Lesson%20Content";
+            String classAttendanceUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=AttendanceClass&view=Detail&record=456177&mode=showRelatedList&tab_label=Attendance%20Report";
+            String content = null;
+        try {
+            content = getRequestContent(classLessonContentUrl, Arrays.asList(new BasicNameValuePair("record", classId)), "GET");
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            Document doc = Jsoup.parse(content);
 
+            // Get class from response
+            Elements elements = doc.select("td");
+
+            TimeOFWeek timeOFWeek = new TimeOFWeek();
+            List <TimeOFWeek> listTimeOfWeek = new ArrayList<>();
+            List<TA> listTA = new ArrayList<>();
+            List<String> listTAName = new ArrayList<>();
+            String classCode = "";
+            LocalDate startDate = null;
+            LocalDate endDate = null;
+
+            boolean foundTA = false;
+            int countWeekDay = 0;
+            // Get class code, day and time
+            for (Element e : elements){
+                // Found class code
+                if (e.text().equals("Class Code")){
+                    classCode = e.nextElementSibling().text();
+//                    System.out.println(classCode);
+                }
+
+                // Get start and end date
+                if (e.text().equals("Start Date")){
+                    String start = e.nextElementSibling().text();
+                    startDate = LocalDate.parse(start, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                }
+                if (e.text().equals("End Date")){
+                    String end = e.nextElementSibling().text();
+                    endDate = LocalDate.parse(end, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                }
+
+                // Found TA
+                if (e.text().equals("TA") && !foundTA){
+                    foundTA = true;
+                    String TAName = e.nextElementSibling().text();
+                    listTAName = Arrays.asList(TAName.split(", "));
+
+                    // Get TA by name
+                    for (String name : listTAName){
+//                        System.out.println("\""+name+"\"");
+                        for (TA ta : TAList){
+                            if (ta.getName().equals(name)){
+//                                System.out.println("Found "+ name + " in TAList");
+                                listTA.add(ta);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Found day and time ** has json file
+                if (e.hasClass("weekDay") && !e.text().equals("")){
+                    countWeekDay++;
+                    int dayOfWeek = Integer.parseInt(e.attr("value"));
+                    if (dayOfWeek == 0) dayOfWeek = 7;
+
+                    String startTime = e.text().split(" ")[0];
+                    LocalTime time = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm"));
+
+                    timeOFWeek.setDayOfWeek(DayOfWeek.of(dayOfWeek));
+                    timeOFWeek.setTime(time);
+
+//                    System.out.println(timeOFWeek.getDayOfWeek() + " - " + timeOFWeek.getTime());
+
+                    listTimeOfWeek.add(timeOFWeek);
+                }
+
+
+                // Found all class information
+                if (listTimeOfWeek.size() == 2 || countWeekDay == 7){
+                    break;
+                };
+            }
+
+            // Get lesson list information
+            List<Lesson>  lessonList = new ArrayList<>();
+
+            String lessonNumber = null;
+            String lessonId = null;
+            String lessonName = null;
+            LocalDate lessonDate = null;
+            LocalTime lessonTime = null;
+            String emailStatus = null;
+            String lessonStatus = null;
+
+//            // request with attendance page
+//            elements = doc.select(".table-bordered");
+//            System.out.println(elements.size());
+//            elements = elements.get(2).select("tr");
+
+            // request with lesson content page
+            elements = doc.select(".item__lesson");
+
+            for (Element e : elements){
+//                System.out.println(e.text());
+                Elements td = e.select("td");
+                lessonNumber = td.get(0).text();
+                lessonId = td.get(8).select(".btnSendEmail").attr("data-id");
+                lessonName = td.get(1).text();
+                String date = td.get(2).text();
+
+                // Get lesson date
+                if (date.equals("")){ // lesson not started
+                    if (lessonNumber.equals("1") || lessonNumber.equals("21")){   // First lesson
+                        lessonDate = startDate;
+                    } else {
+                        Lesson previousLesson = lessonList.get(lessonList.size()-1);
+                        lessonDate = previousLesson.getDate().plusDays(7);
+                    }
+                } else {
+                    lessonDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                }
+
+                emailStatus = td.get(7).text();
+                lessonList.add(new Lesson(lessonNumber, lessonId, lessonName, lessonDate, null, emailStatus));
+//                System.out.println(lessonNumber + " - " + lessonId + " - " + lessonName + " - " + lessonDate + " - " + emailStatus);
+                }
+
+            // *Get student list
+            List<Student> listStudent = new ArrayList<>();
+
+            // Get first lesson detail to extract student list
+            String firstLessonDetailUrl = "https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=listStudent&id=456177&lessonId=181942";
+
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("id", classId));
+            params.add(new BasicNameValuePair("lessonId", lessonId));
+
+        try {
+            // Json file of student list
+            content = getRequestContent(firstLessonDetailUrl, params, "GET");
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        if (content != null) return null;
+            JSONObject jo = new JSONObject(content);
+            JSONArray ja = jo.getJSONArray("result");
+
+//            System.out.println(studentList.get(0).getName() + " - " + studentList.get(0).getId());
+
+            // Loop through all student
+            for (int i = 0; i < ja.length(); i++){
+                JSONObject student = ja.getJSONObject(i);
+                System.out.println(student.toString());
+                String studentId = student.getString("studentid");
+//                System.out.println(studentId);
+
+                // Get student by id
+                for (Student s : studentList){
+                    if (s.getId().equals(studentId)){
+//                        System.out.println("Found "+ s.getName() + " in studentList");
+                        listStudent.add(s);
+                        break;
+                    }
+                }
+            }
+
+            ClassRoom classRoom = new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent);
+        return classRoom;
+    }
 }

@@ -4,20 +4,12 @@
  */
 package Viewer;
 
-import Controller.RequestAPI;
-import Model.ClassRoom;
-import java.util.List;
 
 /**
  *
  * @author MinhDunk
  */
 public interface TableActionEvent {
-
-    /**
-     *
-     */
-    public List<ClassRoom> classRoomList = RequestAPI.getInstance().getClassRoomList();;
     public void onUpdate(int row);
     public void onDelete(int row);
     public void onView(int row);

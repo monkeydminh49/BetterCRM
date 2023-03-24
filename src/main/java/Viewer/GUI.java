@@ -32,27 +32,31 @@ public class GUI extends javax.swing.JFrame {
 
     }
     
+        private List<ClassRoom> classRoomList = null;
       public void update(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        
-        List<ClassRoom> classRoomList = null;
-             
+
+
         classRoomList = RequestAPI.getInstance().getClassRoomList();
 
         TableActionEvent event = new TableActionEvent() {
             @Override
             public void onUpdate(int row) {
                 ClassRoom current = classRoomList.get(row);
-                System.out.println(current.getClassCode());
+//                System.out.println(current.getClassCode());
                 current.updateLatestLesson();
                 
                 if (jTable1.isEditing()){
                     jTable1.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                current.setClassCode("Test Update");
-                model.fireTableDataChanged();
+                if (jTable1.getSelectedRowCount() == 1){
+                    model.setValueAt(current.getLatestLesson().getEmailStatus(), jTable1.getSelectedRow(), 4); 
+                }
+                
+                System.out.println(current.getClassCode());
+//                model.fireTableDataChanged();
             }
 
             @Override

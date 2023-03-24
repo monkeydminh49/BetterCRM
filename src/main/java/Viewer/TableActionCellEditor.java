@@ -18,11 +18,10 @@ public class TableActionCellEditor extends DefaultCellEditor {
 
     private TableActionEvent event;
     
-    private ClassRoom classRoom;
-    
     public TableActionCellEditor(TableActionEvent event) {
         super(new JCheckBox());
         this.event = event;
+
     }
 
     @Override

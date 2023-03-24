@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
  *
  * @author MinhDunk
  */
-public class ActionButton extends JButton implements Cloneable {
+public class ActionButton extends JButton  {
     
     private boolean mousePress;
     
@@ -38,9 +38,6 @@ public class ActionButton extends JButton implements Cloneable {
         });
     }
     
-    public ActionButton clone() throws CloneNotSupportedException{
-        return (ActionButton) super.clone();
-    }
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
