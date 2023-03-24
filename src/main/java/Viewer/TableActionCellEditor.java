@@ -20,16 +20,15 @@ public class TableActionCellEditor extends DefaultCellEditor {
     
     private ClassRoom classRoom;
     
-    public TableActionCellEditor(TableActionEvent event, ClassRoom classRoom) {
+    public TableActionCellEditor(TableActionEvent event) {
         super(new JCheckBox());
         this.event = event;
-        this.classRoom = classRoom;
     }
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         PanelAction action = new PanelAction();
-        action.initEvent(event, classRoom);
+        action.initEvent(event, row);
         action.setBackground(table.getBackground());
         return action;
     }

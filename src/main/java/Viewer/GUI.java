@@ -10,10 +10,11 @@ import Model.ClassRoom;
 import Model.Lesson;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 
 /**
  *
@@ -26,48 +27,53 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
-        updateTable();
+        update();
+
+
     }
     
-    public List<ClassRoom> classRoomList = null;
-    
-    public void updateTable(){
+      public void update(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        
         model.setRowCount(0);
         
-        try {
-            classRoomList = IOSystem.getInstance().read(RequestAPI.getInstance().getFilesPath() + "classRoomList.dat");
-        } catch (IOException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-      
-        jTable1.setRowHeight(40);
-        jTable1.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
-        
-        TableActionEvent event = new TableActionEvent(){
+        List<ClassRoom> classRoomList = null;
+             
+        classRoomList = RequestAPI.getInstance().getClassRoomList();
+
+        TableActionEvent event = new TableActionEvent() {
             @Override
             public void onUpdate(int row) {
-                System.out.println(classRoomList.get(row).getClassCode());
-                System.out.println("ouchh");
+                ClassRoom current = classRoomList.get(row);
+                System.out.println(current.getClassCode());
+                current.updateLatestLesson();
+                
+                if (jTable1.isEditing()){
+                    jTable1.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                current.setClassCode("Test Update");
+                model.fireTableDataChanged();
             }
 
             @Override
             public void onDelete(int row) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                if (jTable1.isEditing()){
+                    jTable1.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                classRoomList.remove(row);
+                model.removeRow(row);
             }
 
             @Override
             public void onView(int row) {
                 throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
             }
-        
+
+
         };
         
+        jTable1.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
         jTable1.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event));
         
         for (int i = 0; i < classRoomList.size(); i++) {
@@ -97,7 +103,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGap(0, 269, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,34 +118,35 @@ public class GUI extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "No.", "Class Code", "Latest Lesson", "Date", "Status", "Action"
+                "No.", "Class Code", "Lesson", "Date", "Status", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setRowHeight(40);
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(85, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(91, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
