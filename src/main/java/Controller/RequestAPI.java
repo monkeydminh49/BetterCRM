@@ -183,9 +183,9 @@ public class RequestAPI {
 //            classRoom.display();
             classRoomList.add(classRoom);
 
-            System.out.println("Added " + classRoom.getClassCode() + " " + count + "/" + classIdList.size());
+            System.out.println("Added " + classRoom.getClassName() + " " + count + "/" + classIdList.size());
             System.out.println("----------------------------------------------------");
-//            break;
+            break;
         }
         // Write to file
         IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
@@ -295,7 +295,7 @@ public class RequestAPI {
         updateClassList();
         List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
         for (ClassRoom classRoom : list) {
-            System.out.println(classRoom.getClassCode());
+            System.out.println(classRoom.getClassName());
             System.out.println(classRoom.getLatestLesson());
         }
         System.out.println(list.size());
@@ -470,8 +470,13 @@ public class RequestAPI {
             Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        if (content != null) return null;
-            JSONObject jo = new JSONObject(content);
-            JSONArray ja = jo.getJSONArray("result");
+            JSONObject jo = null;
+        try{
+            jo = new JSONObject(content);
+        } catch (JSONException e) {
+            System.out.println("@"+content + classId +"@");
+        }
+        JSONArray ja = jo.getJSONArray("result");
 
 //            System.out.println(studentList.get(0).getName() + " - " + studentList.get(0).getId());
 

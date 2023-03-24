@@ -4,16 +4,11 @@
  */
 package Viewer;
 
-import Controller.IOSystem;
 import Controller.RequestAPI;
 import Model.ClassRoom;
 import Model.Lesson;
-import java.io.IOException;
+
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -55,7 +50,7 @@ public class GUI extends javax.swing.JFrame {
                     model.setValueAt(current.getLatestLesson().getEmailStatus(), jTable1.getSelectedRow(), 4); 
                 }
                 
-                System.out.println(current.getClassCode());
+                System.out.println(current.getClassName());
 //                model.fireTableDataChanged();
             }
 
@@ -83,7 +78,7 @@ public class GUI extends javax.swing.JFrame {
         for (int i = 0; i < classRoomList.size(); i++) {
             ClassRoom classRoom = classRoomList.get(i);
             Lesson latestLesson = classRoom.getLatestLesson();
-            model.addRow(new Object[]{i+1, classRoom.getClassCode(), latestLesson.getLessonName(),latestLesson.getDate().toString(), latestLesson.getEmailStatus(), "Update"});
+            model.addRow(new Object[]{i+1, classRoom.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().toString(), latestLesson.getEmailStatus(), "Update"});
         }
     }
 

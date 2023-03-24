@@ -4,11 +4,10 @@ import Controller.RequestAPI;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import org.jsoup.Connection;
 
 public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     private String id;
-    private String classCode;
+    private String className;
     private List<TA> listTA;
     private List<TimeOFWeek> listStartTime;
     private List<Lesson> lessonList;
@@ -31,12 +30,12 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
         this.id = id;
     }
 
-    public String getClassCode() {
-        return classCode;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClassCode(String classCode) {
-        this.classCode = classCode;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public List<TA> getListTA() {
@@ -68,7 +67,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
 
     public ClassRoom(String id, String name, List<TA> listTA, LocalDate startDate, LocalDate endDate, List<TimeOFWeek> listStartTime, List<Lesson> lessonList, List<Student> listStudent) {
         this.id = id;
-        this.classCode = name;
+        this.className = name;
         this.listTA = listTA;
         this.endDate = endDate;
         this.listStartTime = listStartTime;
@@ -85,7 +84,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     public String toString() {
         return "ClassRoom{" +
                 "id='" + id + '\'' +
-                ", classCode='" + classCode + '\'' +
+                ", classCode='" + className + '\'' +
                 ", listTA=" + listTA +
                 ", listStartTime=" + listStartTime +
                 ", lessonList=" + lessonList +
@@ -102,7 +101,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
 
     public void display(){
         System.out.println(id);
-        System.out.println(classCode);
+        System.out.println(className);
         System.out.println(startDate.toString());
         System.out.println(endDate.toString());
         for (TA ta : listTA){
@@ -125,7 +124,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     }
     
     public void updateLatestLesson(){
-//        updateLessonStatus();
+        updateLessonStatus();
         
         LocalDate today = LocalDate.now();
         for (Lesson lesson : lessonList){
@@ -136,7 +135,7 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     }
     
     public void updateLessonStatus(){
-        ClassRoom another = RequestAPI.getInstance().getClassRoomInformation(classCode); 
+        ClassRoom another = RequestAPI.getInstance().getClassRoomInformation(id);
         this.lessonList = another.getLessonList();
         this.listStudent = another.getListStudent();
     }
