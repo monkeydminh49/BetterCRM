@@ -9,6 +9,7 @@ import Model.ClassRoom;
 import Model.Lesson;
 
 import java.util.List;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -40,8 +41,14 @@ public class GUI extends javax.swing.JFrame {
             public void onUpdate(int row) {
                 ClassRoom current = classRoomList.get(row);
 //                System.out.println(current.getClassCode());
-                current.updateLatestLesson();
-                
+
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        current.updateLatestLesson();
+                    }
+                });
+
                 if (jTable1.isEditing()){
                     jTable1.getCellEditor().stopCellEditing();
                 }

@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Resolve problem in RequestAPI and update .dat files">
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Fix Json read error, change classCode -&gt; className">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Files/classRoomList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Files/classRoomList.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mycompany/bettercrm/BetterCRM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mycompany/bettercrm/BetterCRM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +112,7 @@
       <workItem from="1679506396273" duration="4694000" />
       <workItem from="1679584821509" duration="3282000" />
       <workItem from="1679596816783" duration="1247000" />
-      <workItem from="1679640095954" duration="8071000" />
+      <workItem from="1679640095954" duration="11116000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -245,7 +247,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679653294111</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Fix Json read error, change classCode -&gt; className">
+      <created>1679654794760</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1679654794760</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,6 +279,7 @@
     <MESSAGE value="add button to table using ButtonBuilder" />
     <MESSAGE value="junk commit" />
     <MESSAGE value="Resolve problem in RequestAPI and update .dat files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Resolve problem in RequestAPI and update .dat files" />
+    <MESSAGE value="Fix Json read error, change classCode -&gt; className" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix Json read error, change classCode -&gt; className" />
   </component>
 </project>

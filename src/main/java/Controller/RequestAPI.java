@@ -45,6 +45,8 @@ public class RequestAPI {
     public static RequestAPI getInstance() {
         if (requestInstance == null) {
             requestInstance = new RequestAPI();
+            client = HttpClients.createDefault();
+
         }
         return requestInstance;
     }
@@ -73,7 +75,7 @@ public class RequestAPI {
     private List<Student> studentList;
     private HttpGet get;
     private HttpPost post;
-    private HttpClient client;
+    private static HttpClient client;
     private URIBuilder builder;
     private CloseableHttpResponse response;
     private String token;
@@ -185,7 +187,7 @@ public class RequestAPI {
 
             System.out.println("Added " + classRoom.getClassName() + " " + count + "/" + classIdList.size());
             System.out.println("----------------------------------------------------");
-            break;
+//            if (count==5) break;
         }
         // Write to file
         IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
@@ -292,13 +294,13 @@ public class RequestAPI {
 //            System.out.println(s);
 //        }
 //        updateClassIdList();
-        updateClassList();
-        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
-        for (ClassRoom classRoom : list) {
-            System.out.println(classRoom.getClassName());
-            System.out.println(classRoom.getLatestLesson());
-        }
-        System.out.println(list.size());
+//        updateClassList();
+//        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
+//        for (ClassRoom classRoom : list) {
+//            System.out.println(classRoom.getClassName());
+//            System.out.println(classRoom.getLatestLesson());
+//        }
+//        System.out.println(list.size());
     }
     public String getRequestContent(String url, List<NameValuePair> payload, String method) throws URISyntaxException, IOException {
         // Build url
@@ -483,7 +485,7 @@ public class RequestAPI {
             // Loop through all student
             for (int i = 0; i < ja.length(); i++){
                 JSONObject student = ja.getJSONObject(i);
-                System.out.println(student.toString());
+//                System.out.println(student.toString());
                 String studentId = student.getString("studentid");
 //                System.out.println(studentId);
 

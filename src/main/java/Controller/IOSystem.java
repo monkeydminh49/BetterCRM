@@ -20,9 +20,11 @@ public class IOSystem {
     public  <T> List<T> read(String file) throws IOException, ClassNotFoundException {
         List<T> list = new ArrayList<>();
         try {
-            ObjectInputStream a = new ObjectInputStream(new FileInputStream(file));
+            FileInputStream fileStream = new FileInputStream(file);
+            ObjectInputStream a = new ObjectInputStream(fileStream);
             list = (List<T>) a.readObject();
             a.close();
+            fileStream.close();
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File not found!");
         } catch (IOException e) {
@@ -35,10 +37,12 @@ public class IOSystem {
 
     public  <T> void write( List<T> list, String file) throws IOException {
         try {
-            ObjectOutputStream a = new ObjectOutputStream(new FileOutputStream(file));
+            FileOutputStream fileStream = new FileOutputStream(file);
+            ObjectOutputStream a = new ObjectOutputStream(fileStream);
             a.writeObject(list);
             System.out.println("Write file " + file + " successfully!");
             a.close();
+            fileStream.close();
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File not found!");
         } catch (SocketException e) {
@@ -53,9 +57,11 @@ public class IOSystem {
     public  <T> void clearData(String file) {
         List<T> list = new ArrayList<>();
         try {
-            ObjectOutputStream a = new ObjectOutputStream(new FileOutputStream(file));
+            FileOutputStream fileStream = new FileOutputStream(file);
+            ObjectOutputStream a = new ObjectOutputStream(fileStream);
             a.writeObject(list);
             a.close();
+            fileStream.close();
         } catch (Exception e) {
         }
     }
