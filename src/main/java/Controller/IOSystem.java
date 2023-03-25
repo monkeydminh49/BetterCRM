@@ -17,30 +17,35 @@ public class IOSystem {
         }
         return ioSystemInstance;
     }
-    public  <T> List<T> read(String file) throws IOException, ClassNotFoundException {
+    public  <T> List<T> read(String filePath) throws IOException, ClassNotFoundException {
         List<T> list = new ArrayList<>();
+        FileInputStream fileStream = null;
+        ObjectInputStream a = null;
         try {
-            FileInputStream fileStream = new FileInputStream(file);
-            ObjectInputStream a = new ObjectInputStream(fileStream);
+            fileStream = new FileInputStream(filePath);
+            a = new ObjectInputStream(fileStream);
             list = (List<T>) a.readObject();
-            a.close();
-            fileStream.close();
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File not found!");
         } catch (IOException e) {
             throw new IOException("Read file failed!");
         } catch (ClassNotFoundException e) {
             throw new ClassNotFoundException("Class not found!");
+        } finally {
+            a.close();
+            fileStream.close();
         }
         return list;
     }
 
-    public  <T> void write( List<T> list, String file) throws IOException {
+    public  <T> void write( List<T> list, String filePath) throws IOException {
+        FileOutputStream fileStream = null;
+        ObjectOutputStream a = null;
         try {
-            FileOutputStream fileStream = new FileOutputStream(file);
-            ObjectOutputStream a = new ObjectOutputStream(fileStream);
+            fileStream = new FileOutputStream(filePath);
+            a = new ObjectOutputStream(fileStream);
             a.writeObject(list);
-            System.out.println("Write file " + file + " successfully!");
+            System.out.println("Write file " + filePath + " successfully!");
             a.close();
             fileStream.close();
         } catch (FileNotFoundException e) {
@@ -51,18 +56,26 @@ public class IOSystem {
             throw new UnknownHostException("Unknown host exception!");
         } catch (IOException e) {
             throw new IOException("Write file failed!");
+        } finally {
+            a.close();
+            fileStream.close();
         }
     }
 
-    public  <T> void clearData(String file) {
+    public  <T> void clearData(String filePath) throws IOException {
         List<T> list = new ArrayList<>();
+        FileOutputStream fileStream = null;
+        ObjectOutputStream a = null;
         try {
-            FileOutputStream fileStream = new FileOutputStream(file);
-            ObjectOutputStream a = new ObjectOutputStream(fileStream);
+            fileStream = new FileOutputStream(filePath);
+            a = new ObjectOutputStream(fileStream);
             a.writeObject(list);
+
+        } catch (IOException e) {
+            throw new IOException("Clear data failed!");
+        } finally {
             a.close();
             fileStream.close();
-        } catch (Exception e) {
         }
     }
 }

@@ -93,6 +93,7 @@ public class RequestAPI {
         this.TAList = TAList;
     }
     public void login(String username, String password, boolean remember) throws IOException, URISyntaxException {
+        System.out.println("Logging in");
         // Init
         client = HttpClients.createDefault();
         // First Get request to get token

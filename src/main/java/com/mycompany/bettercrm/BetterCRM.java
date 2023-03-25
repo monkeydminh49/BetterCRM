@@ -3,14 +3,18 @@ package com.mycompany.bettercrm;
 import Controller.RequestAPI;
 import Viewer.GUI;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import javax.swing.SwingUtilities;
 
 public class BetterCRM {
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
         RequestAPI.getInstance().run();
-//        new GUI().setVisible(true);
-
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new GUI().setVisible(true);
+            }
+        });
     }
 }

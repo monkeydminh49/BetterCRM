@@ -4,25 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Morning commit, add Multithreading_in_Java_Swing with SwingWorker doc">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_httpclient_commons_httpclient_20020423.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_ecf_org_apache_httpcomponents_httpcore_4_4_6_v20170210_0925.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_11_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_0_4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_0_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_ecf_org_apache_httpcomponents_httpclient_4_5_2_v20170210_0925.xml" beforeDir="false" />
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Fix NotFoundException: org.apache.http.config.Lookup">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/menu.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BetterCRM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BetterCRM.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/Multithreading_in_Java_Swing.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Multithreading_in_Java_Swing.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Files/classRoomList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Files/classRoomList.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GFG.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Lesson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Lesson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/TimeOFWeek.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/TimeOFWeek.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/TableActionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/TableActionEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mycompany/bettercrm/BetterCRM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mycompany/bettercrm/BetterCRM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Model/Lesson.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Lesson.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/ActionButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/ActionButton.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/TA.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/TA.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/PanelAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/PanelAction.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +130,7 @@
       <workItem from="1679596816783" duration="1247000" />
       <workItem from="1679640095954" duration="11486000" />
       <workItem from="1679663924462" duration="1528000" />
-      <workItem from="1679665979183" duration="5743000" />
+      <workItem from="1679665979183" duration="10094000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -289,7 +293,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679710644241</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Fix NotFoundException: org.apache.http.config.Lookup">
+      <created>1679724385401</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1679724385401</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,6 +330,7 @@
     <MESSAGE value="Auto crlf off commit" />
     <MESSAGE value="Run successfully commit" />
     <MESSAGE value="Morning commit, add Multithreading_in_Java_Swing with SwingWorker doc" />
-    <option name="LAST_COMMIT_MESSAGE" value="Morning commit, add Multithreading_in_Java_Swing with SwingWorker doc" />
+    <MESSAGE value="Fix NotFoundException: org.apache.http.config.Lookup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix NotFoundException: org.apache.http.config.Lookup" />
   </component>
 </project>
