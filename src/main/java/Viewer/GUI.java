@@ -39,7 +39,6 @@ public class GUI extends javax.swing.JFrame {
 
 
         try {
-            //        classRoomList = RequestAPI.getInstance().getClassRoomList();
             classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
         } catch (IOException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,15 +50,6 @@ public class GUI extends javax.swing.JFrame {
             @Override
             public void onUpdate(int row) {
                 ClassRoom current = classRoomList.get(row);
-//                System.out.println(current.getClassCode());
-
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        current.updateLatestLesson();
-//                    }
-//                });
-
                 if (jTable1.isEditing()){
                     jTable1.getCellEditor().stopCellEditing();
                 }
@@ -69,7 +59,6 @@ public class GUI extends javax.swing.JFrame {
                 }
                 
                 System.out.println(current.getClassName());
-//                model.fireTableDataChanged();
             }
 
             @Override
