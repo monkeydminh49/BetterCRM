@@ -67,21 +67,21 @@ public class PanelAction extends javax.swing.JPanel {
             }
         });
 
-        btnUpdate.setIcon(new javax.swing.ImageIcon("D:\\ProPTIT\\Java\\ProjectJava\\TestRequest\\resources\\menu.png")); // NOI18N
+        btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/menu.png"))); // NOI18N
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
             }
         });
 
-        btnDelete.setIcon(new javax.swing.ImageIcon("D:\\ProPTIT\\Java\\ProjectJava\\TestRequest\\resources\\trash.png")); // NOI18N
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/trash.png"))); // NOI18N
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
 
-        btnReload.setIcon(new javax.swing.ImageIcon("D:\\ProPTIT\\Java\\ProjectJava\\TestRequest\\resources\\reload.png")); // NOI18N
+        btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/reload.png"))); // NOI18N
         btnReload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReloadActionPerformed(evt);
