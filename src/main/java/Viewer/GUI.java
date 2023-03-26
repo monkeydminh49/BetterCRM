@@ -8,11 +8,14 @@ import Controller.IOSystem;
 import Model.ClassRoom;
 import Model.Lesson;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,17 +35,15 @@ public class GUI extends javax.swing.JFrame {
 
     }
     
-        private List<ClassRoom> classRoomList;
-      public void update(){
+    private List<ClassRoom> classRoomList;
+    
+    private void update(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
-
         try {
             classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
-        } catch (IOException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -53,11 +54,6 @@ public class GUI extends javax.swing.JFrame {
                 if (jTable1.isEditing()){
                     jTable1.getCellEditor().stopCellEditing();
                 }
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                if (jTable1.getSelectedRowCount() == 1){
-                    model.setValueAt(current.getLatestLesson().getEmailStatus(), jTable1.getSelectedRow(), 4); 
-                }
-                
                 System.out.println(current.getClassName());
             }
 
@@ -72,11 +68,12 @@ public class GUI extends javax.swing.JFrame {
             }
 
             @Override
-            public void onView(int row) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            public void onReload(int row) {
+                ClassRoom current = classRoomList.get(row);
+                System.out.println("Updating " + current.getClassName());
+                updateClass(current);
+               
             }
-
-
         };
         
         jTable1.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
@@ -85,8 +82,45 @@ public class GUI extends javax.swing.JFrame {
         for (int i = 0; i < classRoomList.size(); i++) {
             ClassRoom classRoom = classRoomList.get(i);
             Lesson latestLesson = classRoom.getLatestLesson();
-            model.addRow(new Object[]{i+1, classRoom.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().toString(), latestLesson.getEmailStatus(), "Update"});
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            model.addRow(new Object[]{i+1, classRoom.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), latestLesson.getEmailStatus(), "Update"});
         }
+    }
+    
+    private void updateClass(ClassRoom current){
+        SwingWorker sw1 = new SwingWorker() {
+            @Override
+            protected String doInBackground() throws Exception {
+                current.updateClassInformation();
+//                publish(getProgress());
+
+                return "Finish update " + current.getClassName();
+            }
+            @Override 
+            protected void process(List chunks)
+            {
+                // define what the event dispatch thread
+                // will do with the intermediate results
+                // received while the thread is executing
+                Object val = chunks.get(chunks.size() - 1);
+  
+                System.out.println(val);
+            }
+            @Override
+            protected void done(){
+                try {
+                    System.out.println(get());
+                } catch (InterruptedException | ExecutionException ex) {
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                if (jTable1.getSelectedRowCount() == 1){
+                    model.setValueAt(current.getLatestLesson().getEmailStatus(), jTable1.getSelectedRow(), 4);
+                    model.setValueAt("Yes", jTable1.getSelectedRow(), 4);
+                }
+            }
+        };
+        sw1.execute();
     }
 
     /**
@@ -102,8 +136,11 @@ public class GUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,7 +161,7 @@ public class GUI extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "No.", "Class Code", "Lesson", "Date", "Status", "Action"
+                "No.", "Class Code", "Lastest Lesson", "Date", "Status", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -138,21 +175,30 @@ public class GUI extends javax.swing.JFrame {
         jTable1.setRowHeight(40);
         jScrollPane1.setViewportView(jTable1);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setText("Lesson Status");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(85, Short.MAX_VALUE)
+                .addContainerGap(71, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(91, Short.MAX_VALUE)
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(18, 31, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -202,14 +248,15 @@ public class GUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//            }
+//        });
                 new GUI().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
