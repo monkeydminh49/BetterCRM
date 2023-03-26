@@ -116,7 +116,8 @@ public class GUI extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 if (jTable1.getSelectedRowCount() == 1){
                     model.setValueAt(current.getLatestLesson().getEmailStatus(), jTable1.getSelectedRow(), 4);
-                    model.setValueAt("Yes", jTable1.getSelectedRow(), 4);
+                    System.out.println(current.getLatestLesson().getEmailStatus());
+//                    model.setValueAt("Yes", jTable1.getSelectedRow(), 4);
                 }
             }
         };
