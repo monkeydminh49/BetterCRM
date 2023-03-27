@@ -1,7 +1,7 @@
 package com.mycompany.bettercrm;
 
 import Controller.RequestAPI;
-import Viewer.GUI;
+import com.raven.main.Main;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -13,7 +13,8 @@ public class BetterCRM {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new GUI().setVisible(true);
+//                new GUI().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }

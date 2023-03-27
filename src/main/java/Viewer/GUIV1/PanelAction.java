@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Viewer;
+package Viewer.GUIV1;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -57,9 +56,9 @@ public class PanelAction extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnUpdate = new Viewer.ActionButton();
-        btnDelete = new Viewer.ActionButton();
-        btnReload = new Viewer.ActionButton();
+        btnUpdate = new ActionButton();
+        btnDelete = new ActionButton();
+        btnReload = new ActionButton();
 
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -134,9 +133,9 @@ public class PanelAction extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Viewer.ActionButton btnDelete;
-    private Viewer.ActionButton btnReload;
-    private Viewer.ActionButton btnUpdate;
+    private ActionButton btnDelete;
+    private ActionButton btnReload;
+    private ActionButton btnUpdate;
     // End of variables declaration//GEN-END:variables
 
 }

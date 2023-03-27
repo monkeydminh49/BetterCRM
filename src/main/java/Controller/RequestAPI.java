@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.*;
-import Viewer.GUI;
+//import Viewer.GUI;
 import org.apache.commons.io.IOUtils;
 
 import org.apache.http.client.HttpClient;
@@ -66,7 +66,7 @@ public class RequestAPI {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         return classRoomList;
     }
