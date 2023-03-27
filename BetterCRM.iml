@@ -34,5 +34,8 @@
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
+    <orderEntry type="library" name="Maven: net.java.dev.timingframework:timingframework:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.miglayout:miglayout-swing:4.1" level="project" />
+    <orderEntry type="library" name="Maven: com.miglayout:miglayout-core:4.1" level="project" />
   </component>
 </module>

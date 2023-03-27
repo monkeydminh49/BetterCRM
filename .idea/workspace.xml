@@ -4,87 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Add icons in PanelAction to project">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/component/Card.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/component/Card.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/component/Header.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/component/Header.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/component/Menu.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/component/Menu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/event/EventMenuSelected.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_1.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_2.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_3.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_Home.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/form/Form_Home.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/flag.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/menu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/profit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/search.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/icon/stock.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/main/Main.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/main/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/model/Model_Card.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/model/Model_Menu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/model/StatusType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/CellStatus.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/CellStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/ListMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/MenuItem.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/MenuItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/ModernScrollBarUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/PanelBorder.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/PanelBorder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/ScrollBar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/SearchText.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/Table.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/TableHeader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV2/swing/TableStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/flag.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/profit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/search.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/stock.png" afterDir="false" />
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="New UI design commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/Button.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/ButtonBadges.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/ImageAvatar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/MenuButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/PanelPopup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/ProgressBarCustom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/Action.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/Action.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/EventAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/ModelAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/ModelProfile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/Profile.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/Profile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/Table.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/TableCellAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/table/TableHeader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logo-llv.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/ActionButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/ActionButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/GUI.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/PanelAction.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/PanelAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/PanelAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/TableActionCellEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/TableActionCellEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/TableActionCellRender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/TableActionCellRender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Viewer/TableActionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUIV1/TableActionEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mycompany/bettercrm/BetterCRM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mycompany/bettercrm/BetterCRM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/menu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/menu.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BetterCRM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BetterCRM.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raven/component/Menu.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raven/component/Menu.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raven/component/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raven/component/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raven/swing/ListMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raven/swing/ListMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/PanelAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/PanelAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Viewer/TableActionCellRender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Viewer/TableActionCellRender.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Lesson.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Lesson.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Student.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/TA.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/TA.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/TimeOFWeek.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/TimeOFWeek.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +98,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\ProPTIT\Java\ProjectJava\TestRequest\src\main\java\Viewer\GUIV1" />
       <recent name="D:\ProPTIT\Java\ProjectJava\TestRequest" />
       <recent name="D:\ProPTIT\Java\ProjectJava\TestRequest\src\main\java\Controller" />
     </key>
@@ -191,7 +141,7 @@
       <workItem from="1679665979183" duration="10094000" />
       <workItem from="1679895123883" duration="2380000" />
       <workItem from="1679899846618" duration="2050000" />
-      <workItem from="1679902750940" duration="8027000" />
+      <workItem from="1679902750940" duration="10303000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -368,7 +318,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679832195465</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="New UI design commit">
+      <created>1679933298618</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1679933298618</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -400,6 +357,7 @@
     <MESSAGE value="Morning commit, add Multithreading_in_Java_Swing with SwingWorker doc" />
     <MESSAGE value="Fix NotFoundException: org.apache.http.config.Lookup" />
     <MESSAGE value="Add icons in PanelAction to project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add icons in PanelAction to project" />
+    <MESSAGE value="New UI design commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="New UI design commit" />
   </component>
 </project>

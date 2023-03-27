@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 
 public class BetterCRM {
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
-        RequestAPI.getInstance().run();
+//        RequestAPI.getInstance().run();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

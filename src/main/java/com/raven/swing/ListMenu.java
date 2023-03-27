@@ -93,7 +93,7 @@ public class ListMenu<E extends Object> extends JList<E> {
         };
     }
 
-     public void addItem(Model_Menu data) {
+    public void addItem(Model_Menu data) {
         model.addElement(data);
     }
 }
