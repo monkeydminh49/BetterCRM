@@ -129,7 +129,6 @@ public class RequestAPI {
 
         content = getRequestContent(loginUrl, payload, "POST");
         System.out.println(content);
-
     }
     public void updateClassIdList() throws IOException, URISyntaxException {
         classIdList.clear();
@@ -283,6 +282,7 @@ public class RequestAPI {
     public void run() throws IOException, URISyntaxException, ClassNotFoundException  {
         // Login
         login("dangminh.TAMD", "LLVN123456", true);
+//        testPost();
 //        updateTAList();
 //        updateStudentList();
 
@@ -502,5 +502,33 @@ public class RequestAPI {
 
             ClassRoom classRoom = new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent);
         return classRoom;
+    }
+
+    public void testPost(){
+        String postUrl= "https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=checkDateGetTeacher";
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("module", "AttendanceClass"));
+        params.add(new BasicNameValuePair("action", "AjaxListAtten"));
+        params.add(new BasicNameValuePair("mode", "saveLessonDetail"));
+//        params.add(new BasicNameValuePair("mode", "checkDateGetTeacher"));
+//        params.add(new BasicNameValuePair("__vtrftk", token));
+//        params.add(new BasicNameValuePair("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"));
+        params.add(new BasicNameValuePair("date", "28-03-2023"));
+        params.add(new BasicNameValuePair("classId", "431598"));
+        params.add(new BasicNameValuePair("lessonId", "182535"));
+        params.add(new BasicNameValuePair("teacherId", "85215"));
+        params.add(new BasicNameValuePair("taId", "386728"));
+        params.add(new BasicNameValuePair("model", "EC"));
+        params.add(new BasicNameValuePair("time", "17:45:00 - 19:15:00"));
+        params.add(new BasicNameValuePair("data", "[{\"studentId\":\"374160\",\"status\":\"1\",\"late\":\"\",\"stdNote\":\"\"},{\"studentId\":\"240986\",\"status\":\"1\",\"late\":\"\",\"stdNote\":\"\"},{\"studentId\":\"403713\",\"status\":\"0\",\"late\":\"\",\"stdNote\":\"\"},{\"studentId\":\"134686\",\"status\":\"0\",\"late\":\"\",\"stdNote\":\"\"},{\"studentId\":\"403765\",\"status\":\"0\",\"late\":\"\",\"stdNote\":\"\"},{\"studentId\":\"403739\",\"status\":\"0\",\"late\":\"\",\"stdNote\":\"\"}]"));
+//        System.out.println(params.get(9).getValue());
+        String content = null;
+        try {
+            content = getRequestContent(postUrl, params, "GET");
+            System.out.println("Post successfully " + content);
+        } catch (URISyntaxException | IOException e) {
+        }
+
+
     }
 }

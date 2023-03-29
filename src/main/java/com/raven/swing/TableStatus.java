@@ -33,7 +33,7 @@ public class TableStatus extends JLabel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             GradientPaint g;
             if (type == StatusType.YES) {
-                g = new GradientPaint(0, 0, new Color(131, 247, 123), 0, getHeight(), new Color(64, 194, 93));
+                g = new GradientPaint(0, 0, new Color(64, 194, 93), 0, getHeight(), new Color(64, 194, 93));
             } else if (type == StatusType.NO) {
                 g = new GradientPaint(0, 0, new Color(231, 208, 88), 0, getHeight(), new Color(217, 191, 79));
             } else {

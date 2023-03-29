@@ -15,9 +15,10 @@ public class TableCellAction extends DefaultCellEditor {
     }
 
     @Override
-    public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int i, int i1) {
+    public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int row, int column) {
         data = (ModelAction) o;
-        Action cell = new Action(data);
+        Action cell = new Action();
+        cell.initAction(data, row);
         cell.setBackground(new Color(239, 244, 255));
         return cell;
     }

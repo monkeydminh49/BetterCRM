@@ -23,7 +23,7 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     private Form_Home home;
-    private Form_1 form1;
+    public Form_1 form1;
     private Form_2 form2;
     private Form_3 form3;
 
@@ -54,7 +54,7 @@ public class Main extends javax.swing.JFrame {
         setForm(new Form_Home());
     }
 
-    private void setForm(JComponent com) {
+    public void setForm(JComponent com) {
         mainPanel.removeAll();
         mainPanel.add(com);
         mainPanel.repaint();

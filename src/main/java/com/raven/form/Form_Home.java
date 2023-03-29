@@ -4,9 +4,12 @@ import Controller.IOSystem;
 import Model.ClassRoom;
 import Model.Lesson;
 import Viewer.GUIV1.GUI;
+import com.mycompany.bettercrm.BetterCRM;
 import com.raven.model.Model_Card;
 import com.raven.model.StatusType;
 import com.raven.swing.ScrollBar;
+import com.raven.swing.table.EventAction;
+import com.raven.swing.table.ModelAction;
 import java.awt.Color;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -14,11 +17,14 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingWorker;
+import javax.swing.table.DefaultTableModel;
 
 public class Form_Home extends javax.swing.JPanel {
 
@@ -29,6 +35,37 @@ public class Form_Home extends javax.swing.JPanel {
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/stock.png")), "Stock Total", "$200000", "Increased by 60%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/profit.png")), "Total Profit", "$15000", "Increased by 25%"));
         card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/flag.png")), "Unique Visitors", "$300000", "Increased by 70%"));
+        
+        initTableData();
+    }
+    
+    private void initTableData() {
+        EventAction eventAction = new EventAction() {
+            @Override
+            public void delete(int row) {
+                if (table.isEditing()){
+                    table.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                System.out.println("Delete " + classRoomList.get(row).getClassName());
+                classRoomList.remove(row);
+                model.removeRow(row);
+            }
+
+            @Override
+            public void update(int row) {
+                ClassRoom current = classRoomList.get(row);
+                System.out.println("Updating " + current.getClassName());
+                updateClass(current);
+            }
+
+            @Override
+            public void detail(int row) {
+                ClassRoom current = classRoomList.get(row);
+                BetterCRM.main.setForm(BetterCRM.main.form1);
+            }  
+        };
+        
         //  add row table
         spTable.setVerticalScrollBar(new ScrollBar());
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
@@ -43,14 +80,14 @@ public class Form_Home extends javax.swing.JPanel {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        StatusType type = StatusType.YES;
         for (int i = 0; i < classRoomList.size(); i++) {
-            ClassRoom classRoom = classRoomList.get(i);
-            Lesson latestLesson = classRoom.getLatestLesson();
+            ClassRoom current = classRoomList.get(i);
+            Lesson latestLesson = current.getLatestLesson();
             String emailStatus = latestLesson.getEmailStatus();
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate lessonDate = latestLesson.getDate();
             LocalTime todayTime = LocalTime.now();
+            StatusType type = StatusType.YES;
 
             if (emailStatus.equals("Yes")){
                 type = StatusType.YES;
@@ -63,7 +100,7 @@ public class Form_Home extends javax.swing.JPanel {
             }
 
 //            table.addRow(new Object[]{i+1, classRoom.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), latestLesson.getEmailStatus()});
-            table.addRow(new Object[]{i+1, classRoom.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), type});
+            table.addRow(new Object[]{i+1, current.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), type, new ModelAction(current, eventAction)});
         }
 //        table.addRow(new Object[]{"Mike Bhand", "mikebhand@gmail.com", "Admin", "25 Apr,2018", StatusType.YES});
 //        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.NO});
@@ -80,7 +117,60 @@ public class Form_Home extends javax.swing.JPanel {
 //        table.addRow(new Object[]{"Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018", StatusType.REJECT});
 //        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
     }
+    
+    private void updateClass(ClassRoom current){
+        SwingWorker sw1 = new SwingWorker() {
+            @Override
+            protected String doInBackground() throws Exception {
+                current.updateClassInformation();
+//                publish(getProgress());
 
+                return "Finish update " + current.getClassName();
+            }
+            @Override 
+            protected void process(List chunks)
+            {
+                // define what the event dispatch thread
+                // will do with the intermediate results
+                // received while the thread is executing
+                Object val = chunks.get(chunks.size() - 1);
+  
+                System.out.println(val);
+            }
+            @Override
+            protected void done(){
+                try {
+                    System.out.println(get());
+                } catch (InterruptedException | ExecutionException ex) {
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                if (table.getSelectedRowCount() == 1){
+                Lesson latestLesson = current.getLatestLesson();
+                String emailStatus = latestLesson.getEmailStatus();
+                LocalDate lessonDate = latestLesson.getDate();
+                LocalTime todayTime = LocalTime.now();
+                StatusType type = StatusType.YES;
+
+                if (emailStatus.equals("Yes")){
+                    type = StatusType.YES;
+                } else if (emailStatus.equals("No")){
+                    if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
+                        type = StatusType.OVERDUE;
+                    } else {
+                        type = StatusType.NO;
+                    }
+                }                    
+                model.setValueAt(type, table.getSelectedRow(), 4);
+                System.out.println(current.getLatestLesson().getEmailStatus());
+//                    model.setValueAt("Yes", jTable1.getSelectedRow(), 4);
+                }
+            }
+        };
+        sw1.execute();
+    }
+
+ 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -119,11 +209,11 @@ public class Form_Home extends javax.swing.JPanel {
 
             },
             new String [] {
-                "No.", "Class Name", "Latest Lesson", "Date", "Status"
+                "No.", "Class Name", "Latest Lesson", "Date", "Status", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -133,6 +223,12 @@ public class Form_Home extends javax.swing.JPanel {
         table.setShowGrid(false);
         table.setShowHorizontalLines(true);
         spTable.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(50);
+            table.getColumnModel().getColumn(0).setMaxWidth(55);
+            table.getColumnModel().getColumn(1).setMinWidth(100);
+            table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        }
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);

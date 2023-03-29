@@ -1,11 +1,11 @@
 package com.raven.swing.table;
 
 
-import Model.ClassRoom;
-
 public interface EventAction {
 
-    public void delete(ClassRoom classRoom);
+    public void delete(int row);
 
-    public void update(ClassRoom classRoom);
+    public void update(int row);
+    
+    public void detail(int row);
 }
