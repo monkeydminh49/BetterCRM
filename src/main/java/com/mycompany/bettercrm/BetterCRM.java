@@ -11,13 +11,13 @@ public class BetterCRM {
     public static Main main = new Main();
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
         RequestAPI.getInstance().run();
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-////                new GUI().setVisible(true);
-////                main.setVisible(true);
-////                new Main().setVisible(true);
-//            }
-//        });
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+//                new GUI().setVisible(true);
+                main.setVisible(true);
+//                new Main().setVisible(true);
+            }
+        });
     }
 }
