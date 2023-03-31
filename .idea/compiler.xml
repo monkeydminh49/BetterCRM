@@ -9,8 +9,5 @@
         <module name="BetterCRM" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="BetterCRM" target="19" />
-    </bytecodeTargetLevel>
   </component>
 </project>

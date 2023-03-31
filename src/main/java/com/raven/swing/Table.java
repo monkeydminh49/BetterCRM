@@ -9,6 +9,7 @@ import com.raven.swing.table.ModelAction;
 import com.raven.swing.table.TableCellAction;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -112,5 +113,8 @@ public class Table extends JTable {
         p.setBackground(Color.WHITE);
         scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         scroll.setBorder(new EmptyBorder(5, 10, 5, 10));
+    }
+    
+    public void setUpdateIcon(ImageIcon img){
     }
 }

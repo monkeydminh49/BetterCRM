@@ -32,9 +32,9 @@ public class Form_Home extends javax.swing.JPanel {
     public Form_Home() {
         initComponents();
         this.classRoomList = new ArrayList<>();
-        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/stock.png")), "Stock Total", "$200000", "Increased by 60%"));
-        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/profit.png")), "Total Profit", "$15000", "Increased by 25%"));
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/flag.png")), "Unique Visitors", "$300000", "Increased by 70%"));
+//        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/stock.png")), "Stock Total", "$200000", "Increased by 60%"));
+//        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/profit.png")), "Total Profit", "$15000", "Increased by 25%"));
+//        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/flag.png")), "Unique Visitors", "$300000", "Increased by 70%"));
         
         initTableData();
     }
@@ -62,7 +62,7 @@ public class Form_Home extends javax.swing.JPanel {
             @Override
             public void detail(int row) {
                 ClassRoom current = classRoomList.get(row);
-                BetterCRM.main.setForm(BetterCRM.main.form1);
+                BetterCRM.main.setForm(new Form_1(current));
             }  
         };
         
@@ -124,7 +124,6 @@ public class Form_Home extends javax.swing.JPanel {
             protected String doInBackground() throws Exception {
                 current.updateClassInformation();
 //                publish(getProgress());
-
                 return "Finish update " + current.getClassName();
             }
             @Override 
@@ -169,7 +168,29 @@ public class Form_Home extends javax.swing.JPanel {
         };
         sw1.execute();
     }
+    
+    public void updateTableRowContent(ClassRoom current){
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+                if (table.getSelectedRowCount() == 1){
+                Lesson latestLesson = current.getLatestLesson();
+                String emailStatus = latestLesson.getEmailStatus();
+                LocalDate lessonDate = latestLesson.getDate();
+                LocalTime todayTime = LocalTime.now();
+                StatusType type = StatusType.YES;
 
+                if (emailStatus.equals("Yes")){
+                    type = StatusType.YES;
+                } else if (emailStatus.equals("No")){
+                    if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
+                        type = StatusType.OVERDUE;
+                    } else {
+                        type = StatusType.NO;
+                    }
+                }                    
+                model.setValueAt(type, table.getSelectedRow(), 4);
+                System.out.println(current.getLatestLesson().getEmailStatus());
+    }
+}
  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
