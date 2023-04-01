@@ -5,7 +5,12 @@ import Controller.MainController;
 import Model.ClassRoom;
 import Model.Lesson;
 import Viewer.GUIV1.GUI;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.mycompany.bettercrm.BetterCRM;
+import com.raven.datechooser.DateBetween;
+import com.raven.datechooser.DateChooser;
+import com.raven.datechooser.listener.DateChooserAction;
+import com.raven.datechooser.listener.DateChooserAdapter;
 import com.raven.model.Model_Card;
 import com.raven.model.StatusType;
 import com.raven.swing.ScrollBar;
@@ -13,10 +18,12 @@ import com.raven.swing.table.EventAction;
 import com.raven.swing.table.ModelAction;
 import java.awt.Color;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -30,15 +37,33 @@ import javax.swing.table.DefaultTableModel;
 public class Form_Home extends javax.swing.JPanel {
 
     private List<ClassRoom> classRoomList;
+    private DateChooser chDate = new DateChooser();
+    private EventAction eventAction = null;
+    
     public Form_Home() {
         initComponents();
+        FlatIntelliJLaf.registerCustomDefaultsSource("com.raven.form");
+        FlatIntelliJLaf.setup();
         this.classRoomList = new ArrayList<>();
-        
+        chDate.setLabelCalendar(labelCalendar);
+        chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
+        chDate.toDay();
+        chDate.addActionDateChooserListener(new DateChooserAdapter(){
+            @Override
+            public void dateBetweenChanged(DateBetween dateBetween, DateChooserAction action){
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                String dateFrom = df.format(dateBetween.getFromDate());
+                String toDate = df.format(dateBetween.getToDate());
+                System.out.println(dateFrom + " to " + toDate);
+                
+                updateTableByDate(dateFrom, toDate);
+            }
+        });
         initTableData();
     }
     
     private void initTableData() {
-        EventAction eventAction = new EventAction() {
+        eventAction = new EventAction() {
             @Override
             public void delete(int row) {
                 if (table.isEditing()){
@@ -111,26 +136,58 @@ public class Form_Home extends javax.swing.JPanel {
         ClassRoom current = classRoomList.get(row);
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         if (table.getSelectedRowCount() == 1){
-        Lesson latestLesson = current.getLatestLesson();
-        String emailStatus = latestLesson.getEmailStatus();
-        LocalDate lessonDate = latestLesson.getDate();
-        LocalTime todayTime = LocalTime.now();
-        StatusType type = StatusType.YES;
+            Lesson latestLesson = current.getLatestLesson();
+            String emailStatus = latestLesson.getEmailStatus();
+            LocalDate lessonDate = latestLesson.getDate();
+            LocalTime todayTime = LocalTime.now();
+            StatusType type = StatusType.YES;
 
-        if (emailStatus.equals("Yes")){
-            type = StatusType.YES;
-        } else if (emailStatus.equals("No")){
-            if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
-                type = StatusType.OVERDUE;
-            } else {
-                type = StatusType.NO;
+            if (emailStatus.equals("Yes")){
+                type = StatusType.YES;
+            } else if (emailStatus.equals("No")){
+                if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
+                    type = StatusType.OVERDUE;
+                } else {
+                    type = StatusType.NO;
+                }
+            }
+            model.setValueAt(type, row, 4);
+//        System.out.println(current.getLatestLesson().getEmailStatus());
+        }
+    }
+ 
+    public void updateTableByDate(String dateFrom, String toDate){
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        
+        LocalDate start = LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate end = LocalDate.parse(toDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        
+        for (ClassRoom current : classRoomList){
+            Lesson latestLesson = current.getLatestLesson();
+            LocalDate currentDate = latestLesson.getDate();
+            if (currentDate.compareTo(start) >= 0 && currentDate.compareTo(end) <= 0){
+                String emailStatus = latestLesson.getEmailStatus();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate lessonDate = latestLesson.getDate();
+                LocalTime todayTime = LocalTime.now();
+                StatusType type = StatusType.YES;
+
+                if (emailStatus.equals("Yes")){
+                    type = StatusType.YES;
+                } else if (emailStatus.equals("No")){
+                    if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
+                        type = StatusType.OVERDUE;
+                    } else {
+                        type = StatusType.NO;
+                    }
+                }
+                
+                table.addRow(new Object[]{table.getRowCount()+1, current.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), type, new ModelAction(current, eventAction)});
             }
         }
-        model.setValueAt(type, row, 4);
-//        System.out.println(current.getLatestLesson().getEmailStatus());
     }
-}
- 
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -143,6 +200,7 @@ public class Form_Home extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         spTable = new javax.swing.JScrollPane();
         table = new com.raven.swing.Table();
+        labelCalendar = new javax.swing.JLabel();
 
         card3.setColor1(new java.awt.Color(241, 208, 62));
         card3.setColor2(new java.awt.Color(211, 184, 61));
@@ -190,6 +248,12 @@ public class Form_Home extends javax.swing.JPanel {
             table.getColumnModel().getColumn(1).setPreferredWidth(150);
         }
 
+        labelCalendar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        labelCalendar.setForeground(new java.awt.Color(127, 127, 127));
+        labelCalendar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelCalendar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calendar.png"))); // NOI18N
+        labelCalendar.setText("Calendar");
+
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
         panelBorder1Layout.setHorizontalGroup(
@@ -198,19 +262,21 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addComponent(spTable)
-                        .addGap(155, 155, 155))
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(729, 729, 729))))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spTable))
+                .addGap(20, 20, 20))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(labelCalendar))
+                .addGap(18, 18, 18)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
         );
 
@@ -225,7 +291,7 @@ public class Form_Home extends javax.swing.JPanel {
                         .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, Short.MAX_VALUE)
+                        .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(19, 19, 19))))
         );
         layout.setVerticalGroup(
@@ -245,9 +311,12 @@ public class Form_Home extends javax.swing.JPanel {
     private com.raven.component.Card card2;
     private com.raven.component.Card card3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel labelCalendar;
     private javax.swing.JLayeredPane panel;
     private com.raven.swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane spTable;
     private com.raven.swing.Table table;
     // End of variables declaration//GEN-END:variables
+
+
 }

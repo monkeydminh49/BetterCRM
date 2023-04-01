@@ -163,7 +163,7 @@ public class RequestAPI {
             }
             page++;
         }
-        classIdList = new ArrayList<>(new HashSet<>(classIdList));
+//        classIdList = new ArrayList<>(new HashSet<>(classIdList));
         System.out.println("Total class updated: " + classIdList.size());
 
         // Write list to file
@@ -212,7 +212,7 @@ public class RequestAPI {
         jo = jo.getJSONObject("result");
         totalPage = jo.getInt("page");
 
-        Set<TA> set = new HashSet<>();
+  
         while (page <= totalPage){
             content = getRequestContent(TAListUrl,Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))) , "GET");
             Document doc = Jsoup.parse(content);
@@ -226,13 +226,13 @@ public class RequestAPI {
                     String email = e.select(".listViewEntryValue").get(3).text();
 
                     TA ta = new TA(name, phone, email);
-                    set.add(ta);
+                    TAList.add(ta);
 //                    System.out.println(ta.getName());
                 }
             }
             page++;
         }
-        TAList.addAll(set);
+
 
         // Write to file
         IOSystem.getInstance().write(TAList, filesPath+ "TAList.dat");
