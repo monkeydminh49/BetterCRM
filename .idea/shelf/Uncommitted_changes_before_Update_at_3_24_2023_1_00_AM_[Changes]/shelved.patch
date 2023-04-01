@@ -1,0 +1,23 @@
+Index: src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Main.java b/src/main/java/com/mycompany/bettercrmv2/BetterCRMV2.java
+rename from src/main/java/Main.java
+rename to src/main/java/com/mycompany/bettercrmv2/BetterCRMV2.java
+--- a/src/main/java/Main.java	
++++ b/src/main/java/com/mycompany/bettercrmv2/BetterCRMV2.java	
+@@ -1,9 +1,11 @@
++package com.mycompany.bettercrmv2;
++
+ import Viewer.GUIV2;
+ 
+ import java.io.IOException;
+ import java.net.URISyntaxException;
+ 
+-public class Main {
++public class BetterCRMV2 {
+     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
+ //        Request.getInstance().run();
+         new GUIV2().setVisible(true);

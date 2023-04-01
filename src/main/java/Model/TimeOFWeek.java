@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 public class TimeOFWeek implements Serializable {
     public TimeOFWeek() {
-
+        
     }
 
     public DayOfWeek getDayOfWeek() {
