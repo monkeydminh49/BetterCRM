@@ -1,6 +1,7 @@
 package com.raven.form;
 
 import Controller.IOSystem;
+import Controller.MainController;
 import Model.ClassRoom;
 import Model.Lesson;
 import Viewer.GUIV1.GUI;
@@ -32,9 +33,6 @@ public class Form_Home extends javax.swing.JPanel {
     public Form_Home() {
         initComponents();
         this.classRoomList = new ArrayList<>();
-//        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/stock.png")), "Stock Total", "$200000", "Increased by 60%"));
-//        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/profit.png")), "Total Profit", "$15000", "Increased by 25%"));
-//        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/flag.png")), "Unique Visitors", "$300000", "Increased by 70%"));
         
         initTableData();
     }
@@ -56,14 +54,21 @@ public class Form_Home extends javax.swing.JPanel {
             public void update(int row) {
                 ClassRoom current = classRoomList.get(row);
                 System.out.println("Updating " + current.getClassName());
-                updateClass(current);
+                current.updateClassInformation();
+//                updateClass(current);
             }
 
             @Override
             public void detail(int row) {
                 ClassRoom current = classRoomList.get(row);
                 BetterCRM.main.setForm(new Form_1(current));
-            }  
+            }
+
+            @Override
+            public void doneAction(int row) {
+                System.out.println("Finish update " + classRoomList.get(row).getClassName());
+                updateTableRowContent(row);
+            }
         };
         
         //  add row table
@@ -73,12 +78,9 @@ public class Form_Home extends javax.swing.JPanel {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        
-        try {
-            classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+
+        classRoomList = MainController.getInstance().getClassRoomList();
 
         for (int i = 0; i < classRoomList.size(); i++) {
             ClassRoom current = classRoomList.get(i);
@@ -99,96 +101,33 @@ public class Form_Home extends javax.swing.JPanel {
                 }
             }
 
-//            table.addRow(new Object[]{i+1, classRoom.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), latestLesson.getEmailStatus()});
             table.addRow(new Object[]{i+1, current.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), type, new ModelAction(current, eventAction)});
         }
-//        table.addRow(new Object[]{"Mike Bhand", "mikebhand@gmail.com", "Admin", "25 Apr,2018", StatusType.YES});
-//        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.NO});
-//        table.addRow(new Object[]{"Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018", StatusType.OVERDUE});
-//        table.addRow(new Object[]{"Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018", StatusType.REJECT});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
-//        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018", StatusType.REJECT});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
-//        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018", StatusType.REJECT});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
-    }
-    
-    private void updateClass(ClassRoom current){
-        SwingWorker sw1 = new SwingWorker() {
-            @Override
-            protected String doInBackground() throws Exception {
-                current.updateClassInformation();
-//                publish(getProgress());
-                return "Finish update " + current.getClassName();
-            }
-            @Override 
-            protected void process(List chunks)
-            {
-                // define what the event dispatch thread
-                // will do with the intermediate results
-                // received while the thread is executing
-                Object val = chunks.get(chunks.size() - 1);
-  
-                System.out.println(val);
-            }
-            @Override
-            protected void done(){
-                try {
-                    System.out.println(get());
-                } catch (InterruptedException | ExecutionException ex) {
-                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                if (table.getSelectedRowCount() == 1){
-                Lesson latestLesson = current.getLatestLesson();
-                String emailStatus = latestLesson.getEmailStatus();
-                LocalDate lessonDate = latestLesson.getDate();
-                LocalTime todayTime = LocalTime.now();
-                StatusType type = StatusType.YES;
 
-                if (emailStatus.equals("Yes")){
-                    type = StatusType.YES;
-                } else if (emailStatus.equals("No")){
-                    if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
-                        type = StatusType.OVERDUE;
-                    } else {
-                        type = StatusType.NO;
-                    }
-                }                    
-                model.setValueAt(type, table.getSelectedRow(), 4);
-                System.out.println(current.getLatestLesson().getEmailStatus());
-//                    model.setValueAt("Yes", jTable1.getSelectedRow(), 4);
-                }
-            }
-        };
-        sw1.execute();
     }
+
     
-    public void updateTableRowContent(ClassRoom current){
+    public void updateTableRowContent(int row){
+        ClassRoom current = classRoomList.get(row);
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-                if (table.getSelectedRowCount() == 1){
-                Lesson latestLesson = current.getLatestLesson();
-                String emailStatus = latestLesson.getEmailStatus();
-                LocalDate lessonDate = latestLesson.getDate();
-                LocalTime todayTime = LocalTime.now();
-                StatusType type = StatusType.YES;
+        if (table.getSelectedRowCount() == 1){
+        Lesson latestLesson = current.getLatestLesson();
+        String emailStatus = latestLesson.getEmailStatus();
+        LocalDate lessonDate = latestLesson.getDate();
+        LocalTime todayTime = LocalTime.now();
+        StatusType type = StatusType.YES;
 
-                if (emailStatus.equals("Yes")){
-                    type = StatusType.YES;
-                } else if (emailStatus.equals("No")){
-                    if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
-                        type = StatusType.OVERDUE;
-                    } else {
-                        type = StatusType.NO;
-                    }
-                }                    
-                model.setValueAt(type, table.getSelectedRow(), 4);
-                System.out.println(current.getLatestLesson().getEmailStatus());
+        if (emailStatus.equals("Yes")){
+            type = StatusType.YES;
+        } else if (emailStatus.equals("No")){
+            if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
+                type = StatusType.OVERDUE;
+            } else {
+                type = StatusType.NO;
+            }
+        }
+        model.setValueAt(type, row, 4);
+//        System.out.println(current.getLatestLesson().getEmailStatus());
     }
 }
  

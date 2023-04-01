@@ -42,13 +42,6 @@ public class Form_1 extends javax.swing.JPanel {
     public Form_1(){};
     public Form_1(ClassRoom current) {
         initComponents();
-//        spTable1.setVerticalScrollBar(new ScrollBar());
-//        spTable1.getVerticalScrollBar().setBackground(Color.WHITE);
-//        spTable1.getViewport().setBackground(Color.WHITE);
-//        JPanel p = new JPanel();
-//        p.setBackground(Color.WHITE);
-//        spTable1.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-//        
         this.current = current;
         initTableData();
         
@@ -56,22 +49,6 @@ public class Form_1 extends javax.swing.JPanel {
     
     private void initTableData() {
          classNameLabel.setText(current.getClassName());
-            
-//        EventAction eventAction = new EventAction() {
-//            @Override
-//            public void delete(int row) {
-//            }
-//
-//            @Override
-//            public void update(int row) {
-//                System.out.println("Updating " + current.getClassName());
-//                updateClass(current);
-//            }
-//
-//            @Override
-//            public void detail(int row) {
-//            }  
-//        };
         
         //  add row table
         spTable1.setVerticalScrollBar(new ScrollBar());
@@ -101,31 +78,14 @@ public class Form_1 extends javax.swing.JPanel {
                 }
             }
 
-//            table.addRow(new Object[]{i+1, classRoom.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), latestLesson.getEmailStatus()});
             table.addRow(new Object[]{i+1, lesson.getLessonName(),lesson.getDate().format(dateFormatter),"", type});
         }
-//        table.addRow(new Object[]{"Mike Bhand", "mikebhand@gmail.com", "Admin", "25 Apr,2018", StatusType.YES});
-//        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.NO});
-//        table.addRow(new Object[]{"Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018", StatusType.OVERDUE});
-//        table.addRow(new Object[]{"Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018", StatusType.REJECT});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
-//        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018", StatusType.REJECT});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
-//        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018", StatusType.APPROVED});
-//        table.addRow(new Object[]{"Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018", StatusType.REJECT});
-//        table.addRow(new Object[]{"Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018", StatusType.PENDING});
     }
         
-        private void updateClass(ClassRoom current){
+    private void updateClass(ClassRoom current){
         SwingWorker sw1 = new SwingWorker() {
             @Override
             protected String doInBackground() throws Exception {
-//                BufferedImage img = ImageIO.read(getClass().getResource("/XOsX.gif"));
-//                Image img1 = img.getScaledInstance(btnReload.getWidth(), btnReload.getHeight(), Image.SCALE_SMOOTH);
                 System.out.println("Updating " + current.getClassName());
                 btnReload.setIcon(new ImageIcon(getClass().getResource("/loading1.gif")));
                 current.updateClassInformation();
@@ -136,9 +96,6 @@ public class Form_1 extends javax.swing.JPanel {
             @Override 
             protected void process(List chunks)
             {
-                // define what the event dispatch thread
-                // will do with the intermediate results
-                // received while the thread is executing
                 Object val = chunks.get(chunks.size() - 1);
   
                 System.out.println(val);
@@ -169,10 +126,11 @@ public class Form_1 extends javax.swing.JPanel {
                             type = StatusType.NO;
                         }
                     }                    
-                    model.setValueAt(type, i, 4);  
+                    model.setValueAt(type, i, 4);
+                    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    model.setValueAt(lessonDate.format(dateFormatter), i, 2);
+//                    System.out.println((i+1) + " " + lessonDate.format(dateFormatter) + " " + emailStatus);
                 }
-//                System.out.println(current.getLatestLesson().getEmailStatus());
-//                model.setValueAt("Yes", jTable1.getSelectedRow(), 4);
             }
             
         };

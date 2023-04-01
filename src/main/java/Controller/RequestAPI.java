@@ -437,9 +437,13 @@ public class RequestAPI {
                 lessonName = td.get(1).text();
                 String date = td.get(2).text();
 
+                boolean isStarted = true;
                 // Get lesson date
                 if (date.equals("")){ // lesson not started
-                    if (lessonNumber.equals("1") || lessonNumber.equals("21")){   // First lesson
+                    if (lessonNumber.equals("1")){   // First lesson
+                        lessonDate = startDate;
+                        isStarted = false;
+                    } else if (lessonNumber.equals("23") && !isStarted){
                         lessonDate = startDate;
                     } else {
                         Lesson previousLesson = lessonList.get(lessonList.size()-1);

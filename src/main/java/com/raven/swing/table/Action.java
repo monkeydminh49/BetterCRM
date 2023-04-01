@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 public class Action extends javax.swing.JPanel {
 
@@ -18,16 +18,28 @@ public class Action extends javax.swing.JPanel {
         cmdUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
-                
-//                cmdUpdate.setIcon(new ImageIcon(getClass().getResource("/loading1.gif")));
-                data.getEvent().update(row);
-//                cmdUpdate.setIcon(new ImageIcon(getClass().getResource("/reload.png")));                
+                SwingWorker sw1 = new SwingWorker() {
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        cmdUpdate.setIcon(new ImageIcon(getClass().getResource("/loading1.gif")));
+                        data.getEvent().update(row);
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        cmdUpdate.setIcon(new ImageIcon(getClass().getResource("/reload.png")));
+                        data.getEvent().doneAction(row);
+                    }
+                };
+                sw1.execute();
             }
         });
         cmdDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+
+
                 data.getEvent().delete(row);
             }
         });
@@ -113,6 +125,11 @@ public class Action extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button cmdDelete;
     private com.raven.swing.Button cmdDetail;
+
+    public Button getCmdUpdate() {
+        return cmdUpdate;
+    }
+
     private com.raven.swing.Button cmdUpdate;
     // End of variables declaration//GEN-END:variables
 }

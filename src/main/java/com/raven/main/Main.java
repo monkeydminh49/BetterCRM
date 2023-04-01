@@ -40,7 +40,8 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 if (index == 0) {
-                    setForm(home);
+//                    setForm(home);
+                    setForm(new Form_Home());
                 } else if (index == 1) {
                     setForm(form1);
                 } else if (index == 2) {

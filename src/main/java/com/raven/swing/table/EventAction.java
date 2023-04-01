@@ -8,4 +8,6 @@ public interface EventAction {
     public void update(int row);
     
     public void detail(int row);
+
+    public void doneAction(int row);
 }

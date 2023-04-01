@@ -39,21 +39,6 @@ public class Table extends JTable {
         setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected, boolean focus, int row, int column) {
-//                if (i1 != 4) {
-//                    Component com = super.getTableCellRendererComponent(jtable, o, selected, focus, i, i1);
-//                    com.setBackground(Color.WHITE);
-//                    setBorder(noFocusBorder);
-//                    if (selected) {
-//                        com.setForeground(new Color(15, 89, 140));
-//                    } else {
-//                        com.setForeground(new Color(102, 102, 102));
-//                    }
-//                    return com;
-//                } else {
-//                    StatusType type = (StatusType) o;
-//                    CellStatus cell = new CellStatus(type);
-//                    return cell;
-//                }
                 if (o instanceof StatusType) {
                     StatusType type = (StatusType) o;
                     CellStatus cell = new CellStatus(type);
