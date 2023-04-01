@@ -47,16 +47,12 @@ public class Form_Home extends javax.swing.JPanel {
         this.classRoomList = new ArrayList<>();
         chDate.setLabelCalendar(labelCalendar);
         chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
-        chDate.toDay();
+        chDate.setSelectedDateBetween(MainController.getInstance().getDateBetween(), true);
         chDate.addActionDateChooserListener(new DateChooserAdapter(){
             @Override
             public void dateBetweenChanged(DateBetween dateBetween, DateChooserAction action){
-                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                String dateFrom = df.format(dateBetween.getFromDate());
-                String toDate = df.format(dateBetween.getToDate());
-                System.out.println(dateFrom + " to " + toDate);
-                
-                updateTableByDate(dateFrom, toDate);
+                MainController.getInstance().setDateBetween(dateBetween);
+                updateTableByDate(dateBetween);
             }
         });
         initTableData();
@@ -70,6 +66,15 @@ public class Form_Home extends javax.swing.JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String className = (String) model.getValueAt(row, 1);
+                
+                for (ClassRoom current : classRoomList){
+                    if (current.getClassName().equals(className)){
+                        System.out.println("Delete " + current.getClassName());
+                        classRoomList.remove(current);
+                        break;
+                    }
+                }
                 System.out.println("Delete " + classRoomList.get(row).getClassName());
                 classRoomList.remove(row);
                 model.removeRow(row);
@@ -77,23 +82,42 @@ public class Form_Home extends javax.swing.JPanel {
 
             @Override
             public void update(int row) {
-                ClassRoom current = classRoomList.get(row);
-                System.out.println("Updating " + current.getClassName());
-                current.updateClassInformation();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String className = (String) model.getValueAt(row, 1);
+                
+                for (ClassRoom current : classRoomList){
+                    if (current.getClassName().equals(className)){
+                        System.out.println("Updating " + current.getClassName());
+                        current.updateClassInformation();
+                        break;
+                    }
+                }
+             
 //                updateClass(current);
             }
 
             @Override
             public void detail(int row) {
-                ClassRoom current = classRoomList.get(row);
-                BetterCRM.main.setForm(new Form_1(current));
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String className = (String) model.getValueAt(row, 1);
+                
+                for (ClassRoom current : classRoomList){
+                    if (current.getClassName().equals(className)){
+                        BetterCRM.main.setForm(new Form_1(current));
+                        break;
+                    }
+                }
+                
             }
 
             @Override
             public void doneAction(int row) {
-                System.out.println("Finish update " + classRoomList.get(row).getClassName());
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String className = (String) model.getValueAt(row, 1);
+                System.out.println("Finish update " + className);
                 updateTableRowContent(row);
             }
+
         };
         
         //  add row table
@@ -106,28 +130,29 @@ public class Form_Home extends javax.swing.JPanel {
 
 
         classRoomList = MainController.getInstance().getClassRoomList();
+        updateTableByDate(MainController.getInstance().getDateBetween());
 
-        for (int i = 0; i < classRoomList.size(); i++) {
-            ClassRoom current = classRoomList.get(i);
-            Lesson latestLesson = current.getLatestLesson();
-            String emailStatus = latestLesson.getEmailStatus();
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate lessonDate = latestLesson.getDate();
-            LocalTime todayTime = LocalTime.now();
-            StatusType type = StatusType.YES;
-
-            if (emailStatus.equals("Yes")){
-                type = StatusType.YES;
-            } else if (emailStatus.equals("No")){
-                if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
-                    type = StatusType.OVERDUE;
-                } else {
-                    type = StatusType.NO;
-                }
-            }
-
-            table.addRow(new Object[]{i+1, current.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), type, new ModelAction(current, eventAction)});
-        }
+//        for (int i = 0; i < classRoomList.size(); i++) {
+//            ClassRoom current = classRoomList.get(i);
+//            Lesson latestLesson = current.getLatestLesson();
+//            String emailStatus = latestLesson.getEmailStatus();
+//            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//            LocalDate lessonDate = latestLesson.getDate();
+//            LocalTime todayTime = LocalTime.now();
+//            StatusType type = StatusType.YES;
+//
+//            if (emailStatus.equals("Yes")){
+//                type = StatusType.YES;
+//            } else if (emailStatus.equals("No")){
+//                if ((LocalDate.now().isAfter(lessonDate) && LocalTime.now().isAfter(LocalTime.of(17, 0))) || LocalDate.now().isAfter(lessonDate.plusDays(1))){
+//                    type = StatusType.OVERDUE;
+//                } else {
+//                    type = StatusType.NO;
+//                }
+//            }
+//
+//            table.addRow(new Object[]{i+1, current.getClassName(), latestLesson.getLessonName(),latestLesson.getDate().format(dateFormatter), type, new ModelAction(current, eventAction)});
+//        }
 
     }
 
@@ -156,9 +181,13 @@ public class Form_Home extends javax.swing.JPanel {
         }
     }
  
-    public void updateTableByDate(String dateFrom, String toDate){
+    public void updateTableByDate(DateBetween dateBetween){
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
+        
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String dateFrom = df.format(dateBetween.getFromDate());
+        String toDate = df.format(dateBetween.getToDate());
         
         LocalDate start = LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         LocalDate end = LocalDate.parse(toDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
