@@ -23,6 +23,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -39,6 +41,7 @@ public class Form_Home extends javax.swing.JPanel {
     private List<ClassRoom> classRoomList;
     private DateChooser chDate = new DateChooser();
     private EventAction eventAction = null;
+    private int sortOrientation = -1;
     
     public Form_Home() {
         initComponents();
@@ -130,6 +133,7 @@ public class Form_Home extends javax.swing.JPanel {
 
 
         classRoomList = MainController.getInstance().getClassRoomList();
+        classRoomList.sort((ClassRoom o1, ClassRoom o2) -> sortOrientation*o1.getLatestLesson().getDate().compareTo(o2.getLatestLesson().getDate()));
         updateTableByDate(MainController.getInstance().getDateBetween());
 
 //        for (int i = 0; i < classRoomList.size(); i++) {
@@ -230,6 +234,7 @@ public class Form_Home extends javax.swing.JPanel {
         spTable = new javax.swing.JScrollPane();
         table = new com.raven.swing.Table();
         labelCalendar = new javax.swing.JLabel();
+        button1 = new com.raven.swing.Button();
 
         card3.setColor1(new java.awt.Color(241, 208, 62));
         card3.setColor2(new java.awt.Color(211, 184, 61));
@@ -283,6 +288,13 @@ public class Form_Home extends javax.swing.JPanel {
         labelCalendar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calendar.png"))); // NOI18N
         labelCalendar.setText("Calendar");
 
+        button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/descendant.png"))); // NOI18N
+        button1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
         panelBorder1Layout.setHorizontalGroup(
@@ -291,11 +303,15 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
+                        .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
+                        .addGap(20, 20, 20))
+                    .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(spTable))
-                .addGap(20, 20, 20))
+                        .addComponent(labelCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,9 +319,10 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(labelCalendar))
+                    .addComponent(labelCalendar)
+                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
         );
 
@@ -334,8 +351,16 @@ public class Form_Home extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+        // TODO add your handling code here:
+        sortOrientation*=-1;
+        classRoomList.sort((ClassRoom o1, ClassRoom o2) -> sortOrientation*o1.getLatestLesson().getDate().compareTo(o2.getLatestLesson().getDate()));
+        updateTableByDate(MainController.getInstance().getDateBetween());
+    }//GEN-LAST:event_button1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.raven.swing.Button button1;
     private com.raven.component.Card card1;
     private com.raven.component.Card card2;
     private com.raven.component.Card card3;
