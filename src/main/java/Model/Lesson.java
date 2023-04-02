@@ -62,13 +62,16 @@ public class Lesson implements Serializable {
     private LocalTime time;
     private String emailStatus;
 
-    public Lesson(String lessonNumber, String lessonId, String lessonName, LocalDate date, LocalTime time, String emailStatus) {
+    private Teacher teacher;
+
+    public Lesson(String lessonNumber, String lessonId, String lessonName, LocalDate date, LocalTime time, Teacher teacher,String emailStatus) {
         this.lessonNumber = lessonNumber;
         this.lessonId = lessonId;
         this.lessonName = lessonName;
         this.date = date;
         this.time = time;
         this.emailStatus = emailStatus;
+        this.teacher = teacher;
     }
 
     public Lesson() {

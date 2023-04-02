@@ -29,12 +29,13 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
-//        setBackground(new Color(0, 0, 0, 0));
 // TODO
-        home = new Form_Home();
-        form1 = new Form_1();
-        form2 = new Form_2();
-        form3 = new Form_3();
+//        setBackground(new Color(0, 0, 0, 0));
+
+//        home = new Form_Home();
+//        form1 = new Form_1();
+//        form2 = new Form_2();
+//        form3 = new Form_3();
         menu.initMoving(Main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -43,11 +44,11 @@ public class Main extends javax.swing.JFrame {
 //                    setForm(home);
                     setForm(new Form_Home());
                 } else if (index == 1) {
-                    setForm(form1);
+                    setForm(new Form_1());
                 } else if (index == 2) {
-                    setForm(form2);
+                    setForm(new Form_2());
                 } else if (index == 3) {
-                    setForm(form3);
+                    setForm(new Form_3());
                 }
             }
         });
