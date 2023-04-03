@@ -148,7 +148,7 @@ public class RequestAPI {
         int totalPage = 0;
 
         String content = null;
-        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
+        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=876&orderby=class_code&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:0e4015d1f33aee007767349d620db9e2e515740b,1679154595&module=Classes&parent=&page=1&view=ListAjax&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D&mode=getPageCount";
 
         // Request
@@ -159,6 +159,8 @@ public class RequestAPI {
         jo = jo.getJSONObject("result");
         totalPage = jo.getInt("page");
 
+        Set<String> classIdSet = new HashSet<String>();
+
         // Get class id from each page
         while (page <= totalPage){
             content = getRequestContent(on_goingClassListUrl,Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))) , "GET");
@@ -166,19 +168,28 @@ public class RequestAPI {
 
             // Get classId from response
             Elements elements = doc.select("tr");
-            for (Element e : elements) {
+            a: for (Element e : elements) {
                 if (e.hasClass("listViewEntries")){
+                    String classId = e.attr("data-id");
+                    for (String id : classIdList) {
+                        if (id.equals(classId)){
+                            continue a;
+                        }
+                    }
                     classIdList.add(e.attr("data-id"));
+//                    classIdSet.add(e.attr("data-id"));
 //                    System.out.println(e.attr("data-id"));
                 }
             }
             page++;
         }
-//        classIdList = new ArrayList<>(new HashSet<>(classIdList));
+
+//        classIdList = new ArrayList<>(classIdSet);
+//        classIdList = new ArrayList<>(new HashSet<String>(classIdList));
         System.out.println("Total class updated: " + classIdList.size());
 
         // Write list to file
-        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
+//        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
     }
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
         // Get classIdList from file
