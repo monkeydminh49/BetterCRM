@@ -148,7 +148,7 @@ public class RequestAPI {
         int totalPage = 0;
 
         String content = null;
-        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=876&orderby=class_code&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
+        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=876&orderby=class_code&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:0e4015d1f33aee007767349d620db9e2e515740b,1679154595&module=Classes&parent=&page=1&view=ListAjax&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D&mode=getPageCount";
 
         // Request
@@ -189,7 +189,7 @@ public class RequestAPI {
         System.out.println("Total class updated: " + classIdList.size());
 
         // Write list to file
-//        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
+        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
     }
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
         // Get classIdList from file
