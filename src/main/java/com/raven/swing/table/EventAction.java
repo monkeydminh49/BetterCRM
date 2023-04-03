@@ -1,5 +1,7 @@
 package com.raven.swing.table;
 
+import Model.ClassRoom;
+
 
 public interface EventAction {
 

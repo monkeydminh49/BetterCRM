@@ -12,6 +12,16 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     private List<TimeOFWeek> listStartTime;
     private List<Lesson> lessonList;
 
+    public List<Teacher> getListTeacher() {
+        return listTeacher;
+    }
+
+    public void setListTeacher(List<Teacher> listTeacher) {
+        this.listTeacher = listTeacher;
+    }
+
+    private List<Teacher> listTeacher;
+
     public List<Lesson> getLessonList() {
         return lessonList;
     }

@@ -2,6 +2,7 @@ package com.mycompany.bettercrm;
 
 import Controller.RequestAPI;
 import Model.ClassRoom;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.raven.main.Main;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class BetterCRM {
     public static Main main = new Main();
 
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
+//        RequestAPI.getInstance().run();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -22,7 +24,7 @@ public class BetterCRM {
                 } catch (IOException | URISyntaxException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-//                new GUI().setVisible(true);
+
                 main.setVisible(true);
 //                new Main().setVisible(true);
             }

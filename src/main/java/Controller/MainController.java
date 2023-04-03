@@ -1,8 +1,13 @@
 package Controller;
 
 import Model.ClassRoom;
+import com.raven.datechooser.DateBetween;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 public class MainController {
@@ -20,6 +25,16 @@ public class MainController {
     }
 
     private List<ClassRoom> classRoomList;
+    
+    private DateBetween dateBetween;
+
+    public DateBetween getDateBetween() {
+        return dateBetween;
+    }
+
+    public void setDateBetween(DateBetween dateBetween) {
+        this.dateBetween = dateBetween;
+    }
 
     private MainController() {
         try {
@@ -27,6 +42,10 @@ public class MainController {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        
+        LocalDate ldate = LocalDate.now().minusDays(6);
+        Instant instant = Instant.from(ldate.atStartOfDay(ZoneId.of("GMT")));
+        dateBetween = new DateBetween(Date.from(instant), new Date());
     }
 
 

@@ -40,6 +40,7 @@ public class RequestAPI {
         classIdList = new ArrayList<>();
         TAList = new ArrayList<>();
         studentList = new ArrayList<>();
+        teacherList = new ArrayList<>();
     }
 
     public static RequestAPI getInstance() {
@@ -72,6 +73,16 @@ public class RequestAPI {
     }
     private List<String> classIdList;
     private List<TA> TAList;
+
+    public List<Teacher> getTeacherList() {
+        return teacherList;
+    }
+
+    public void setTeacherList(List<Teacher> teacherList) {
+        this.teacherList = teacherList;
+    }
+
+    private List<Teacher> teacherList;
     private List<Student> studentList;
     private HttpGet get;
     private HttpPost post;
@@ -163,7 +174,7 @@ public class RequestAPI {
             }
             page++;
         }
-        classIdList = new ArrayList<>(new HashSet<>(classIdList));
+//        classIdList = new ArrayList<>(new HashSet<>(classIdList));
         System.out.println("Total class updated: " + classIdList.size());
 
         // Write list to file
@@ -174,6 +185,7 @@ public class RequestAPI {
         classIdList = IOSystem.getInstance().read(filesPath + "classIdList.dat");
         TAList = IOSystem.getInstance().read(filesPath + "TAList.dat");
         studentList = IOSystem.getInstance().read(filesPath + "studentList.dat");
+        teacherList = IOSystem.getInstance().read(filesPath + "teacherList.dat");
 
         int count = 0;
 
@@ -212,7 +224,7 @@ public class RequestAPI {
         jo = jo.getJSONObject("result");
         totalPage = jo.getInt("page");
 
-        Set<TA> set = new HashSet<>();
+  
         while (page <= totalPage){
             content = getRequestContent(TAListUrl,Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))) , "GET");
             Document doc = Jsoup.parse(content);
@@ -224,19 +236,65 @@ public class RequestAPI {
                     String name = e.select(".listViewEntryValue").get(0).text() + " " + e.select(".listViewEntryValue").get(1).text();
                     String phone = e.select(".listViewEntryValue").get(2).text();
                     String email = e.select(".listViewEntryValue").get(3).text();
-
-                    TA ta = new TA(name, phone, email);
-                    set.add(ta);
+                    String id = e.select(".listViewEntryValue").attr("data-id");
+                    TA ta = new TA(name, phone, email, id);
+                    TAList.add(ta);
 //                    System.out.println(ta.getName());
                 }
             }
             page++;
         }
-        TAList.addAll(set);
+
 
         // Write to file
         IOSystem.getInstance().write(TAList, filesPath+ "TAList.dat");
     }
+    public void updateTeacherList() throws URISyntaxException, IOException {
+        // Clear TAList
+        teacherList.clear();
+
+        // Loop through all pages
+        int page = 1;
+        int totalPage = 0;
+
+        String content = null;
+        String TeacherListUrl = "https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=cf_1252&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22Teacher%22%5D%5D%5D";
+        String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:fcb5c7ecbb4c28f6fd29086850ddf1b719643422,1680451355&module=TeacherTA&parent=&page=1&view=ListAjax&viewname=648&orderby=cf_1252&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22Teacher%22%5D%5D%5D&mode=getPageCount";
+
+        // Request
+        content = getRequestContent(totalPageJsonUrl,Arrays.asList(new BasicNameValuePair("__vtrftk", token)) , "GET");
+
+        // parsing json content
+        JSONObject jo = new JSONObject(content);
+        jo = jo.getJSONObject("result");
+        totalPage = jo.getInt("page");
+
+
+        while (page <= totalPage){
+            content = getRequestContent(TeacherListUrl,Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))) , "GET");
+            Document doc = Jsoup.parse(content);
+
+            // Get TA from response
+            Elements elements = doc.select("tr");
+            for (Element e : elements) {
+                if (e.hasClass("listViewEntries")){
+                    String name = e.select(".listViewEntryValue").get(0).text() + " " + e.select(".listViewEntryValue").get(1).text();
+                    String phone = e.select(".listViewEntryValue").get(2).text();
+                    String email = e.select(".listViewEntryValue").get(3).text();
+                    String id = e.select(".listViewEntryValue").attr("data-id");
+                    Teacher teacher = new Teacher(name, phone, email, id);
+                    teacherList.add(teacher);
+//                    System.out.println(ta.getName());
+                }
+            }
+            page++;
+        }
+
+
+        // Write to file
+        IOSystem.getInstance().write(teacherList, filesPath + "teacherList.dat");
+    }
+
     public void updateStudentList() throws URISyntaxException, IOException {
         // Clear studentList
         studentList.clear();
@@ -282,8 +340,9 @@ public class RequestAPI {
     public void run() throws IOException, URISyntaxException, ClassNotFoundException  {
         // Login
         login("dangminh.TAMD", "LLVN123456", true);
-        testPost();
+//        testPost();
 //        updateTAList();
+//        updateTeacherList();
 //        updateStudentList();
 
 //        List<TA> list = IOSystem.getInstance().read(filesPath + "TAList.dat");
@@ -294,8 +353,8 @@ public class RequestAPI {
 //        for (String s : classIdList) {
 //            System.out.println(s);
 //        }
-//        updateClassIdList();
-//        updateClassList();
+        updateClassIdList();
+        updateClassList();
 //        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
 //        for (ClassRoom classRoom : list) {
 //            System.out.println(classRoom.getClassName());
@@ -324,7 +383,7 @@ public class RequestAPI {
     }
     public ClassRoom getClassRoomInformation(String classId){   
             // Get class information
-            String classLessonContentUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=&mode=showRelatedList&tab_label=Lesson%20Content";
+            String classLessonContentUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=431598&mode=showRelatedList&tab_label=Lesson%20Content";
             String classAttendanceUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=AttendanceClass&view=Detail&record=456177&mode=showRelatedList&tab_label=Attendance%20Report";
             String content = null;
         try {
@@ -339,7 +398,7 @@ public class RequestAPI {
             // Get class from response
             Elements elements = doc.select("td");
 
-            TimeOFWeek timeOFWeek = new TimeOFWeek();
+            TimeOFWeek timeOFWeek = null;
             List <TimeOFWeek> listTimeOfWeek = new ArrayList<>();
             List<TA> listTA = new ArrayList<>();
             List<String> listTAName = new ArrayList<>();
@@ -394,7 +453,7 @@ public class RequestAPI {
 
                     String startTime = e.text().split(" ")[0];
                     LocalTime time = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm"));
-
+                    timeOFWeek = new TimeOFWeek();
                     timeOFWeek.setDayOfWeek(DayOfWeek.of(dayOfWeek));
                     timeOFWeek.setTime(time);
 
@@ -420,6 +479,7 @@ public class RequestAPI {
             LocalTime lessonTime = null;
             String emailStatus = null;
             String lessonStatus = null;
+            Teacher teacher = null;
 
 //            // request with attendance page
 //            elements = doc.select(".table-bordered");
@@ -429,6 +489,9 @@ public class RequestAPI {
             // request with lesson content page
             elements = doc.select(".item__lesson");
 
+            Set<Teacher> teacherSet = new HashSet<>();
+
+            boolean isStarted = true;
             for (Element e : elements){
 //                System.out.println(e.text());
                 Elements td = e.select("td");
@@ -436,8 +499,16 @@ public class RequestAPI {
                 lessonId = td.get(8).select(".btnSendEmail").attr("data-id");
                 lessonName = td.get(1).text();
                 String date = td.get(2).text();
+                String teacherName = td.get(3).text();
 
-                boolean isStarted = true;
+                for (Teacher t : teacherList){
+                    if (t.getName().equals(teacherName)){
+                        teacher = t;
+                        teacherSet.add(teacher);
+                        break;
+                    }
+                }
+
                 // Get lesson date
                 if (date.equals("")){ // lesson not started
                     if (lessonNumber.equals("1")){   // First lesson
@@ -454,9 +525,87 @@ public class RequestAPI {
                 }
 
                 emailStatus = td.get(7).text();
-                lessonList.add(new Lesson(lessonNumber, lessonId, lessonName, lessonDate, null, emailStatus));
+                lessonList.add(new Lesson(lessonNumber, lessonId, lessonName, lessonDate,null, teacher, emailStatus));
 //                System.out.println(lessonNumber + " - " + lessonId + " - " + lessonName + " - " + lessonDate + " - " + emailStatus);
+            }
+
+
+            JSONObject jo = null;
+            // TODO
+            // Write logic get date
+            if (!lessonList.get(0).getLessonName().contains("EC")){
+                if(!isStarted){
+                    int x = 0;
+                    LocalDate date = startDate;
+    //                System.out.println(listTimeOfWeek.size());
+                    while (x < lessonList.size() && (date.isBefore(endDate) || date.isEqual(endDate))){
+        //            String isLessonDateUrl = "https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=checkDateGetTeacher";
+    //                List<NameValuePair> params = new ArrayList<>();
+    //                params.add(new BasicNameValuePair("classId", classId));
+    //                params.add(new BasicNameValuePair("date", date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
+    //
+    //                try {
+    //                    content = getRequestContent(isLessonDateUrl, params, "GET");
+    //                } catch (URISyntaxException | IOException e) {
+    //                    throw new RuntimeException(e);
+    //                }
+    //
+    //                try{
+    //                    jo = new JSONObject(content);
+    //                } catch (JSONException e) {
+    //                    System.out.println("@" + content + classId +"@");
+    //                }
+    //                JSONArray ja = jo.getJSONArray("result");
+    //
+    //                String dateStr = ja.getString(0);
+    //                if (!dateStr.equals("")){
+    //                    lessonList.get(x).setDate(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+    //                    x++;
+    //                }
+    //                    System.out.println(date +" - " + date.getDayOfWeek().getValue() + " - " + listTimeOfWeek.get(0).getDayOfWeek().getValue() + " - " + listTimeOfWeek.get(1).getDayOfWeek().getValue());
+                        if (listTimeOfWeek.size() > 0 && date.getDayOfWeek().getValue() == listTimeOfWeek.get(0).getDayOfWeek().getValue()){
+                            lessonList.get(x).setDate(date);
+                            x++;
+                        } else if (listTimeOfWeek.size() > 1 && date.getDayOfWeek().getValue() == listTimeOfWeek.get(1).getDayOfWeek().getValue()){
+                            lessonList.get(x).setDate(date);
+                            x++;
+                        }
+                        date = date.plusDays(1);
+                    }
+
+                } else {
+
+                    // TODO
+                    // Optimize code
+                    for (int i = 0; i < lessonList.size(); i++){
+                        if (i == 0) {
+                            lessonList.get(i).setDate(startDate);
+                        } else{
+                            if (lessonList.get(i).getEmailStatus().equals("No") && i != 0){
+                                LocalDate previousDate = lessonList.get(i-1).getDate();
+                                if (listTimeOfWeek.size() == 2){
+                                    if (previousDate.getDayOfWeek().getValue() == listTimeOfWeek.get(0).getDayOfWeek().getValue()){
+                                        while (previousDate.getDayOfWeek().getValue() != listTimeOfWeek.get(1).getDayOfWeek().getValue()){
+                                            previousDate = previousDate.plusDays(1);
+                                        }
+                                        lessonList.get(i).setDate(previousDate);
+                                    } else {
+                                        while (previousDate.getDayOfWeek().getValue() != listTimeOfWeek.get(0).getDayOfWeek().getValue()){
+                                            previousDate = previousDate.plusDays(1);
+                                        }
+                                        lessonList.get(i).setDate(previousDate);
+                                    }
+                                } else {
+                                    lessonList.get(i).setDate(previousDate.plusDays(7));
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+
+
+
 
             // *Get student list
             List<Student> listStudent = new ArrayList<>();
@@ -477,7 +626,6 @@ public class RequestAPI {
             Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        if (content != null) return null;
-            JSONObject jo = null;
         try{
             jo = new JSONObject(content);
         } catch (JSONException e) {
@@ -505,6 +653,7 @@ public class RequestAPI {
             }
 
             ClassRoom classRoom = new ClassRoom(classId,classCode ,listTA, startDate, endDate, listTimeOfWeek, lessonList, listStudent);
+            classRoom.setListTeacher(new ArrayList<>(teacherSet));
         return classRoom;
     }
 
@@ -537,5 +686,9 @@ public class RequestAPI {
         }
 
 
+    }
+
+    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
+        RequestAPI.getInstance().run();
     }
 }
