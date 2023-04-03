@@ -159,6 +159,8 @@ public class RequestAPI {
         jo = jo.getJSONObject("result");
         totalPage = jo.getInt("page");
 
+        Set<String> classIdSet = new HashSet<String>();
+
         // Get class id from each page
         while (page <= totalPage){
             content = getRequestContent(on_goingClassListUrl,Arrays.asList(new BasicNameValuePair("page", Integer.toString(page))) , "GET");
@@ -169,26 +171,25 @@ public class RequestAPI {
             a: for (Element e : elements) {
                 if (e.hasClass("listViewEntries")){
                     String classId = e.attr("data-id");
-                    classId = classId.trim();
-                    
-                    for (String id: classIdList){
+                    for (String id : classIdList) {
                         if (id.equals(classId)){
-                            System.out.println(id);
                             continue a;
                         }
                     }
-                    classIdList.add(classId);
-                    
+                    classIdList.add(e.attr("data-id"));
+//                    classIdSet.add(e.attr("data-id"));
 //                    System.out.println(e.attr("data-id"));
                 }
             }
             page++;
         }
-        classIdList = new ArrayList<String>(new HashSet<String>(classIdList));
+
+//        classIdList = new ArrayList<>(classIdSet);
+//        classIdList = new ArrayList<>(new HashSet<String>(classIdList));
         System.out.println("Total class updated: " + classIdList.size());
 
         // Write list to file
-//        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
+        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
     }
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
         // Get classIdList from file
@@ -364,7 +365,7 @@ public class RequestAPI {
 //            System.out.println(s);
 //        }
         updateClassIdList();
-//        updateClassList();
+        updateClassList();
 //        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
 //        for (ClassRoom classRoom : list) {
 //            System.out.println(classRoom.getClassName());
