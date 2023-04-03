@@ -60,4 +60,18 @@ public class Teacher implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public Teacher() {
+        name = "";
+        id = "";
+        email = "";
+        phoneNumber = "";
+    }
+
+    public Teacher(String name) {
+        this.name = name;
+        id = "";
+        email = "";
+        phoneNumber = "";
+    }
+
 }

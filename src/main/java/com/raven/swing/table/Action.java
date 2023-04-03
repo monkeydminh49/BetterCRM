@@ -38,8 +38,6 @@ public class Action extends javax.swing.JPanel {
         cmdDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-
-
                 data.getEvent().delete(row);
             }
         });

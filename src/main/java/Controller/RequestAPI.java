@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 //import Viewer.GUI;
+import com.raven.main.Main;
 import org.apache.commons.io.IOUtils;
 
 import org.apache.http.client.HttpClient;
@@ -38,7 +39,7 @@ public class RequestAPI {
     private RequestAPI() {
         classRoomList = new ArrayList<>();
         classIdList = new ArrayList<>();
-        TAList = new ArrayList<>();
+        taList = new ArrayList<>();
         studentList = new ArrayList<>();
         teacherList = new ArrayList<>();
     }
@@ -67,12 +68,12 @@ public class RequestAPI {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+
         }
         return classRoomList;
     }
     private List<String> classIdList;
-    private List<TA> TAList;
+    private List<TA> taList;
 
     public List<Teacher> getTeacherList() {
         return teacherList;
@@ -91,8 +92,8 @@ public class RequestAPI {
     private CloseableHttpResponse response;
     private String token;
 
-    public List<TA> getTAList() {
-        return TAList;
+    public List<TA> getTaList() {
+        return taList;
     }
     public List<String> getClassIdList() {
         return classIdList;
@@ -100,8 +101,8 @@ public class RequestAPI {
     public void setClassIdList(List<String> classIdList) {
         this.classIdList = classIdList;
     }
-    public void setTAList(List<TA> TAList) {
-        this.TAList = TAList;
+    public void setTaList(List<TA> taList) {
+        this.taList = taList;
     }
     public void login(String username, String password, boolean remember) throws IOException, URISyntaxException {
         System.out.println("Logging in");
@@ -141,8 +142,12 @@ public class RequestAPI {
         content = getRequestContent(loginUrl, payload, "POST");
         System.out.println(content);
     }
-    public void updateClassIdList() throws IOException, URISyntaxException {
-        classIdList.clear();
+    public List<String> updateNewClassIdList() throws IOException, URISyntaxException {
+
+//        classIdList = MainController.getInstance().getClassIdList();
+//        classRoomList = MainController.getInstance().getClassRoomList();
+        List<String> newClassIdList = new ArrayList<>();
+
         // Loop through all pages
         int page = 1;
         int totalPage = 0;
@@ -168,63 +173,63 @@ public class RequestAPI {
 
             // Get classId from response
             Elements elements = doc.select("tr");
-            a: for (Element e : elements) {
+            for (Element e : elements) {
                 if (e.hasClass("listViewEntries")){
                     String classId = e.attr("data-id");
-                    for (String id : classIdList) {
-                        if (id.equals(classId)){
-                            continue a;
-                        }
+                    if (!classIdList.contains(classId)) {
+                        classIdList.add(classId);
+                        newClassIdList.add(classId);
                     }
-                    classIdList.add(e.attr("data-id"));
-//                    classIdSet.add(e.attr("data-id"));
-//                    System.out.println(e.attr("data-id"));
                 }
             }
             page++;
         }
 
-//        classIdList = new ArrayList<>(classIdSet);
-//        classIdList = new ArrayList<>(new HashSet<String>(classIdList));
-        System.out.println("Total class updated: " + classIdList.size());
+        classIdList = new ArrayList<>(new HashSet<String>(classIdList));
+        System.out.println("Added class: " + newClassIdList.size());
+        System.out.println("Total class after update: " + classIdList.size());
 
         // Write list to file
         IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
+        return newClassIdList;
     }
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
         // Get classIdList from file
-        classIdList = IOSystem.getInstance().read(filesPath + "classIdList.dat");
-        TAList = IOSystem.getInstance().read(filesPath + "TAList.dat");
-        studentList = IOSystem.getInstance().read(filesPath + "studentList.dat");
-        teacherList = IOSystem.getInstance().read(filesPath + "teacherList.dat");
 
+        taList = MainController.getInstance().getTaList();
+        studentList = MainController.getInstance().getStudentList();
+        teacherList = MainController.getInstance().getTeacherList();
+        List<String> classIdListUpdate = updateNewClassIdList();
+//        List<String> classIdListUpdate = classIdList;
         int count = 0;
 
         // Loop through all classId
-        for (String classId : classIdList){
+        for (String classId : classIdListUpdate){
             count++;
             
             ClassRoom classRoom = getClassRoomInformation(classId);
 //            classRoom.display();
             classRoomList.add(classRoom);
 
-            System.out.println("Added " + classRoom.getClassName() + " " + count + "/" + classIdList.size());
+            System.out.println("Added " + classRoom.getClassName() + " " + count + "/" + classIdListUpdate.size());
             System.out.println("----------------------------------------------------");
+            System.out.println(classRoomList.size());
 //            if (count==5) break;
         }
+
         // Write to file
         IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
     }
     public void updateTAList() throws URISyntaxException, IOException {
         // Clear TAList
-        TAList.clear();
+        taList.clear();
 
         // Loop through all pages
         int page = 1;
         int totalPage = 0;
 
         String content = null;
-        String TAListUrl = "https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D";
+        String TAListUrl = "https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=lastname&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:6eb8d4459b055ecf6ca085e3895468c2a865dd75,1679155849&module=TeacherTA&parent=&page=1&view=ListAjax&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D&mode=getPageCount";
 
         // Request
@@ -249,7 +254,7 @@ public class RequestAPI {
                     String email = e.select(".listViewEntryValue").get(3).text();
                     String id = e.select(".listViewEntryValue").attr("data-id");
                     TA ta = new TA(name, phone, email, id);
-                    TAList.add(ta);
+                    taList.add(ta);
 //                    System.out.println(ta.getName());
                 }
             }
@@ -258,7 +263,7 @@ public class RequestAPI {
 
 
         // Write to file
-        IOSystem.getInstance().write(TAList, filesPath+ "TAList.dat");
+        IOSystem.getInstance().write(taList, filesPath+ "TAList.dat");
     }
     public void updateTeacherList() throws URISyntaxException, IOException {
         // Clear TAList
@@ -269,7 +274,7 @@ public class RequestAPI {
         int totalPage = 0;
 
         String content = null;
-        String TeacherListUrl = "https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=cf_1252&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22Teacher%22%5D%5D%5D";
+        String TeacherListUrl = "https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=lastname&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22Teacher%22%5D%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:fcb5c7ecbb4c28f6fd29086850ddf1b719643422,1680451355&module=TeacherTA&parent=&page=1&view=ListAjax&viewname=648&orderby=cf_1252&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22Teacher%22%5D%5D%5D&mode=getPageCount";
 
         // Request
@@ -295,12 +300,11 @@ public class RequestAPI {
                     String id = e.select(".listViewEntryValue").attr("data-id");
                     Teacher teacher = new Teacher(name, phone, email, id);
                     teacherList.add(teacher);
-//                    System.out.println(ta.getName());
+                    System.out.println(teacher.getName());
                 }
             }
             page++;
         }
-
 
         // Write to file
         IOSystem.getInstance().write(teacherList, filesPath + "teacherList.dat");
@@ -315,7 +319,7 @@ public class RequestAPI {
         int totalPage = 0;
 
         String content = null;
-        String studentListUrl = "https://crm.llv.edu.vn/index.php?module=Contacts&parent=&page=1&view=List&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D";
+        String studentListUrl = "https://crm.llv.edu.vn/index.php?module=Contacts&parent=&page=1&view=List&viewname=470&orderby=lastname&sortorder=ASC&search_params=%5B%5B%5D%5D";
         String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:797b1b65f176b662e920f223a74320f600987536,1679156710&module=Contacts&parent=&page=1&view=ListAjax&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D&mode=getPageCount";
 
         // Request
@@ -348,31 +352,18 @@ public class RequestAPI {
         // Write to file
         IOSystem.getInstance().write(studentList, filesPath+ "studentList.dat");
     }
-    public void run() throws IOException, URISyntaxException, ClassNotFoundException  {
-        // Login
-        login("dangminh.TAMD", "LLVN123456", true);
-//        testPost();
-//        updateTAList();
-//        updateTeacherList();
-//        updateStudentList();
 
-//        List<TA> list = IOSystem.getInstance().read(filesPath + "TAList.dat");
-//        for (TA ta : list) {
-//            System.out.println(ta.getName() + " - " + ta.getPhoneNumber() + " - " + ta.getEmail());
-//        }
-//
-//        for (String s : classIdList) {
-//            System.out.println(s);
-//        }
-        updateClassIdList();
-        updateClassList();
-//        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
-//        for (ClassRoom classRoom : list) {
-//            System.out.println(classRoom.getClassName());
-//            System.out.println(classRoom.getLatestLesson());
-//        }
-//        System.out.println(list.size());
+    public void updateOnGoingClassList()  {
+        try {
+            classIdList = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
+        } catch (IOException | ClassNotFoundException e) {
+            classIdList = new ArrayList<>();
+            throw new RuntimeException(e);
+        }
+
+
     }
+
     public String getRequestContent(String url, List<NameValuePair> payload, String method) throws URISyntaxException, IOException {
         // Build url
         builder = new URIBuilder(url);
@@ -446,7 +437,7 @@ public class RequestAPI {
                     // Get TA by name
                     for (String name : listTAName){
 //                        System.out.println("\""+name+"\"");
-                        for (TA ta : TAList){
+                        for (TA ta : taList){
                             if (ta.getName().equals(name)){
 //                                System.out.println("Found "+ name + " in TAList");
                                 listTA.add(ta);
@@ -490,7 +481,7 @@ public class RequestAPI {
             LocalTime lessonTime = null;
             String emailStatus = null;
             String lessonStatus = null;
-            Teacher teacher = null;
+            Teacher teacher = new Teacher();
 
 //            // request with attendance page
 //            elements = doc.select(".table-bordered");
@@ -511,14 +502,15 @@ public class RequestAPI {
                 lessonName = td.get(1).text();
                 String date = td.get(2).text();
                 String teacherName = td.get(3).text();
-
-                for (Teacher t : teacherList){
-                    if (t.getName().equals(teacherName)){
-                        teacher = t;
-                        teacherSet.add(teacher);
-                        break;
-                    }
-                }
+//                System.out.println(teacherName);
+//                for (Teacher t : teacherList){
+//                    if (t.getName().equals(teacherName)){
+//                        System.out.println("Found " + teacherName + " in teacherList");
+//                        teacher = t;
+//                        teacherSet.add(teacher);
+//                        break;
+//                    }
+//                }
 
                 // Get lesson date
                 if (date.equals("")){ // lesson not started
@@ -536,7 +528,7 @@ public class RequestAPI {
                 }
 
                 emailStatus = td.get(7).text();
-                lessonList.add(new Lesson(lessonNumber, lessonId, lessonName, lessonDate,null, teacher, emailStatus));
+                lessonList.add(new Lesson(lessonNumber, lessonId, lessonName, lessonDate,null, new Teacher(teacherName), emailStatus));
 //                System.out.println(lessonNumber + " - " + lessonId + " - " + lessonName + " - " + lessonDate + " - " + emailStatus);
             }
 
@@ -697,6 +689,17 @@ public class RequestAPI {
         }
 
 
+    }
+
+    public void run() throws IOException, URISyntaxException, ClassNotFoundException  {
+        // Login
+//        login("dangminh.TAMD", "LLVN123456", true);
+//        testPost();
+//        updateTAList();
+//        updateTeacherList();
+//        updateStudentList();
+//        updateClassList();
+        System.out.println(MainController.getInstance().getClassRoomList().size());
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {

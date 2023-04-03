@@ -46,8 +46,6 @@ public class IOSystem {
             a = new ObjectOutputStream(fileStream);
             a.writeObject(list);
             System.out.println("Write file " + filePath + " successfully!");
-            a.close();
-            fileStream.close();
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File not found!");
         } catch (SocketException e) {

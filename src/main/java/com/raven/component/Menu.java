@@ -1,5 +1,6 @@
 package com.raven.component;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.raven.event.EventMenuSelected;
 import com.raven.model.Model_Menu;
 import java.awt.Color;
@@ -23,6 +24,8 @@ public class Menu extends javax.swing.JPanel {
 
     public Menu() {
         initComponents();
+        FlatIntelliJLaf.registerCustomDefaultsSource("com.raven.form");
+        FlatIntelliJLaf.setup();
         setOpaque(false);
         listMenu1.setOpaque(false);
         init();
@@ -33,7 +36,7 @@ public class Menu extends javax.swing.JPanel {
         listMenu1.addItem(new Model_Menu("2", "Class", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("3", "TA", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("4", "Student", Model_Menu.MenuType.MENU));
-//        listMenu1.addItem(new Model_Menu("5", "Date Table", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("5", "Admin", Model_Menu.MenuType.MENU));
 //        listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
 
 //        listMenu1.addItem(new Model_Menu("", "My Data", Model_Menu.MenuType.TITLE));

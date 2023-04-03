@@ -45,8 +45,7 @@ public class Form_Home extends javax.swing.JPanel {
     
     public Form_Home() {
         initComponents();
-        FlatIntelliJLaf.registerCustomDefaultsSource("com.raven.form");
-        FlatIntelliJLaf.setup();
+        
         this.classRoomList = new ArrayList<>();
         chDate.setLabelCalendar(labelCalendar);
         chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
@@ -70,16 +69,18 @@ public class Form_Home extends javax.swing.JPanel {
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 String className = (String) model.getValueAt(row, 1);
+                String classId = "";
                 
                 for (ClassRoom current : classRoomList){
                     if (current.getClassName().equals(className)){
                         System.out.println("Delete " + current.getClassName());
+                        classId = current.getId();
+                        
+                        MainController.getInstance().getClassIdList().remove(classId);
                         classRoomList.remove(current);
                         break;
                     }
                 }
-                System.out.println("Delete " + classRoomList.get(row).getClassName());
-                classRoomList.remove(row);
                 model.removeRow(row);
             }
 
