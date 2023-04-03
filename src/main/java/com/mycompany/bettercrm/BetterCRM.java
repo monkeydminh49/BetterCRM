@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 
 public class BetterCRM {
 
-    public static Main main = new Main();
+    public static Main main;
 
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
 //        RequestAPI.getInstance().run();
@@ -24,7 +24,7 @@ public class BetterCRM {
                 } catch (IOException | URISyntaxException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-
+                main = new Main();
                 main.setVisible(true);
 //                new Main().setVisible(true);
             }
