@@ -41,7 +41,7 @@ public class Main extends javax.swing.JFrame {
            public void windowClosing(WindowEvent e)
             {
                 try {
-                    IOSystem.getInstance().write(MainController.getInstance().getClassRoomList(), "src/Files/classIdList.dat");
+                    IOSystem.getInstance().write(MainController.getInstance().getClassIdList(), "src/Files/classIdList.dat");
                     IOSystem.getInstance().write(MainController.getInstance().getClassRoomList(), "src/Files/classRoomList.dat");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);

@@ -144,9 +144,10 @@ public class RequestAPI {
     }
     public List<String> updateNewClassIdList() throws IOException, URISyntaxException {
 
-//        classIdList = MainController.getInstance().getClassIdList();
-//        classRoomList = MainController.getInstance().getClassRoomList();
+        classIdList = MainController.getInstance().getClassIdList();
+        classRoomList = MainController.getInstance().getClassRoomList();
         List<String> newClassIdList = new ArrayList<>();
+        System.out.println("Before update: " + classIdList.size());
 
         // Loop through all pages
         int page = 1;
@@ -173,7 +174,7 @@ public class RequestAPI {
 
             // Get classId from response
             Elements elements = doc.select("tr");
-            for (Element e : elements) {
+            a: for (Element e : elements) {
                 if (e.hasClass("listViewEntries")){
                     String classId = e.attr("data-id");
                     if (!classIdList.contains(classId)) {
@@ -213,7 +214,7 @@ public class RequestAPI {
 
             System.out.println("Added " + classRoom.getClassName() + " " + count + "/" + classIdListUpdate.size());
             System.out.println("----------------------------------------------------");
-            System.out.println(classRoomList.size());
+//            System.out.println(classRoomList.size());
 //            if (count==5) break;
         }
 
@@ -693,13 +694,13 @@ public class RequestAPI {
 
     public void run() throws IOException, URISyntaxException, ClassNotFoundException  {
         // Login
-//        login("dangminh.TAMD", "LLVN123456", true);
+        login("dangminh.TAMD", "LLVN123456", true);
 //        testPost();
 //        updateTAList();
 //        updateTeacherList();
 //        updateStudentList();
-//        updateClassList();
-        System.out.println(MainController.getInstance().getClassRoomList().size());
+//        updateNewClassIdList();
+        updateClassList();
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
