@@ -18,15 +18,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnUpdate" min="-2" pref="157" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="updateText" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="latestUpdateTimeText" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace pref="539" max="32767" attributes="0"/>
+              <Component id="btnUpdate" min="-2" pref="157" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="updateText" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="latestUpdateTimeText" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="352" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -34,13 +31,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-              <Component id="btnUpdate" min="-2" pref="26" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnUpdate" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
                   <Component id="updateText" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="latestUpdateTimeText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="401" max="32767" attributes="0"/>
+              <EmptySpace pref="421" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -59,17 +55,11 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="cc" green="cc" red="cc" type="rgb"/>
         </Property>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="10" style="0"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Latest update: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="latestUpdateTimeText">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="10" style="0"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="latestUpdateTime"/>
       </Properties>
     </Component>

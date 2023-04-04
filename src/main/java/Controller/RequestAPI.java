@@ -2,7 +2,6 @@ package Controller;
 
 import Model.*;
 //import Viewer.GUI;
-import com.raven.main.Main;
 import org.apache.commons.io.IOUtils;
 
 import org.apache.http.client.HttpClient;
@@ -21,8 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -57,13 +56,13 @@ public class RequestAPI {
         return filesPath;
     }
 
-    private final String filesPath = "src/Files/";
+    private final String filesPath = MainController.getInstance().getProjectPath();
 
     private List<ClassRoom> classRoomList;
 
     public List<ClassRoom> getClassRoomList() {
         try {
-            String filePath = RequestAPI.getInstance().getFilesPath() + "classRoomList.dat";
+            String filePath = RequestAPI.getInstance().getFilesPath() + "/Files/classRoomList.dat";
             classRoomList = IOSystem.getInstance().read(filePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -191,7 +190,7 @@ public class RequestAPI {
         System.out.println("Total class after update: " + classIdList.size());
 
         // Write list to file
-        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
+        IOSystem.getInstance().write( classIdList,filesPath + "/Files/classIdList.dat");
         return newClassIdList;
     }
     public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
@@ -219,7 +218,7 @@ public class RequestAPI {
         }
 
         // Write to file
-        IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
+        IOSystem.getInstance().write(classRoomList, filesPath + "/Files/classRoomList.dat");
     }
     public void updateTAList() throws URISyntaxException, IOException {
         // Clear TAList
@@ -264,7 +263,7 @@ public class RequestAPI {
 
 
         // Write to file
-        IOSystem.getInstance().write(taList, filesPath+ "TAList.dat");
+        IOSystem.getInstance().write(taList, filesPath+ "/Files/TAList.dat");
     }
     public void updateTeacherList() throws URISyntaxException, IOException {
         // Clear TAList
@@ -308,7 +307,7 @@ public class RequestAPI {
         }
 
         // Write to file
-        IOSystem.getInstance().write(teacherList, filesPath + "teacherList.dat");
+        IOSystem.getInstance().write(teacherList, filesPath + "/Files/teacherList.dat");
     }
 
     public void updateStudentList() throws URISyntaxException, IOException {
@@ -351,12 +350,12 @@ public class RequestAPI {
         }
 
         // Write to file
-        IOSystem.getInstance().write(studentList, filesPath+ "studentList.dat");
+        IOSystem.getInstance().write(studentList, filesPath+ "/Files/studentList.dat");
     }
 
     public void updateOnGoingClassList()  {
         try {
-            classIdList = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
+            classIdList = IOSystem.getInstance().read(filesPath + "/Files/classRoomList.dat");
         } catch (IOException | ClassNotFoundException e) {
             classIdList = new ArrayList<>();
             throw new RuntimeException(e);
@@ -392,9 +391,9 @@ public class RequestAPI {
         try {
             content = getRequestContent(classLessonContentUrl, Arrays.asList(new BasicNameValuePair("record", classId)), "GET");
         } catch (URISyntaxException ex) {
-            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
             Document doc = Jsoup.parse(content);
 
@@ -625,9 +624,9 @@ public class RequestAPI {
             // Json file of student list
             content = getRequestContent(firstLessonDetailUrl, params, "GET");
         } catch (URISyntaxException ex) {
-            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(RequestAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        if (content != null) return null;
         try{
@@ -703,7 +702,7 @@ public class RequestAPI {
 //        updateClassList();
     }
 
-    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
-        RequestAPI.getInstance().run();
-    }
+//    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
+//        RequestAPI.getInstance().run();
+//    }
 }

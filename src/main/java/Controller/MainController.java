@@ -13,11 +13,17 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class MainController {
     private static MainController instance;
+
+    public String getProjectPath() {
+        return projectPath;
+    }
+
+    private String projectPath = System.getProperty("user.dir");
+//    private final String projectPath = "D:/ProPTIT/Java/ProjectJava/TestRequest";
 
     public static MainController getInstance() {
         if (instance == null) {
@@ -29,7 +35,8 @@ public class MainController {
     public List<ClassRoom> getClassRoomList() {
         if (classRoomList == null){
             try {
-                classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
+
+                classRoomList = IOSystem.getInstance().read(MainController.getInstance().getProjectPath()+ "/Files/classRoomList.dat");
             } catch (IOException | ClassNotFoundException e) {
                 classRoomList = new ArrayList<>();
                 throw new RuntimeException(e);
@@ -44,7 +51,7 @@ public class MainController {
     public List<TA> getTaList() {
         if (taList == null) {
             try {
-                taList = IOSystem.getInstance().read("src/Files/taList.dat");
+                taList = IOSystem.getInstance().read(MainController.getInstance().getProjectPath()+ "/Files/TAList.dat");
             } catch (IOException | ClassNotFoundException e) {
                 taList = new ArrayList<>();
                 throw new RuntimeException(e);
@@ -60,7 +67,7 @@ public class MainController {
     public List<Teacher> getTeacherList() {
         if (teacherList == null) {
             try {
-                teacherList = IOSystem.getInstance().read("src/Files/teacherList.dat");
+                teacherList = IOSystem.getInstance().read(MainController.getInstance().getProjectPath()+ "/Files/teacherList.dat");
             } catch (IOException | ClassNotFoundException e) {
                 teacherList = new ArrayList<>();
                 throw new RuntimeException(e);
@@ -76,7 +83,7 @@ public class MainController {
     public List<Student> getStudentList() {
         if (studentList == null) {
             try {
-                studentList = IOSystem.getInstance().read("src/Files/studentList.dat");
+                studentList = IOSystem.getInstance().read(MainController.getInstance().getProjectPath()+ "/Files/studentList.dat");
             } catch (IOException | ClassNotFoundException e) {
                 studentList = new ArrayList<>();
                 throw new RuntimeException(e);
@@ -96,7 +103,7 @@ public class MainController {
     public List<String> getClassIdList() {
         if (classIdList == null) {
             try {
-                classIdList = IOSystem.getInstance().read("src/Files/classIdList.dat");
+                classIdList = IOSystem.getInstance().read(MainController.getInstance().getProjectPath()+ "/Files/classIdList.dat");
             } catch (IOException | ClassNotFoundException e) {
                 classIdList = new ArrayList<>();
                 throw new RuntimeException(e);
@@ -120,6 +127,7 @@ public class MainController {
     }
 
     private MainController() {
+        projectPath = projectPath.replaceAll("\\\\", "/");
         LocalDate ldate = LocalDate.now().minusDays(6);
         Instant instant = Instant.from(ldate.atStartOfDay(ZoneId.of("GMT")));
         dateBetween = new DateBetween(Date.from(instant), new Date());
