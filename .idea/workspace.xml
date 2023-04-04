@@ -9,7 +9,9 @@
       <change beforePath="$PROJECT_DIR$/src/Files/classIdList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Files/classIdList.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Files/classRoomList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Files/classRoomList.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/RequestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/raven/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raven/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/ClassRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/ClassRoom.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Lesson.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Lesson.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

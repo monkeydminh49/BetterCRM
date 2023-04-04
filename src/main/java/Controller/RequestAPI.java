@@ -700,7 +700,7 @@ public class RequestAPI {
 //        updateTeacherList();
 //        updateStudentList();
 //        updateNewClassIdList();
-        updateClassList();
+//        updateClassList();
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
