@@ -85,7 +85,7 @@ public class Form_1 extends javax.swing.JPanel {
                 }
             }
 
-            table.addRow(new Object[]{i+1, lesson.getLessonName(),lesson.getDate().format(dateFormatter),"", type});
+            table.addRow(new Object[]{i+1, lesson.getLessonName(),lesson.getDate().format(dateFormatter),lesson.getTeacher().getName(), type});
         }
     }
         

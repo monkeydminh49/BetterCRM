@@ -64,6 +64,14 @@ public class Lesson implements Serializable {
 
     private Teacher teacher;
 
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
     public Lesson(String lessonNumber, String lessonId, String lessonName, LocalDate date, LocalTime time, Teacher teacher,String emailStatus) {
         this.lessonNumber = lessonNumber;
         this.lessonId = lessonId;

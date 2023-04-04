@@ -1,14 +1,20 @@
 package Controller;
 
 import Model.ClassRoom;
+import Model.Student;
+import Model.TA;
+import Model.Teacher;
 import com.raven.datechooser.DateBetween;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainController {
     private static MainController instance;
@@ -21,10 +27,87 @@ public class MainController {
     }
 
     public List<ClassRoom> getClassRoomList() {
+        if (classRoomList == null){
+            try {
+                classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
+            } catch (IOException | ClassNotFoundException e) {
+                classRoomList = new ArrayList<>();
+                throw new RuntimeException(e);
+            }
+        }
         return classRoomList;
     }
 
     private List<ClassRoom> classRoomList;
+    private List<String> classIdList;
+
+    public List<TA> getTaList() {
+        if (taList == null) {
+            try {
+                taList = IOSystem.getInstance().read("src/Files/taList.dat");
+            } catch (IOException | ClassNotFoundException e) {
+                taList = new ArrayList<>();
+                throw new RuntimeException(e);
+            }
+        }
+        return taList;
+    }
+
+    public void setTaList(List<TA> taList) {
+        this.taList = taList;
+    }
+
+    public List<Teacher> getTeacherList() {
+        if (teacherList == null) {
+            try {
+                teacherList = IOSystem.getInstance().read("src/Files/teacherList.dat");
+            } catch (IOException | ClassNotFoundException e) {
+                teacherList = new ArrayList<>();
+                throw new RuntimeException(e);
+            }
+        }
+        return teacherList;
+    }
+
+    public void setTeacherList(List<Teacher> teacherList) {
+        this.teacherList = teacherList;
+    }
+
+    public List<Student> getStudentList() {
+        if (studentList == null) {
+            try {
+                studentList = IOSystem.getInstance().read("src/Files/studentList.dat");
+            } catch (IOException | ClassNotFoundException e) {
+                studentList = new ArrayList<>();
+                throw new RuntimeException(e);
+            }
+        }
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
+
+    private List <TA> taList;
+    private List <Teacher> teacherList;
+    private List<Student> studentList;
+
+    public List<String> getClassIdList() {
+        if (classIdList == null) {
+            try {
+                classIdList = IOSystem.getInstance().read("src/Files/classIdList.dat");
+            } catch (IOException | ClassNotFoundException e) {
+                classIdList = new ArrayList<>();
+                throw new RuntimeException(e);
+            }
+        }
+        return classIdList;
+    }
+
+    public void setClassIdList(List<String> classIdList) {
+        this.classIdList = classIdList;
+    }
     
     private DateBetween dateBetween;
 
@@ -37,12 +120,6 @@ public class MainController {
     }
 
     private MainController() {
-        try {
-            classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        
         LocalDate ldate = LocalDate.now().minusDays(6);
         Instant instant = Instant.from(ldate.atStartOfDay(ZoneId.of("GMT")));
         dateBetween = new DateBetween(Date.from(instant), new Date());

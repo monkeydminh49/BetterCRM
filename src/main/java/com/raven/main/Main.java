@@ -5,13 +5,19 @@
  */
 package com.raven.main;
 
+import Controller.IOSystem;
+import Controller.MainController;
 import com.raven.event.EventMenuSelected;
 import com.raven.form.Form_1;
 import com.raven.form.Form_2;
 import com.raven.form.Form_3;
 import com.raven.form.Form_Home;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 
 /**
  *
@@ -29,6 +35,19 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
+
+        addWindowListener( new WindowAdapter()
+         {
+           public void windowClosing(WindowEvent e)
+            {
+                try {
+                    IOSystem.getInstance().write(MainController.getInstance().getClassIdList(), "src/Files/classIdList.dat");
+                    IOSystem.getInstance().write(MainController.getInstance().getClassRoomList(), "src/Files/classRoomList.dat");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+          });
 // TODO
 //        setBackground(new Color(0, 0, 0, 0));
 
