@@ -6,14 +6,15 @@
 package com.raven.form;
 
 import Controller.IOSystem;
+import Controller.MainController;
 import Controller.RequestAPI;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
@@ -40,12 +41,12 @@ public class Form_2 extends javax.swing.JPanel {
         initComponents();
         timeList = new ArrayList<>();
         try {
-            time = (String) IOSystem.getInstance().read("src/Files/latestUpdateTime.dat").get(0);
+            time = (String) IOSystem.getInstance().read(MainController.getInstance().getProjectPath()+ "/Files/latestUpdateTime.dat").get(0);
             latestUpdateTimeText.setText(time);
         } catch (IOException ex) {
-            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -70,10 +71,8 @@ public class Form_2 extends javax.swing.JPanel {
         });
 
         updateText.setBackground(new java.awt.Color(204, 204, 204));
-        updateText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         updateText.setText("Latest update: ");
 
-        latestUpdateTimeText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         latestUpdateTimeText.setText("latestUpdateTime");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -82,24 +81,22 @@ public class Form_2 extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(updateText)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(latestUpdateTimeText)))
-                .addContainerGap(539, Short.MAX_VALUE))
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(updateText)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(latestUpdateTimeText)
+                .addContainerGap(352, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(55, 55, 55)
-                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(updateText)
                     .addComponent(latestUpdateTimeText))
-                .addContainerGap(401, Short.MAX_VALUE))
+                .addContainerGap(421, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -119,14 +116,15 @@ public class Form_2 extends javax.swing.JPanel {
             }
         };
         sw1.execute();
-        time = LocalDateTime.now().toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
+        time = LocalDateTime.now().format(formatter);
         
         timeList.add(time);
 
         try {
-            IOSystem.getInstance().write(timeList, "src/Files/latestUpdateTime.dat");
+            IOSystem.getInstance().write(timeList, MainController.getInstance().getProjectPath()+ "/Files/latestUpdateTime.dat");
         } catch (IOException ex) {
-            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 

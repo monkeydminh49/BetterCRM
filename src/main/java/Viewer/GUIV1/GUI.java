@@ -5,6 +5,7 @@
 package Viewer.GUIV1;
 
 import Controller.IOSystem;
+import Controller.MainController;
 import Model.ClassRoom;
 import Model.Lesson;
 import java.io.IOException;
@@ -13,8 +14,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,9 +43,9 @@ public class GUI extends javax.swing.JFrame {
         model.setRowCount(0);
 
         try {
-            classRoomList = IOSystem.getInstance().read("src/Files/classRoomList.dat");
+            classRoomList = IOSystem.getInstance().read(MainController.getInstance().getProjectPath()+ "/Files/classRoomList.dat");
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         TableActionEvent event = new TableActionEvent() {
@@ -111,7 +112,7 @@ public class GUI extends javax.swing.JFrame {
                 try {
                     System.out.println(get());
                 } catch (InterruptedException | ExecutionException ex) {
-                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+//                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 if (jTable1.getSelectedRowCount() == 1){
@@ -238,13 +239,13 @@ public class GUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
