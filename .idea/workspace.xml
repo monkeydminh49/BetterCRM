@@ -9,7 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="update Introduction.md" />
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="delete jar file to push">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,7 +68,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.38965517&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.obiscr.chatgpt.settings.ChatGPT&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -149,8 +151,7 @@
       <workItem from="1680611345464" duration="2754000" />
       <workItem from="1680616179943" duration="931000" />
       <workItem from="1680620626375" duration="16383000" />
-      <workItem from="1680640316208" duration="1940000" />
-      <workItem from="1680642285150" duration="487000" />
+      <workItem from="1680640316208" duration="1460000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -446,28 +447,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680640348746</updated>
     </task>
-    <task id="LOCAL-00043" summary="delete jar file to push">
-      <created>1680642137692</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1680642137692</updated>
-    </task>
-    <task id="LOCAL-00044" summary="delete jar file to push">
-      <created>1680642353983</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1680642353983</updated>
-    </task>
-    <task id="LOCAL-00045" summary="update Introduction.md">
-      <created>1680642646132</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1680642646132</updated>
-    </task>
-    <option name="localTasksCounter" value="46" />
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -492,6 +472,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="add button to table using ButtonBuilder" />
     <MESSAGE value="junk commit" />
     <MESSAGE value="Resolve problem in RequestAPI and update .dat files" />
     <MESSAGE value="Fix Json read error, change classCode -&gt; className" />
@@ -516,11 +497,6 @@
     <MESSAGE value="first build app commit" />
     <MESSAGE value="update introduction doc" />
     <MESSAGE value="delete jar file to push" />
-    <MESSAGE value="update Introduction.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="update Introduction.md" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
+    <option name="LAST_COMMIT_MESSAGE" value="delete jar file to push" />
   </component>
 </project>

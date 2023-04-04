@@ -18,7 +18,7 @@ Người dùng có thể tìm kiếm lớp học bằng các nhập tên của l
 
 2. Tab Dashboard
 
-![Tab Dashboard](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/dashboard_bettercrm.png?raw=true)
+![Tab Dashboard](doc/img/dashboard_bettercrm.png)
 
 - Ở tab này, các lớp học được hiển thị với tên lớp học, tiết học gần nhất, thời gian tiết học,
 và trạng thái gửi nhận xét lớp. Nếu trạng thái là đã gửi sẽ hiện YES màu xanh, chưa gửi nếu chưa quá hạn gửi sẽ hiện 
@@ -29,14 +29,14 @@ NO màu vàng, nếu đã quá hạn nộp sẽ hiện OVERDUE màu đỏ.
 - 
 3. Tab Admin
 
-![Tab Admin](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/admin_bettercrm.png?raw=true)
+![Tab Admin](doc/img/admin_bettercrm.png)
 
 - Người dùng có thể cập nhật danh sách lớp thông qua nút "Update class list" khi có lớp học mới được thêm vào hệ thống.
 - Thời gian lần cuối cùng cập nhật danh sách lớp học sẽ được hiển thị ở phần "Last update".
 
 4. Trang lớp học
 
-![Trang lớp học](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/class_bettercrm.png?raw=true)
+![Trang lớp học](doc/img/class_bettercrm.png)
 
 - Ở trang lớp học, người dùng có thể xem thông tin các tiết học của lớp học, TA và giáo viên từng tiết học của lớp.
 - Người dùng có thể tải lại trạng thái lớp với nút "Reload" phía trên bên phải bảng các tiết học.
