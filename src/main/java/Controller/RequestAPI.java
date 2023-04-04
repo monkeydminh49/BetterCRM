@@ -692,6 +692,10 @@ public class RequestAPI {
 
     }
 
+    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
+        RequestAPI.getInstance().run();
+    }
+
     public void run() throws IOException, URISyntaxException, ClassNotFoundException  {
         // Login
         login("dangminh.TAMD", "LLVN123456", true);
@@ -700,10 +704,6 @@ public class RequestAPI {
 //        updateTeacherList();
 //        updateStudentList();
 //        updateNewClassIdList();
-        updateClassList();
-    }
-
-    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
-        RequestAPI.getInstance().run();
+//        updateClassList();
     }
 }
