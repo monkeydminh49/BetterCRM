@@ -43,9 +43,11 @@ public class Main extends javax.swing.JFrame {
                 try {
                     IOSystem.getInstance().write(MainController.getInstance().getClassIdList(), "src/Files/classIdList.dat");
                     IOSystem.getInstance().write(MainController.getInstance().getClassRoomList(), "src/Files/classRoomList.dat");
+
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+
             }
           });
 // TODO
@@ -53,7 +55,7 @@ public class Main extends javax.swing.JFrame {
 
 //        home = new Form_Home();
 //        form1 = new Form_1();
-//        form2 = new Form_2();
+        form2 = new Form_2();
 //        form3 = new Form_3();
         menu.initMoving(Main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -63,9 +65,9 @@ public class Main extends javax.swing.JFrame {
 //                    setForm(home);
                     setForm(new Form_Home());
                 } else if (index == 1) {
-                    setForm(new Form_1());
+                    setForm(form2);
                 } else if (index == 2) {
-                    setForm(new Form_2());
+                    setForm(form2);
                 } else if (index == 3) {
                     setForm(new Form_3());
                 }

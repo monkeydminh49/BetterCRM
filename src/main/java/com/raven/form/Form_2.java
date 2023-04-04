@@ -5,17 +5,48 @@
  */
 package com.raven.form;
 
+import Controller.IOSystem;
+import Controller.RequestAPI;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.SwingWorker;
+
 /**
  *
  * @author RAVEN
  */
 public class Form_2 extends javax.swing.JPanel {
 
+    public List<String> getTimeList() {
+        return timeList;
+    }
+
+    public void setTimeList(List<String> timeList) {
+        this.timeList = timeList;
+    }
+
     /**
      * Creates new form Form_1
      */
+    private String time = "";
+    private List<String> timeList;
     public Form_2() {
         initComponents();
+        timeList = new ArrayList<>();
+        try {
+            time = (String) IOSystem.getInstance().read("src/Files/latestUpdateTime.dat").get(0);
+            latestUpdateTimeText.setText(time);
+        } catch (IOException ex) {
+            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -27,35 +58,82 @@ public class Form_2 extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        btnUpdate = new com.raven.swing.Button();
+        updateText = new javax.swing.JLabel();
+        latestUpdateTimeText = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(242, 242, 242));
+        btnUpdate.setText("Update class list");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("sansserif", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(106, 106, 106));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Form 2");
+        updateText.setBackground(new java.awt.Color(204, 204, 204));
+        updateText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        updateText.setText("Latest update: ");
+
+        latestUpdateTimeText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        latestUpdateTimeText.setText("latestUpdateTime");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(updateText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(latestUpdateTimeText)))
+                .addContainerGap(539, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(125, 125, 125))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateText)
+                    .addComponent(latestUpdateTimeText))
+                .addContainerGap(401, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        btnUpdate.setIcon(new ImageIcon(getClass().getResource("/loading1.gif")));
+        SwingWorker sw1 = new SwingWorker(){
+            @Override
+            protected Object doInBackground() throws Exception {
+                RequestAPI.getInstance().updateClassList();
+                return null;
+            }
+            @Override
+            protected void done(){
+                latestUpdateTimeText.setText(time);
+                btnUpdate.setIcon(null);
+            }
+        };
+        sw1.execute();
+        time = LocalDateTime.now().toString();
+        
+        timeList.add(time);
+
+        try {
+            IOSystem.getInstance().write(timeList, "src/Files/latestUpdateTime.dat");
+        } catch (IOException ex) {
+            Logger.getLogger(Form_2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private com.raven.swing.Button btnUpdate;
+    private javax.swing.JLabel latestUpdateTimeText;
+    private javax.swing.JLabel updateText;
     // End of variables declaration//GEN-END:variables
 }

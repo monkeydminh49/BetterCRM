@@ -129,7 +129,8 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
     }
 
     public Lesson getLatestLesson(){
-        if (latestLesson == null) updateLatestLesson();
+//        if (latestLesson == null)
+            updateLatestLesson();
         return latestLesson;
     }
     
@@ -137,7 +138,10 @@ public class ClassRoom implements Serializable , Comparable<ClassRoom> {
 //        updateClassInformation();     
         LocalDate today = LocalDate.now();
         for (Lesson lesson : lessonList){
-            if (latestLesson == null || ((lesson.getDate().compareTo(latestLesson.getDate()) >= 0) && (lesson.getDate().compareTo(today) <= 0))){
+//            if (latestLesson == null || ((lesson.getDate().compareTo(latestLesson.getDate()) >= 0) && (lesson.getDate().compareTo(today) <= 0))){
+//                latestLesson = lesson;
+//            }
+            if (latestLesson == null || ( (lesson.getDate().compareTo(today) <= 0))){
                 latestLesson = lesson;
             }
         }

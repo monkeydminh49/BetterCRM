@@ -1,0 +1,684 @@
+Index: src/main/java/Controller/Request.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Controller;\r\n\r\nimport Model.ClassRoom;\r\nimport Model.Student;\r\nimport Model.TA;\r\nimport Model.TimeOFWeek;\r\nimport org.apache.commons.io.IOUtils;\r\nimport org.apache.http.Consts;\r\nimport org.apache.http.Header;\r\nimport org.apache.http.HttpResponse;\r\nimport org.apache.http.NameValuePair;\r\nimport org.apache.http.client.HttpClient;\r\nimport org.apache.http.client.entity.UrlEncodedFormEntity;\r\nimport org.apache.http.client.methods.CloseableHttpResponse;\r\nimport org.apache.http.client.methods.HttpGet;\r\nimport org.apache.http.client.methods.HttpPost;\r\nimport org.apache.http.client.utils.URIBuilder;\r\nimport org.apache.http.impl.client.HttpClients;\r\nimport org.apache.http.message.BasicNameValuePair;\r\nimport org.jsoup.Jsoup;\r\nimport org.jsoup.nodes.Document;\r\nimport org.jsoup.nodes.Element;\r\nimport org.jsoup.select.Elements;\r\nimport org.json.*;\r\n\r\nimport java.io.IOException;\r\nimport java.net.URISyntaxException;\r\nimport java.nio.charset.StandardCharsets;\r\nimport java.time.DayOfWeek;\r\nimport java.time.LocalTime;\r\nimport java.time.format.DateTimeFormatter;\r\nimport java.util.*;\r\n\r\n\r\npublic class Request {\r\n    private static Request requestInstance;\r\n\r\n    private Request() {\r\n        classRoomList = new ArrayList<>();\r\n        classIdList = new ArrayList<>();\r\n        TAList = new ArrayList<>();\r\n        studentList = new ArrayList<>();\r\n    }\r\n\r\n    public static Request getInstance() {\r\n        if (requestInstance == null) {\r\n            requestInstance = new Request();\r\n        }\r\n        return requestInstance;\r\n    }\r\n    private final String filesPath = \"src/Files/\";\r\n\r\n    private List<ClassRoom> classRoomList;\r\n    private List<String> classIdList;\r\n    private List<TA> TAList;\r\n    private List<Student> studentList;\r\n    private HttpGet get;\r\n    private HttpPost post;\r\n    private HttpClient client;\r\n    private URIBuilder builder;\r\n    private CloseableHttpResponse response;\r\n    private String token;\r\n\r\n    public List<TA> getTAList() {\r\n        return TAList;\r\n    }\r\n    public List<String> getClassIdList() {\r\n        return classIdList;\r\n    }\r\n    public void setClassIdList(List<String> classIdList) {\r\n        this.classIdList = classIdList;\r\n    }\r\n    public void setTAList(List<TA> TAList) {\r\n        this.TAList = TAList;\r\n    }\r\n    public void login(String username, String password, boolean remember) throws IOException {\r\n//        // First Get request to get token\r\n        String loginUrl = \"https://crm.llv.edu.vn/index.php?module=Users&action=Login&mode=login\";\r\n        get = new HttpGet(loginUrl);\r\n        client = HttpClients.createDefault();\r\n        HttpResponse getResponse = client.execute(get);\r\n//\r\n        // Print request response\r\n        System.out.println(\"Protocol: \" + getResponse.getProtocolVersion());\r\n        System.out.println(\"Status:\" + getResponse.getStatusLine().toString());\r\n        System.out.println(\"Content type:\" + getResponse.getEntity().getContentType());\r\n        System.out.println(\"Locale:\" + getResponse.getLocale());\r\n        System.out.println(\"Headers:\");\r\n\r\n        // Read response headers\r\n        for(Header header : getResponse.getAllHeaders()) {\r\n            System.out.println(\"          \" + header.getName()+\": \" + header.getValue());\r\n        }\r\n\r\n        // Read response body - html\r\n        String content = IOUtils.toString(getResponse.getEntity().getContent(), StandardCharsets.UTF_8);\r\n\r\n        // Get token in returned HTML\r\n        Document doc = Jsoup.parse(content);\r\n        Element element = doc.select(\"input\").get(3);\r\n        token = element.attr(\"value\");\r\n        System.out.println(\"Token: \" + token);\r\n\r\n        // Add form data to payload\r\n        List<NameValuePair> payload = new ArrayList<>();\r\n        payload.add(new BasicNameValuePair(\"__vtrftk\", token));\r\n        payload.add(new BasicNameValuePair(\"username\", username));\r\n        payload.add(new BasicNameValuePair(\"password\", password));\r\n        payload.add(new BasicNameValuePair(\"remember\", remember ? \"true\" : \"false\"));\r\n\r\n        // Add payload to post request\r\n        post = new HttpPost(loginUrl);\r\n        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(payload, Consts.UTF_8);\r\n        post.setEntity(entity);\r\n        post.addHeader(\"User-Agent\", \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36\");\r\n        response = (CloseableHttpResponse) client.execute(post);\r\n    }\r\n    public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {\r\n        // Get classIdList from file\r\n        classIdList = IOSystem.getInstance().read(filesPath + \"classIdList.dat\");\r\n        TAList = IOSystem.getInstance().read(filesPath + \"TAList.dat\");\r\n        studentList = IOSystem.getInstance().read(filesPath + \"studentList.dat\");\r\n\r\n        int count = 0;\r\n\r\n        // Loop through all classId\r\n        for (String classId : classIdList){\r\n            count++;\r\n\r\n            // Build url\r\n            //String classLessonContentUrl = \"https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=&mode=showRelatedList&tab_label=Lesson%20Content\";\r\n            String classAttendanceUrl = \"https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=AttendanceClass&view=Detail&record=456177&mode=showRelatedList&tab_label=Attendance%20Report\";\r\n            builder = new URIBuilder(classAttendanceUrl);\r\n            builder.setParameter(\"record\", classId);\r\n//            System.out.println(builder.build());\r\n\r\n            // Request\r\n            get = new HttpGet(builder.build());\r\n            response = (CloseableHttpResponse) client.execute(get);\r\n            String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n            Document doc = Jsoup.parse(content);\r\n\r\n            // Get class from response\r\n            Elements elements = doc.select(\"td\");\r\n\r\n            TimeOFWeek timeOFWeek = new TimeOFWeek();\r\n            List <TimeOFWeek> listTimeOfWeek = new ArrayList<>();\r\n            List<TA> listTA = new ArrayList<>();\r\n            List<String> listTAName = new ArrayList<>();\r\n            String classCode = \"\";\r\n\r\n            boolean foundTA = false;\r\n            int countWeekDay = 0;\r\n            // Get class code, day and time\r\n            for (Element e : elements){\r\n                // Found class code\r\n                if (e.text().equals(\"Class Code\")){\r\n                    classCode = e.nextElementSibling().text();\r\n//                    System.out.println(classCode);\r\n                }\r\n\r\n                // Found TA\r\n                if (e.text().equals(\"TA\") && !foundTA){\r\n                    foundTA = true;\r\n                    String TAName = e.nextElementSibling().text();\r\n                    listTAName = Arrays.asList(TAName.split(\", \"));\r\n\r\n                    // Get TA by name\r\n                    for (String name : listTAName){\r\n//                        System.out.println(\"\\\"\"+name+\"\\\"\");\r\n                        for (TA ta : TAList){\r\n                            if (ta.getName().equals(name)){\r\n//                                System.out.println(\"Found \"+ name + \" in TAList\");\r\n                                listTA.add(ta);\r\n                                break;\r\n                            }\r\n                        }\r\n                    }\r\n                }\r\n\r\n                // Found day and time ** has json file\r\n                if (e.hasClass(\"weekDay\") && !e.text().equals(\"\")){\r\n                    countWeekDay++;\r\n                    int dayOfWeek = Integer.parseInt(e.attr(\"value\"));\r\n                    if (dayOfWeek == 0) dayOfWeek = 7;\r\n\r\n                    String startTime = e.text().split(\" \")[0];\r\n                    LocalTime time = LocalTime.parse(startTime, DateTimeFormatter.ofPattern(\"HH:mm\"));\r\n\r\n                    timeOFWeek.setDayOfWeek(DayOfWeek.of(dayOfWeek));\r\n                    timeOFWeek.setTime(time);\r\n\r\n//                    System.out.println(timeOFWeek.getDayOfWeek() + \" - \" + timeOFWeek.getTime());\r\n\r\n                    listTimeOfWeek.add(timeOFWeek);\r\n                }\r\n\r\n\r\n                // Found all class information\r\n                if (listTimeOfWeek.size() == 2 || countWeekDay == 7){\r\n                    break;\r\n                };\r\n            }\r\n\r\n            // Get first lesson id\r\n            Element e = doc.select(\".detailModal\").first();\r\n            String lessonId = e.attr(\"data-lesson\");\r\n\r\n            // Get student list\r\n            List<Student> listStudent = new ArrayList<>();\r\n\r\n            String firstLessonDetailUrl = \"https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=listStudent&id=456177&lessonId=181942\";\r\n            builder = new URIBuilder(firstLessonDetailUrl);\r\n            builder.setParameter(\"id\", classId);\r\n            builder.setParameter(\"lessonId\", lessonId);\r\n\r\n            // Request\r\n            get = new HttpGet(builder.build());\r\n            response = (CloseableHttpResponse) client.execute(get);\r\n            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n\r\n            JSONObject jo = new JSONObject(content);\r\n            JSONArray ja = jo.getJSONArray(\"result\");\r\n\r\n//            System.out.println(studentList.get(0).getName() + \" - \" + studentList.get(0).getId());\r\n\r\n            // Loop through all student\r\n            for (int i = 0; i < ja.length(); i++){\r\n                JSONObject student = ja.getJSONObject(i);\r\n                String studentId = student.getString(\"studentid\");\r\n//                System.out.println(studentId);\r\n\r\n                // Get student by id\r\n                for (Student s : studentList){\r\n                    if (s.getId().equals(studentId)){\r\n//                        System.out.println(\"Found \"+ s.getName() + \" in studentList\");\r\n                        listStudent.add(s);\r\n                        break;\r\n                    }\r\n                }\r\n            }\r\n\r\n            classRoomList.add(new ClassRoom(classId,classCode ,listTA, listTimeOfWeek, listStudent));\r\n\r\n\r\n//            System.out.println(classId);\r\n//            System.out.println(classCode);\r\n//            for (TA ta : listTA){\r\n//                System.out.println(ta.getName());\r\n//            }\r\n//            for (TimeOFWeek time : listTimeOfWeek){\r\n//                System.out.println(time.getDayOfWeek() + \" - \" + time.getTime());\r\n//            }\r\n//            for (Student student : listStudent){\r\n//                System.out.println(student.getName());\r\n//            }\r\n\r\n            System.out.println(\"Added \" + classCode + \" \" + count + \"/\" + classIdList.size());\r\n            System.out.println(\"----------------------------------------------------\");\r\n        }\r\n        // Write to file\r\n       // IOSystem.getInstance().write(classRoomList, filesPath + \"classRoomList.dat\");\r\n    }\r\n    public void updateClassIdList() throws IOException, URISyntaxException {\r\n        classIdList.clear();\r\n        // Loop through all pages\r\n        int page = 1;\r\n        int totalPage = 0;\r\n\r\n        String content = null;\r\n        String on_goingClassListUrl = \"https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D\";\r\n        String totalPageJsonUrl = \"https://crm.llv.edu.vn/index.php?__vtrftk=sid:0e4015d1f33aee007767349d620db9e2e515740b,1679154595&module=Classes&parent=&page=1&view=ListAjax&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D&mode=getPageCount\";\r\n\r\n        // Build url\r\n        builder = new URIBuilder(totalPageJsonUrl);\r\n        builder.setParameter(\"__vtrftk\", token);\r\n\r\n        // Request\r\n        get = new HttpGet(builder.build());\r\n        response = (CloseableHttpResponse) client.execute(get);\r\n        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n\r\n        // parsing json content\r\n        JSONObject jo = new JSONObject(content);\r\n        jo = jo.getJSONObject(\"result\");\r\n        totalPage = jo.getInt(\"page\");\r\n\r\n        // Get class id from each page\r\n        while (page <= totalPage){\r\n            // Build url\r\n            builder = new URIBuilder(on_goingClassListUrl);\r\n            builder.setParameter(\"page\", Integer.toString(page));\r\n\r\n            // Request\r\n            get = new HttpGet(builder.build());\r\n            response = (CloseableHttpResponse) client.execute(get);\r\n            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n            Document doc = Jsoup.parse(content);\r\n\r\n            // Get classId from response\r\n            Elements elements = doc.select(\"tr\");\r\n            for (Element e : elements) {\r\n                if (e.hasClass(\"listViewEntries\")){\r\n                    classIdList.add(e.attr(\"data-id\"));\r\n                }\r\n            }\r\n            page++;\r\n        }\r\n        System.out.println(\"Total class: \" + classIdList.size());\r\n\r\n        // Write list to file\r\n        IOSystem.getInstance().write( classIdList,filesPath + \"classIdList.dat\");\r\n    }\r\n    public void updateTAList() throws URISyntaxException, IOException {\r\n        // Clear TAList\r\n        TAList.clear();\r\n\r\n        // Loop through all pages\r\n        int page = 1;\r\n        int totalPage = 0;\r\n\r\n        String content = null;\r\n        String TAListUrl = \"https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D\";\r\n        String totalPageJsonUrl = \"https://crm.llv.edu.vn/index.php?__vtrftk=sid:6eb8d4459b055ecf6ca085e3895468c2a865dd75,1679155849&module=TeacherTA&parent=&page=1&view=ListAjax&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D&mode=getPageCount\";\r\n\r\n        // Build url\r\n        builder = new URIBuilder(totalPageJsonUrl);\r\n        builder.setParameter(\"__vtrftk\", token);\r\n\r\n        // Request\r\n        get = new HttpGet(builder.build());\r\n        response = (CloseableHttpResponse) client.execute(get);\r\n        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n\r\n        // parsing json content\r\n        JSONObject jo = new JSONObject(content);\r\n        jo = jo.getJSONObject(\"result\");\r\n        totalPage = jo.getInt(\"page\");\r\n\r\n        Set<TA> set = new HashSet<>();\r\n        while (page <= totalPage){\r\n            // Build url\r\n            builder = new URIBuilder(TAListUrl);\r\n            builder.setParameter(\"page\", Integer.toString(page));\r\n\r\n            // Request\r\n            get = new HttpGet(builder.build());\r\n            response = (CloseableHttpResponse) client.execute(get);\r\n            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n            Document doc = Jsoup.parse(content);\r\n\r\n            // Get TA from response\r\n            Elements elements = doc.select(\"tr\");\r\n            for (Element e : elements) {\r\n                if (e.hasClass(\"listViewEntries\")){\r\n                    String name = e.select(\".listViewEntryValue\").get(0).text() + \" \" + e.select(\".listViewEntryValue\").get(1).text();\r\n                    String phone = e.select(\".listViewEntryValue\").get(2).text();\r\n                    String email = e.select(\".listViewEntryValue\").get(3).text();\r\n\r\n                    TA ta = new TA(name, phone, email);\r\n                    set.add(ta);\r\n                }\r\n            }\r\n            page++;\r\n        }\r\n        TAList.addAll(set);\r\n\r\n        // Write to file\r\n        IOSystem.getInstance().write(TAList, filesPath+ \"TAList.dat\");\r\n    }\r\n    public void updateStudentList() throws URISyntaxException, IOException {\r\n        // Clear studentList\r\n        studentList.clear();\r\n\r\n        // Loop through all pages\r\n        int page = 1;\r\n        int totalPage = 0;\r\n\r\n        String content = null;\r\n        String studentListUrl = \"https://crm.llv.edu.vn/index.php?module=Contacts&parent=&page=1&view=List&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D\";\r\n        String totalPageJsonUrl = \"https://crm.llv.edu.vn/index.php?__vtrftk=sid:797b1b65f176b662e920f223a74320f600987536,1679156710&module=Contacts&parent=&page=1&view=ListAjax&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D&mode=getPageCount\";\r\n\r\n        // Build url\r\n        builder = new URIBuilder(totalPageJsonUrl);\r\n        builder.setParameter(\"__vtrftk\", token);\r\n\r\n        // Request\r\n        get = new HttpGet(builder.build());\r\n        response = (CloseableHttpResponse) client.execute(get);\r\n        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n\r\n        // parsing json content\r\n        JSONObject jo = new JSONObject(content);\r\n        jo = jo.getJSONObject(\"result\");\r\n        totalPage = jo.getInt(\"page\");\r\n\r\n\r\n        while (page <= totalPage){\r\n            System.out.println(\"Page \" + page + \"/\" + totalPage);\r\n\r\n            // Build url\r\n            builder = new URIBuilder(studentListUrl);\r\n            builder.setParameter(\"page\", Integer.toString(page));\r\n\r\n            // Request\r\n            get = new HttpGet(builder.build());\r\n            response = (CloseableHttpResponse) client.execute(get);\r\n            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);\r\n            Document doc = Jsoup.parse(content);\r\n\r\n            // Get TA from response\r\n            Elements elements = doc.select(\"tr\");\r\n            for (Element e : elements) {\r\n                if (e.hasClass(\"listViewEntries1\")){\r\n                    String studentId = e.attr(\"data-id\");\r\n                    Elements td = e.select(\"td\");\r\n                    String name = td.get(1).text() + \" \" + td.get(2).text();\r\n                    studentList.add(new Student(name, studentId));\r\n                }\r\n            }\r\n            page++;\r\n        }\r\n\r\n        // Write to file\r\n        IOSystem.getInstance().write(studentList, filesPath+ \"studentList.dat\");\r\n    }\r\n    public void run() throws IOException, URISyntaxException, ClassNotFoundException {\r\n        // Login\r\n        login(\"dangminh.TAMD\", \"LLVN123456\", true);\r\n\r\n//        updateClassIdList();\r\n//         updateTAList();\r\n//        updateStudentList();\r\n\r\n//        List<TA> list = IOSystem.getInstance().read(filesPath + \"TAList.dat\");\r\n//        for (TA ta : list) {\r\n//            System.out.println(ta.getName() + \" - \" + ta.getPhoneNumber() + \" - \" + ta.getEmail());\r\n//        }\r\n//\r\n//        for (String s : classIdList) {\r\n//            System.out.println(s);\r\n//        }\r\n//        updateClassList();\r\n//        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + \"classRoomList.dat\");\r\n//        System.out.println(list.size());\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Controller/Request.java b/src/main/java/Controller/Request.java
+--- a/src/main/java/Controller/Request.java	(revision 2fabac4285aba6c758f24ad1a71df3aad2325a8a)
++++ b/src/main/java/Controller/Request.java	(date 1679364226477)
+@@ -1,9 +1,5 @@
+ package Controller;
+ 
+-import Model.ClassRoom;
+-import Model.Student;
+-import Model.TA;
+-import Model.TimeOFWeek;
+ import org.apache.commons.io.IOUtils;
+ import org.apache.http.Consts;
+ import org.apache.http.Header;
+@@ -21,25 +17,17 @@
+ import org.jsoup.nodes.Document;
+ import org.jsoup.nodes.Element;
+ import org.jsoup.select.Elements;
+-import org.json.*;
+ 
+ import java.io.IOException;
+ import java.net.URISyntaxException;
+-import java.nio.charset.StandardCharsets;
+-import java.time.DayOfWeek;
+-import java.time.LocalTime;
+-import java.time.format.DateTimeFormatter;
+-import java.util.*;
++import java.util.ArrayList;
++import java.util.List;
+ 
+ 
+ public class Request {
+     private static Request requestInstance;
+ 
+     private Request() {
+-        classRoomList = new ArrayList<>();
+-        classIdList = new ArrayList<>();
+-        TAList = new ArrayList<>();
+-        studentList = new ArrayList<>();
+     }
+ 
+     public static Request getInstance() {
+@@ -48,38 +36,24 @@
+         }
+         return requestInstance;
+     }
+-    private final String filesPath = "src/Files/";
+ 
+-    private List<ClassRoom> classRoomList;
+     private List<String> classIdList;
+-    private List<TA> TAList;
+-    private List<Student> studentList;
+     private HttpGet get;
+     private HttpPost post;
+     private HttpClient client;
+-    private URIBuilder builder;
++    private HttpResponse getResponse;
+     private CloseableHttpResponse response;
+     private String token;
++    private String loginUrl;
++    private String on_goingClassListUrl;
+ 
+-    public List<TA> getTAList() {
+-        return TAList;
+-    }
+-    public List<String> getClassIdList() {
+-        return classIdList;
+-    }
+-    public void setClassIdList(List<String> classIdList) {
+-        this.classIdList = classIdList;
+-    }
+-    public void setTAList(List<TA> TAList) {
+-        this.TAList = TAList;
+-    }
+     public void login(String username, String password, boolean remember) throws IOException {
+-//        // First Get request to get token
+-        String loginUrl = "https://crm.llv.edu.vn/index.php?module=Users&action=Login&mode=login";
++        // First Get request to get token
++        loginUrl = "https://crm.llv.edu.vn/index.php?module=Users&action=Login&mode=login";
+         get = new HttpGet(loginUrl);
+         client = HttpClients.createDefault();
+-        HttpResponse getResponse = client.execute(get);
+-//
++        getResponse = client.execute(get);
++
+         // Print request response
+         System.out.println("Protocol: " + getResponse.getProtocolVersion());
+         System.out.println("Status:" + getResponse.getStatusLine().toString());
+@@ -93,356 +67,80 @@
+         }
+ 
+         // Read response body - html
+-        String content = IOUtils.toString(getResponse.getEntity().getContent(), StandardCharsets.UTF_8);
++        String content = IOUtils.toString(getResponse.getEntity().getContent(), "UTF-8");
+ 
+         // Get token in returned HTML
+-        Document doc = Jsoup.parse(content);
++        Document doc = (Document) Jsoup.connect(loginUrl).get();
+         Element element = doc.select("input").get(3);
+         token = element.attr("value");
+         System.out.println("Token: " + token);
+ 
+         // Add form data to payload
+         List<NameValuePair> payload = new ArrayList<>();
+-        payload.add(new BasicNameValuePair("__vtrftk", token));
+         payload.add(new BasicNameValuePair("username", username));
+         payload.add(new BasicNameValuePair("password", password));
+         payload.add(new BasicNameValuePair("remember", remember ? "true" : "false"));
++        payload.add(new BasicNameValuePair("__vtrftk", token));
+ 
+         // Add payload to post request
+         post = new HttpPost(loginUrl);
+         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(payload, Consts.UTF_8);
+         post.setEntity(entity);
+         post.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
+-        response = (CloseableHttpResponse) client.execute(post);
++        CloseableHttpResponse response = (CloseableHttpResponse) client.execute(post);
+     }
+-    public void updateClassList() throws URISyntaxException, IOException, ClassNotFoundException {
+-        // Get classIdList from file
+-        classIdList = IOSystem.getInstance().read(filesPath + "classIdList.dat");
+-        TAList = IOSystem.getInstance().read(filesPath + "TAList.dat");
+-        studentList = IOSystem.getInstance().read(filesPath + "studentList.dat");
+-
+-        int count = 0;
+-
+-        // Loop through all classId
+-        for (String classId : classIdList){
+-            count++;
+-
+-            // Build url
+-            //String classLessonContentUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=SJLessonContent&view=Detail&record=&mode=showRelatedList&tab_label=Lesson%20Content";
+-            String classAttendanceUrl = "https://crm.llv.edu.vn/index.php?module=Classes&relatedModule=AttendanceClass&view=Detail&record=456177&mode=showRelatedList&tab_label=Attendance%20Report";
+-            builder = new URIBuilder(classAttendanceUrl);
+-            builder.setParameter("record", classId);
+-//            System.out.println(builder.build());
+-
+-            // Request
+-            get = new HttpGet(builder.build());
+-            response = (CloseableHttpResponse) client.execute(get);
+-            String content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+-            Document doc = Jsoup.parse(content);
+-
+-            // Get class from response
+-            Elements elements = doc.select("td");
+-
+-            TimeOFWeek timeOFWeek = new TimeOFWeek();
+-            List <TimeOFWeek> listTimeOfWeek = new ArrayList<>();
+-            List<TA> listTA = new ArrayList<>();
+-            List<String> listTAName = new ArrayList<>();
+-            String classCode = "";
+-
+-            boolean foundTA = false;
+-            int countWeekDay = 0;
+-            // Get class code, day and time
+-            for (Element e : elements){
+-                // Found class code
+-                if (e.text().equals("Class Code")){
+-                    classCode = e.nextElementSibling().text();
+-//                    System.out.println(classCode);
+-                }
+-
+-                // Found TA
+-                if (e.text().equals("TA") && !foundTA){
+-                    foundTA = true;
+-                    String TAName = e.nextElementSibling().text();
+-                    listTAName = Arrays.asList(TAName.split(", "));
+-
+-                    // Get TA by name
+-                    for (String name : listTAName){
+-//                        System.out.println("\""+name+"\"");
+-                        for (TA ta : TAList){
+-                            if (ta.getName().equals(name)){
+-//                                System.out.println("Found "+ name + " in TAList");
+-                                listTA.add(ta);
+-                                break;
+-                            }
+-                        }
+-                    }
+-                }
+-
+-                // Found day and time ** has json file
+-                if (e.hasClass("weekDay") && !e.text().equals("")){
+-                    countWeekDay++;
+-                    int dayOfWeek = Integer.parseInt(e.attr("value"));
+-                    if (dayOfWeek == 0) dayOfWeek = 7;
+-
+-                    String startTime = e.text().split(" ")[0];
+-                    LocalTime time = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm"));
+-
+-                    timeOFWeek.setDayOfWeek(DayOfWeek.of(dayOfWeek));
+-                    timeOFWeek.setTime(time);
+-
+-//                    System.out.println(timeOFWeek.getDayOfWeek() + " - " + timeOFWeek.getTime());
+-
+-                    listTimeOfWeek.add(timeOFWeek);
+-                }
+ 
+-
+-                // Found all class information
+-                if (listTimeOfWeek.size() == 2 || countWeekDay == 7){
+-                    break;
+-                };
+-            }
+-
+-            // Get first lesson id
+-            Element e = doc.select(".detailModal").first();
+-            String lessonId = e.attr("data-lesson");
+-
+-            // Get student list
+-            List<Student> listStudent = new ArrayList<>();
+-
+-            String firstLessonDetailUrl = "https://crm.llv.edu.vn/index.php?module=AttendanceClass&action=AjaxListAtten&mode=listStudent&id=456177&lessonId=181942";
+-            builder = new URIBuilder(firstLessonDetailUrl);
+-            builder.setParameter("id", classId);
+-            builder.setParameter("lessonId", lessonId);
+-
+-            // Request
+-            get = new HttpGet(builder.build());
+-            response = (CloseableHttpResponse) client.execute(get);
+-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+-
+-            JSONObject jo = new JSONObject(content);
+-            JSONArray ja = jo.getJSONArray("result");
+-
+-//            System.out.println(studentList.get(0).getName() + " - " + studentList.get(0).getId());
+-
+-            // Loop through all student
+-            for (int i = 0; i < ja.length(); i++){
+-                JSONObject student = ja.getJSONObject(i);
+-                String studentId = student.getString("studentid");
+-//                System.out.println(studentId);
+-
+-                // Get student by id
+-                for (Student s : studentList){
+-                    if (s.getId().equals(studentId)){
+-//                        System.out.println("Found "+ s.getName() + " in studentList");
+-                        listStudent.add(s);
+-                        break;
+-                    }
+-                }
+-            }
+-
+-            classRoomList.add(new ClassRoom(classId,classCode ,listTA, listTimeOfWeek, listStudent));
+-
+-
+-//            System.out.println(classId);
+-//            System.out.println(classCode);
+-//            for (TA ta : listTA){
+-//                System.out.println(ta.getName());
+-//            }
+-//            for (TimeOFWeek time : listTimeOfWeek){
+-//                System.out.println(time.getDayOfWeek() + " - " + time.getTime());
+-//            }
+-//            for (Student student : listStudent){
+-//                System.out.println(student.getName());
+-//            }
+-
+-            System.out.println("Added " + classCode + " " + count + "/" + classIdList.size());
+-            System.out.println("----------------------------------------------------");
+-        }
+-        // Write to file
+-       // IOSystem.getInstance().write(classRoomList, filesPath + "classRoomList.dat");
+-    }
+-    public void updateClassIdList() throws IOException, URISyntaxException {
+-        classIdList.clear();
++    public void requestClassIdList() throws IOException, URISyntaxException {
++        classIdList = new ArrayList<>();
+         // Loop through all pages
+         int page = 1;
+-        int totalPage = 0;
+-
+-        String content = null;
+-        String on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
+-        String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:0e4015d1f33aee007767349d620db9e2e515740b,1679154595&module=Classes&parent=&page=1&view=ListAjax&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22class_status%22%2C%22e%22%2C%22On-Going%22%5D%2C%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D&mode=getPageCount";
+-
+-        // Build url
+-        builder = new URIBuilder(totalPageJsonUrl);
+-        builder.setParameter("__vtrftk", token);
+-
+-        // Request
+-        get = new HttpGet(builder.build());
+-        response = (CloseableHttpResponse) client.execute(get);
+-        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+ 
+-        // parsing json content
+-        JSONObject jo = new JSONObject(content);
+-        jo = jo.getJSONObject("result");
+-        totalPage = jo.getInt("page");
+-
+-        // Get class id from each page
+-        while (page <= totalPage){
++        while (page < 5){
+             // Build url
+-            builder = new URIBuilder(on_goingClassListUrl);
++            on_goingClassListUrl = "https://crm.llv.edu.vn/index.php?module=Classes&parent=&page=1&view=List&viewname=493&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%5D%5D";
++            URIBuilder builder = new URIBuilder(on_goingClassListUrl);
+             builder.setParameter("page", Integer.toString(page));
+ 
+             // Request
+             get = new HttpGet(builder.build());
+             response = (CloseableHttpResponse) client.execute(get);
+-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+-            Document doc = Jsoup.parse(content);
++            String content = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
++            Document doc = (Document) Jsoup.parse(content);
+ 
+             // Get classId from response
+             Elements elements = doc.select("tr");
+             for (Element e : elements) {
+                 if (e.hasClass("listViewEntries")){
+                     classIdList.add(e.attr("data-id"));
++                    System.out.println( classIdList.size() + ": " + e.attr("data-id"));
+                 }
+             }
+             page++;
+         }
+-        System.out.println("Total class: " + classIdList.size());
+-
+-        // Write list to file
+-        IOSystem.getInstance().write( classIdList,filesPath + "classIdList.dat");
+-    }
+-    public void updateTAList() throws URISyntaxException, IOException {
+-        // Clear TAList
+-        TAList.clear();
+-
+-        // Loop through all pages
+-        int page = 1;
+-        int totalPage = 0;
+-
+-        String content = null;
+-        String TAListUrl = "https://crm.llv.edu.vn/index.php?module=TeacherTA&parent=&page=1&view=List&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D";
+-        String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:6eb8d4459b055ecf6ca085e3895468c2a865dd75,1679155849&module=TeacherTA&parent=&page=1&view=ListAjax&viewname=648&orderby=schools&sortorder=ASC&search_params=%5B%5B%5B%22schools%22%2C%22c%22%2C%22MD%22%5D%2C%5B%22cf_1252%22%2C%22e%22%2C%22TA%22%5D%5D%5D&mode=getPageCount";
+-
+-        // Build url
+-        builder = new URIBuilder(totalPageJsonUrl);
+-        builder.setParameter("__vtrftk", token);
+-
+-        // Request
+-        get = new HttpGet(builder.build());
+-        response = (CloseableHttpResponse) client.execute(get);
+-        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+-
+-        // parsing json content
+-        JSONObject jo = new JSONObject(content);
+-        jo = jo.getJSONObject("result");
+-        totalPage = jo.getInt("page");
+-
+-        Set<TA> set = new HashSet<>();
+-        while (page <= totalPage){
+-            // Build url
+-            builder = new URIBuilder(TAListUrl);
+-            builder.setParameter("page", Integer.toString(page));
+-
+-            // Request
+-            get = new HttpGet(builder.build());
+-            response = (CloseableHttpResponse) client.execute(get);
+-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+-            Document doc = Jsoup.parse(content);
+ 
+-            // Get TA from response
+-            Elements elements = doc.select("tr");
+-            for (Element e : elements) {
+-                if (e.hasClass("listViewEntries")){
+-                    String name = e.select(".listViewEntryValue").get(0).text() + " " + e.select(".listViewEntryValue").get(1).text();
+-                    String phone = e.select(".listViewEntryValue").get(2).text();
+-                    String email = e.select(".listViewEntryValue").get(3).text();
++        // Get class name
++        //element  = doc.select(".span2").get(6);
++        //System.out.println(element.text());
+ 
+-                    TA ta = new TA(name, phone, email);
+-                    set.add(ta);
+-                }
+-            }
+-            page++;
+-        }
+-        TAList.addAll(set);
++        // Get lessonName and lessonEmailStatus
++        //elements = doc.select(".item__lesson");
++        //for (Element e : elements) {
++        //    System.out.println(e.select("#lessonName").text() + " - " + e.select(".lessonEmailStatus").text());
++        //}
+ 
+-        // Write to file
+-        IOSystem.getInstance().write(TAList, filesPath+ "TAList.dat");
++//        File file = new File("on_goingClassList.html");
++//        FileUtils.writeStringToFile(file, content, "UTF-8");
+     }
+-    public void updateStudentList() throws URISyntaxException, IOException {
+-        // Clear studentList
+-        studentList.clear();
+-
+-        // Loop through all pages
+-        int page = 1;
+-        int totalPage = 0;
+-
+-        String content = null;
+-        String studentListUrl = "https://crm.llv.edu.vn/index.php?module=Contacts&parent=&page=1&view=List&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D";
+-        String totalPageJsonUrl = "https://crm.llv.edu.vn/index.php?__vtrftk=sid:797b1b65f176b662e920f223a74320f600987536,1679156710&module=Contacts&parent=&page=1&view=ListAjax&viewname=470&orderby=&sortorder=&search_params=%5B%5B%5D%5D&mode=getPageCount";
+-
+-        // Build url
+-        builder = new URIBuilder(totalPageJsonUrl);
+-        builder.setParameter("__vtrftk", token);
+-
+-        // Request
+-        get = new HttpGet(builder.build());
+-        response = (CloseableHttpResponse) client.execute(get);
+-        content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+-
+-        // parsing json content
+-        JSONObject jo = new JSONObject(content);
+-        jo = jo.getJSONObject("result");
+-        totalPage = jo.getInt("page");
+-
+-
+-        while (page <= totalPage){
+-            System.out.println("Page " + page + "/" + totalPage);
+-
+-            // Build url
+-            builder = new URIBuilder(studentListUrl);
+-            builder.setParameter("page", Integer.toString(page));
+-
+-            // Request
+-            get = new HttpGet(builder.build());
+-            response = (CloseableHttpResponse) client.execute(get);
+-            content = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+-            Document doc = Jsoup.parse(content);
+ 
+-            // Get TA from response
+-            Elements elements = doc.select("tr");
+-            for (Element e : elements) {
+-                if (e.hasClass("listViewEntries1")){
+-                    String studentId = e.attr("data-id");
+-                    Elements td = e.select("td");
+-                    String name = td.get(1).text() + " " + td.get(2).text();
+-                    studentList.add(new Student(name, studentId));
+-                }
+-            }
+-            page++;
+-        }
++    public List<String> getClassIdList() {
++        return classIdList;
++    }
+ 
+-        // Write to file
+-        IOSystem.getInstance().write(studentList, filesPath+ "studentList.dat");
+-    }
+-    public void run() throws IOException, URISyntaxException, ClassNotFoundException {
++    public void run() throws IOException, URISyntaxException {
+         // Login
+         login("dangminh.TAMD", "LLVN123456", true);
+-
+-//        updateClassIdList();
+-//         updateTAList();
+-//        updateStudentList();
++        requestClassIdList();
++    }
+ 
+-//        List<TA> list = IOSystem.getInstance().read(filesPath + "TAList.dat");
+-//        for (TA ta : list) {
+-//            System.out.println(ta.getName() + " - " + ta.getPhoneNumber() + " - " + ta.getEmail());
+-//        }
+-//
+-//        for (String s : classIdList) {
+-//            System.out.println(s);
+-//        }
+-//        updateClassList();
+-//        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
+-//        System.out.println(list.size());
+-    }
+ 
+ }
+Index: src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import Controller.Request;\r\n\r\nimport java.io.IOException;\r\nimport java.net.URISyntaxException;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {\r\n        Request.getInstance().run();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Main.java b/src/main/java/Main.java
+--- a/src/main/java/Main.java	(revision 2fabac4285aba6c758f24ad1a71df3aad2325a8a)
++++ b/src/main/java/Main.java	(date 1679364231801)
+@@ -4,7 +4,10 @@
+ import java.net.URISyntaxException;
+ 
+ public class Main {
+-    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
++    public static void main(String[] args) throws IOException, URISyntaxException {
+         Request.getInstance().run();
++        for (String s : Request.getInstance().getClassIdList()) {
++            System.out.println(s);
++        }
+     }
+ }
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"c1e9e091-c092-4aea-9364-11fc1c3a7008\" name=\"Changes\" comment=\"Rearrange Request class &#10;+ Request class information: name, day, time make file class\">\r\n      <change afterPath=\"$PROJECT_DIR$/lib/json-20220924.jar\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Files/classRoomList.dat\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Files/studentList.dat\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Files/classIdList.dat\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Files/classIdList.dat\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Controller/IOSystem.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Controller/IOSystem.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Controller/Request.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Controller/Request.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/Controller/IOSystem.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/Controller/IOSystem.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/Controller/Request.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/Controller/Request.class\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"HTTP Request\" />\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2N3tQ6pBu894ur9r3nuh7sw9Llr\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ASKED_ADD_EXTERNAL_FILES\": \"true\",\r\n    \"Downloaded.Files.Path.Enabled\": \"true\",\r\n    \"Repository.Attach.Annotations\": \"false\",\r\n    \"Repository.Attach.JavaDocs\": \"false\",\r\n    \"Repository.Attach.Sources\": \"false\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH\": \"403\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"last_opened_file_path\": \"D:/ProPTIT/Java/ProjectJava/BetterCRM\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"project.structure.last.edited\": \"Modules\",\r\n    \"project.structure.proportion\": \"0.15\",\r\n    \"project.structure.side.proportion\": \"0.38965517\",\r\n    \"settings.editor.selected.configurable\": \"reference.settings.project.maven.repository.indices\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File\": [\r\n      \"Markdown\",\r\n      \"PLAIN_TEXT\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\ProPTIT\\Java\\ProjectJava\\TestRequest\\src\\main\\java\\Controller\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunAnythingCache\">\r\n    <option name=\"myCommands\">\r\n      <command value=\"main\" />\r\n    </option>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Test | #1\" type=\"HttpClient.HttpRequestRunConfigurationType\" factoryName=\"HTTP Request\" temporary=\"true\" nameIsGenerated=\"true\" path=\"$PROJECT_DIR$/Test.http\" requestIdentifier=\"#1\" runType=\"Run single request\">\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"HTTP Request.Test | #1\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"c1e9e091-c092-4aea-9364-11fc1c3a7008\" name=\"Changes\" comment=\"\" />\r\n      <created>1678904576207</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1678904576207</updated>\r\n      <workItem from=\"1678904578046\" duration=\"1736000\" />\r\n      <workItem from=\"1678906495526\" duration=\"7490000\" />\r\n      <workItem from=\"1678925739706\" duration=\"3547000\" />\r\n      <workItem from=\"1678953478853\" duration=\"6516000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Rearrange Request class\">\r\n      <created>1678992334075</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1678992334075</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Rearrange Request class &#10;+ Request class information: name, day, time\">\r\n      <created>1679143238010</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1679143238010</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Rearrange Request class &#10;+ Request class information: name, day, time make file class\">\r\n      <created>1679213752922</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1679213752922</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"Rearrange Request class\" />\r\n    <MESSAGE value=\"Rearrange Request class &#10;+ Request class information: name, day, time\" />\r\n    <MESSAGE value=\"Rearrange Request class &#10;+ Request class information: name, day, time make file class\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Rearrange Request class &#10;+ Request class information: name, day, time make file class\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/main/java/Controller/Request.java</url>\r\n          <line>371</line>\r\n          <option name=\"timeStamp\" value=\"12\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2fabac4285aba6c758f24ad1a71df3aad2325a8a)
++++ b/.idea/workspace.xml	(date 1679373636379)
+@@ -4,19 +4,14 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="Rearrange Request class &#10;+ Request class information: name, day, time make file class">
+-      <change afterPath="$PROJECT_DIR$/lib/json-20220924.jar" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Files/classRoomList.dat" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Files/studentList.dat" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/GUI.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/MainPanel/MainPanel.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/Viewer/GUI/SidePanel/SidePanel.java" afterDir="false" />
++    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="New request obtain class id">
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_17_2023_12_27_AM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_17_2023_12_27_AM__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_17_2023_12_28_AM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_17_2023_12_28_AM__Changes_.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Files/classIdList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Files/classIdList.dat" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/IOSystem.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Request.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/IOSystem.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/Controller/Request.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/Request.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -26,8 +21,6 @@
+   <component name="FileTemplateManagerImpl">
+     <option name="RECENT_TEMPLATES">
+       <list>
+-        <option value="HTTP Request" />
+-        <option value="Interface" />
+         <option value="Class" />
+       </list>
+     </option>
+@@ -46,55 +39,37 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "ASKED_ADD_EXTERNAL_FILES": "true",
+-    "Downloaded.Files.Path.Enabled": "true",
+-    "Repository.Attach.Annotations": "false",
+-    "Repository.Attach.JavaDocs": "false",
+-    "Repository.Attach.Sources": "false",
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "403",
+-    "WebServerToolWindowFactoryState": "false",
+-    "last_opened_file_path": "D:/ProPTIT/Java/ProjectJava/BetterCRM",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "project.structure.last.edited": "Modules",
+-    "project.structure.proportion": "0.15",
+-    "project.structure.side.proportion": "0.38965517",
+-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+-    "vue.rearranger.settings.migration": "true"
+-  },
+-  "keyToStringList": {
+-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+-      "Markdown",
+-      "PLAIN_TEXT"
+-    ]
+-  }
+-}]]></component>
+-  <component name="RecentsManager">
+-    <key name="MoveFile.RECENT_KEYS">
+-      <recent name="D:\ProPTIT\Java\ProjectJava\TestRequest\src\main\java\Controller" />
+-    </key>
+-  </component>
+-  <component name="RunAnythingCache">
+-    <option name="myCommands">
+-      <command value="main" />
+-    </option>
+-  </component>
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
++    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
++    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
++    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
++    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
++    &quot;last_opened_file_path&quot;: &quot;D:/ProPTIT/Java/ProjectJava/BetterCRM&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.38965517&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  }
++}</component>
+   <component name="RunManager">
+-    <configuration name="Test | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/Test.http" requestIdentifier="#1" runType="Run single request">
+-      <method v="2" />
++    <configuration name="Main" type="Application" factoryName="Application">
++      <option name="MAIN_CLASS_NAME" value="Main" />
++      <module name="BetterCRM" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
+     </configuration>
+-    <recent_temporary>
+-      <list>
+-        <item itemvalue="HTTP Request.Test | #1" />
+-      </list>
+-    </recent_temporary>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -108,29 +83,8 @@
+       <workItem from="1678906495526" duration="7490000" />
+       <workItem from="1678925739706" duration="3547000" />
+       <workItem from="1678953478853" duration="6516000" />
++      <workItem from="1679364076815" duration="835000" />
+     </task>
+-    <task id="LOCAL-00001" summary="Rearrange Request class">
+-      <created>1678992334075</created>
+-      <option name="number" value="00001" />
+-      <option name="presentableId" value="LOCAL-00001" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1678992334075</updated>
+-    </task>
+-    <task id="LOCAL-00002" summary="Rearrange Request class &#10;+ Request class information: name, day, time">
+-      <created>1679143238010</created>
+-      <option name="number" value="00002" />
+-      <option name="presentableId" value="LOCAL-00002" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1679143238010</updated>
+-    </task>
+-    <task id="LOCAL-00003" summary="Rearrange Request class &#10;+ Request class information: name, day, time make file class">
+-      <created>1679213752922</created>
+-      <option name="number" value="00003" />
+-      <option name="presentableId" value="LOCAL-00003" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1679213752922</updated>
+-    </task>
+-    <option name="localTasksCounter" value="4" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -138,20 +92,5 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+-    <MESSAGE value="Rearrange Request class" />
+-    <MESSAGE value="Rearrange Request class &#10;+ Request class information: name, day, time" />
+-    <MESSAGE value="Rearrange Request class &#10;+ Request class information: name, day, time make file class" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Rearrange Request class &#10;+ Request class information: name, day, time make file class" />
+-  </component>
+-  <component name="XDebuggerManager">
+-    <breakpoint-manager>
+-      <breakpoints>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/src/main/java/Controller/Request.java</url>
+-          <line>371</line>
+-          <option name="timeStamp" value="12" />
+-        </line-breakpoint>
+-      </breakpoints>
+-    </breakpoint-manager>
+   </component>
+ </project>
+\ No newline at end of file

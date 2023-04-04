@@ -163,8 +163,15 @@ public class Form_Home extends javax.swing.JPanel {
 
     
     public void updateTableRowContent(int row){
-        ClassRoom current = classRoomList.get(row);
         DefaultTableModel model = (DefaultTableModel) table.getModel();
+        String className = (String) model.getValueAt(row, 1);
+        ClassRoom current = new ClassRoom();
+        for (ClassRoom c : classRoomList){
+            if (c.getClassName().equals(className)){
+                current = c;
+                break;
+            }
+        }
         if (table.getSelectedRowCount() == 1){
             Lesson latestLesson = current.getLatestLesson();
             String emailStatus = latestLesson.getEmailStatus();
