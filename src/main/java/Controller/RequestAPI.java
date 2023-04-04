@@ -364,8 +364,8 @@ public class RequestAPI {
 //        for (String s : classIdList) {
 //            System.out.println(s);
 //        }
-        updateClassIdList();
-        updateClassList();
+//        updateClassIdList();
+//        updateClassList();
 //        List<ClassRoom> list = IOSystem.getInstance().read(filesPath + "classRoomList.dat");
 //        for (ClassRoom classRoom : list) {
 //            System.out.println(classRoom.getClassName());
