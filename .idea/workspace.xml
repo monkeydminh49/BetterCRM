@@ -9,8 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="delete jar file to push">
-      <change beforePath="$PROJECT_DIR$/doc/Introduction.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Introduction.md" afterDir="false" />
+    <list default="true" id="c1e9e091-c092-4aea-9364-11fc1c3a7008" name="Changes" comment="update Introduction.md">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/classIdList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/Files/classIdList.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/classRoomList.dat" beforeDir="false" afterPath="$PROJECT_DIR$/Files/classRoomList.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/latestUpdateTime.dat" beforeDir="false" afterPath="$PROJECT_DIR$/Files/latestUpdateTime.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,6 +155,7 @@
       <workItem from="1680616179943" duration="931000" />
       <workItem from="1680620626375" duration="16383000" />
       <workItem from="1680640316208" duration="1460000" />
+      <workItem from="1680666929080" duration="64000" />
     </task>
     <task id="LOCAL-00001" summary="Rearrange Request class">
       <created>1678992334075</created>
@@ -447,7 +451,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680640348746</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="update Introduction.md">
+      <created>1680643117219</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1680643117219</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -472,7 +483,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="add button to table using ButtonBuilder" />
     <MESSAGE value="junk commit" />
     <MESSAGE value="Resolve problem in RequestAPI and update .dat files" />
     <MESSAGE value="Fix Json read error, change classCode -&gt; className" />
@@ -497,6 +507,7 @@
     <MESSAGE value="first build app commit" />
     <MESSAGE value="update introduction doc" />
     <MESSAGE value="delete jar file to push" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete jar file to push" />
+    <MESSAGE value="update Introduction.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="update Introduction.md" />
   </component>
 </project>
