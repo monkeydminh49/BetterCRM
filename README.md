@@ -14,11 +14,11 @@ BetterCRM có thể tự động hiển thị tiết học gần nhất cùng v�
 
 Ứng dụng có 2 tab là tab Dashboard, tab Admin, thanh tìm kiếm và các trang lớp học
 
-1. **Thanh tìm kiếm**
+**1. Thanh tìm kiếm**
 
 Người dùng có thể tìm kiếm lớp học bằng các nhập tên của lớp.
 
-2. **Tab Dashboard**
+**2. Tab Dashboard**
 
 ![Tab Dashboard](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/dashboard_bettercrm.png?raw=true)
 
@@ -29,14 +29,14 @@ Người dùng có thể tìm kiếm lớp học bằng các nhập tên của l
 - Người dùng có thể chọn khoảng thời gian hiển thị lớp học bằng cách chọn khoảng thời gian ở phần lịch.
 - Danh sách lớp học có thể được xem theo chiều mới nhất và cũ nhất bằng cách chọn nút mũi tên 2 chiều ở cạnh phần lịch.
 
-3. **Tab Admin**
+**3. Tab Admin**
 
 ![Tab Admin](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/admin_bettercrm.png?raw=true)
 
 - Người dùng có thể cập nhật danh sách lớp thông qua nút "Update class list" khi có lớp học mới được thêm vào hệ thống.
 - Thời gian lần cuối cùng cập nhật danh sách lớp học sẽ được hiển thị ở phần "Last update".
 
-4. **Trang lớp học**
+**4. Trang lớp học**
 
 ![Trang lớp học](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/class_bettercrm.png?raw=true)
 
