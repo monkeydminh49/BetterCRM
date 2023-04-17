@@ -1,13 +1,20 @@
-# 
+# Giới thiệu BetterCRM
+
 ## Ý tưởng
+
 Vì có rất nhiều lớp học và hàng ngày phải kiểm tra tiến độ gửi mail nhận xét học sinh của từng lớp. BetterCRM giúp công việc đó trở nên nhanh chóng hơn.
+
 ## Các tính năng
+
 BetterCRM có thể tự động hiển thị tiết học gần nhất cùng với trạng thái gửi nhận xét của mỗi lớp, tìm kiếm lớp học theo tên để xem thông tin chi tiết các tiết học của lớp đó.
+
 ## Công nghệ sử dụng
+
 1. Gọi API để lấy thông tin trên website
 2. Multi-threading để tăng tốc độ và trải nghiệm của người dùng
 3. Jsoup để duyệt HTML
 4. Java Swing để tạo giao diện
+
 ## Cách sử dụng
 
 Ứng dụng có 2 tab là tab Dashboard, tab Admin, thanh tìm kiếm và các trang lớp học
@@ -21,12 +28,13 @@ Người dùng có thể tìm kiếm lớp học bằng các nhập tên của l
 ![Tab Dashboard](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/dashboard_bettercrm.png?raw=true)
 
 - Ở tab này, các lớp học được hiển thị với tên lớp học, tiết học gần nhất, thời gian tiết học,
-và trạng thái gửi nhận xét lớp. Nếu trạng thái là đã gửi sẽ hiện YES màu xanh, chưa gửi nếu chưa quá hạn gửi sẽ hiện 
-NO màu vàng, nếu đã quá hạn nộp sẽ hiện OVERDUE màu đỏ.
+  và trạng thái gửi nhận xét lớp. Nếu trạng thái là đã gửi sẽ hiện YES màu xanh, chưa gửi nếu chưa quá hạn gửi sẽ hiện
+  NO màu vàng, nếu đã quá hạn nộp sẽ hiện OVERDUE màu đỏ.
 - Bên cạnh các lớp học là các phím chức năng: xem chi tiết lớp học, tải lại trạng thái tiết học và xóa lớp học.
 - Người dùng có thể chọn khoảng thời gian hiển thị lớp học bằng cách chọn khoảng thời gian ở phần lịch.
 - Danh sách lớp học có thể được xem theo chiều mới nhất và cũ nhất bằng cách chọn nút mũi tên 2 chiều ở cạnh phần lịch.
 - 
+
 3. Tab Admin
 
 ![Tab Admin](https://github.com/monkeydminh49/BetterCRM/blob/master/doc/img/admin_bettercrm.png?raw=true)
